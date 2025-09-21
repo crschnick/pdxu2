@@ -8,7 +8,7 @@
 
 ## About
 
-KickstartFX is a ready-to-use template for JavaFX applications. It can serve as a solid foundation for your own JavaFX application as everything is fully customizable and extendable. You can find the documentation at [https://kickstartfx.xpipe.io](https://kickstartfx.xpipe.io).
+KickstartFX is an advanced ready-to-use template for JavaFX applications. It can serve as a solid foundation for your own JavaFX application as everything is fully customizable and extendable. You can find the documentation at [https://kickstartfx.xpipe.io](https://kickstartfx.xpipe.io).
 
 KickstartFX is more than just a basic template that opens a simple window. It contains a lot of code to handle the challenges of applications in the real world to achieve the best possible desktop application experience across all operating systems. The code is based on [XPipe](https://github.com/xpipe-io/kickstartfx), a well-established JavaFX application, and is the result of years of experience developing a desktop application that is used by many thousands of users right now.
 
@@ -48,12 +48,12 @@ You can run the latest release right now to see for yourself. These releases wer
 Installers are the easiest way to get started:
 
 - [Windows .msi Installer (x86-64)](../../releases/latest/download/kickstartfx-installer-windows-x86_64.msi)
-- [Windows .msi Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-windows-arm64.msi)
+- [Windows .msi Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-windows-arm64.msi) (Not built all the time)
 
 If you don't like installers, you can also use a portable version that is packaged as an archive:
 
 - [Windows .zip Portable (x86-64)](../../releases/latest/download/kickstartfx-portable-windows-x86_64.zip)
-- [Windows .zip Portable (ARM 64)](../../releases/latest/download/kickstartfx-portable-windows-arm64.zip)
+- [Windows .zip Portable (ARM 64)](../../releases/latest/download/kickstartfx-portable-windows-arm64.zip) (Not built all the time)
 
 ### macOS
 
@@ -74,7 +74,7 @@ If you don't like installers, you can also use a portable version that is packag
 The following debian installers are available:
 
 - [Linux .deb Installer (x86-64)](../../releases/latest/download/kickstartfx-installer-linux-x86_64.deb)
-- [Linux .deb Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-linux-arm64.deb)
+- [Linux .deb Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-linux-arm64.deb) (Not built all the time)
 
 Note that you should use apt to install the package with `sudo apt install <file>` as other package managers, for example dpkg,
 are not able to resolve and install any dependency packages.
@@ -84,7 +84,7 @@ are not able to resolve and install any dependency packages.
 The following rpm installers are available:
 
 - [Linux .rpm Installer (x86-64)](../../releases/latest/download/kickstartfx-installer-linux-x86_64.rpm)
-- [Linux .rpm Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-linux-arm64.rpm)
+- [Linux .rpm Installer (ARM 64)](../../releases/latest/download/kickstartfx-installer-linux-arm64.rpm) (Not built all the time)
 
 The same applies here, you should use a package manager that supports resolving and installing required dependencies if needed.
 
@@ -93,7 +93,7 @@ The same applies here, you should use a package manager that supports resolving 
 In case you prefer to use an archive version that you can extract anywhere, you can use these:
 
 - [Linux .tar.gz Portable (x86-64)](../../releases/latest/download/kickstartfx-portable-linux-x86_64.tar.gz)
-- [Linux .tar.gz Portable (ARM 64)](../../releases/latest/download/kickstartfx-portable-linux-arm64.tar.gz)
+- [Linux .tar.gz Portable (ARM 64)](../../releases/latest/download/kickstartfx-portable-linux-arm64.tar.gz) (Not built all the time)
 
 Note that the portable version assumes that you have some basic packages for graphical systems already installed
 as it is not a perfect standalone version. It should however run on most systems.
@@ -105,3 +105,23 @@ as it is not a perfect standalone version. It should however run on most systems
 ![Demo3](https://kickstartfx.xpipe.io/images/demo3.png)
 
 ![Demo4](https://kickstartfx.xpipe.io/images/demo4.png)
+
+## License
+
+The source code of this repository is multi-licensed. It is under a strong copyleft GPL license by default but can also be licensed under a permissive Apache license upon request.
+
+## Copyleft community license
+
+By default, the source code in this repository is licensed under the [GNU General Public License](/LICENSE-GPL.md).
+
+## Permissive community license
+
+If this license is incompatible with your project, you can request to instead license the source code under the [Apache License](/LICENSE-APL.md) if you are creating an open source project with a publicly visible repository.
+
+You can contact [crschnick@xpipe.io](mailto:crschnick@xpipe.io) to request this permissive license for your open source project free of charge. There are no strings attached with this. All dependencies that are included with KickstartFX are compatible with the Apache License as well. While there is no prioritized support with this, this repository will still see timely fixes and improvements for any issues that are reported.
+
+## Permissive enterprise license
+
+If this license is incompatible with your enterprise project, you can request to instead license the source code under the [Apache License](/LICENSE-APL.md). This license is best suited for individuals and organizations looking for key functionalities for application development while fully retaining their intellectual property rights. All dependencies that are included with KickstartFX are compatible with the Apache License as well.
+
+You can contact [crschnick@xpipe.io](mailto:crschnick@xpipe.io) to get a quote for your use case of your enterprise. This can can optionally also include prioritized support.
