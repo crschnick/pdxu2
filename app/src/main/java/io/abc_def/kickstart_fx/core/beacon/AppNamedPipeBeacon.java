@@ -1,8 +1,9 @@
-package io.abc_def.kickstart_fx.core;
+package io.abc_def.kickstart_fx.core.beacon;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.jna.platform.win32.*;
 import com.sun.jna.ptr.IntByReference;
+import io.abc_def.kickstart_fx.core.AppNames;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
 import io.abc_def.kickstart_fx.issue.ErrorEventFactory;
 import io.abc_def.kickstart_fx.issue.TrackEvent;

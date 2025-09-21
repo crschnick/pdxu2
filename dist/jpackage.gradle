@@ -82,6 +82,7 @@ jlink {
             appVersion = macVersion
             imageOptions = ["--mac-package-identifier", jpackageMacOsBundleName]
         }
+        // TODO: Change vendor
         vendor = 'XPipe UG (haftungsbeschränkt)'
         skipInstaller = true
     }

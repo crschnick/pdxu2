@@ -19,6 +19,7 @@ open module io.abc_def.kickstart_fx {
     exports io.abc_def.kickstart_fx.comp;
     exports io.abc_def.kickstart_fx.platform;
     exports io.abc_def.kickstart_fx.page;
+    exports io.abc_def.kickstart_fx.core.beacon;
 
     requires static lombok;
     requires com.sun.jna;

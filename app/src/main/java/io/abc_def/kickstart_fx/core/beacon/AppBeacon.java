@@ -1,4 +1,4 @@
-package io.abc_def.kickstart_fx.core;
+package io.abc_def.kickstart_fx.core.beacon;
 
 import io.abc_def.kickstart_fx.issue.ErrorEventFactory;
 import io.abc_def.kickstart_fx.util.OsType;

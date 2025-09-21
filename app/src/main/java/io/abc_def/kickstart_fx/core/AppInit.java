@@ -1,8 +1,8 @@
 package io.abc_def.kickstart_fx.core;
 
+import io.abc_def.kickstart_fx.core.beacon.AppBeacon;
 import io.abc_def.kickstart_fx.core.check.AppDebugModeCheck;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
-import io.abc_def.kickstart_fx.core.mode.AppOperationModeSelection;
 import io.abc_def.kickstart_fx.core.window.AppMainWindow;
 import io.abc_def.kickstart_fx.issue.ErrorEventFactory;
 import io.abc_def.kickstart_fx.issue.TrackEvent;

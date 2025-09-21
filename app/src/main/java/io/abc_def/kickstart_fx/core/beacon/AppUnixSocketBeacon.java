@@ -1,5 +1,8 @@
-package io.abc_def.kickstart_fx.core;
+package io.abc_def.kickstart_fx.core.beacon;
 
+import io.abc_def.kickstart_fx.core.AppDataLock;
+import io.abc_def.kickstart_fx.core.AppNames;
+import io.abc_def.kickstart_fx.core.AppSystemInfo;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
 import io.abc_def.kickstart_fx.issue.ErrorEventFactory;
 import io.abc_def.kickstart_fx.issue.TrackEvent;

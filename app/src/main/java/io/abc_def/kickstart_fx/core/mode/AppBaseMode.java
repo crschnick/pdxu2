@@ -1,6 +1,7 @@
 package io.abc_def.kickstart_fx.core.mode;
 
 import io.abc_def.kickstart_fx.core.*;
+import io.abc_def.kickstart_fx.core.beacon.AppBeacon;
 import io.abc_def.kickstart_fx.core.check.*;
 import io.abc_def.kickstart_fx.core.window.AppDialog;
 import io.abc_def.kickstart_fx.core.window.AppMainWindow;

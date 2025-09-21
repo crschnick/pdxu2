@@ -2,6 +2,7 @@ def pkgName = kebapProductName
 def targetDir = "/opt/$pkgName"
 
 ospackage {
+    // TODO: Change package information
     packager = "crschnick"
     vendor = "XPipe UG (haftungsbeschränkt) <hello@xpipe.io>"
     packageName = pkgName
@@ -106,8 +107,10 @@ buildRpm {
 
     arch = project.arch == 'x86_64' ? X86_64 : AARCH64
     os = LINUX
-    postInstall replaceVariablesInFile("$projectDir/linux_packages/postinst_rpm.sh", Map.of('__PACKAGE__', pkgName, '__TARGET__', targetDir, '__EXECUTABLE_NAME__', jpackageExecutableName))
-    preUninstall replaceVariablesInFile("$projectDir/linux_packages/prerm_rpm.sh", Map.of('__PACKAGE__', pkgName, '__TARGET__', targetDir, '__EXECUTABLE_NAME__', jpackageExecutableName))
+    postInstall replaceVariablesInFile("$projectDir/linux_packages/postinst_rpm.sh",
+            Map.of('__PACKAGE__', pkgName, '__TARGET__', targetDir, '__EXECUTABLE_NAME__', jpackageExecutableName))
+    preUninstall replaceVariablesInFile("$projectDir/linux_packages/prerm_rpm.sh",
+            Map.of('__PACKAGE__', pkgName, '__TARGET__', targetDir, '__EXECUTABLE_NAME__', jpackageExecutableName))
 }
 
 tasks.register('copyLinuxPackage', Copy) {

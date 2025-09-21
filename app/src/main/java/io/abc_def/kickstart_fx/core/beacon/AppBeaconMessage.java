@@ -1,12 +1,12 @@
-package io.abc_def.kickstart_fx.core;
+package io.abc_def.kickstart_fx.core.beacon;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import io.abc_def.kickstart_fx.core.AppOpenArguments;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
 import io.abc_def.kickstart_fx.core.window.AppMainWindow;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
