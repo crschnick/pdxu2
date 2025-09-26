@@ -1,18 +1,12 @@
 package io.abc_def.kickstart_fx.core.mode;
 
 import io.abc_def.kickstart_fx.core.*;
-import io.abc_def.kickstart_fx.core.check.AppDebugModeCheck;
 import io.abc_def.kickstart_fx.core.window.AppMainWindow;
 import io.abc_def.kickstart_fx.issue.*;
-import io.abc_def.kickstart_fx.platform.PlatformInit;
 import io.abc_def.kickstart_fx.platform.PlatformState;
-import io.abc_def.kickstart_fx.platform.PlatformThreadWatcher;
 import io.abc_def.kickstart_fx.prefs.AppPrefs;
 import io.abc_def.kickstart_fx.prefs.CloseBehaviour;
-import io.abc_def.kickstart_fx.update.AppDistributionType;
 import io.abc_def.kickstart_fx.util.*;
-
-import javafx.application.Platform;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -226,7 +220,8 @@ public abstract class AppOperationMode {
             }
 
             BACKGROUND.onSwitchTo();
-            if (CURRENT != GUI && newMode != GUI
+            if (CURRENT != GUI
+                    && newMode != GUI
                     && AppMainWindow.get() != null
                     && AppMainWindow.get().getStage().isShowing()) {
                 GUI.onSwitchTo();
