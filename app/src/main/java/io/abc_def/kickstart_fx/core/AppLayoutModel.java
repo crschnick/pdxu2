@@ -2,9 +2,9 @@ package io.abc_def.kickstart_fx.core;
 
 import io.abc_def.kickstart_fx.comp.Comp;
 import io.abc_def.kickstart_fx.page.*;
+import io.abc_def.kickstart_fx.page.PrefsPageComp;
 import io.abc_def.kickstart_fx.platform.LabelGraphic;
 import io.abc_def.kickstart_fx.platform.PlatformThread;
-import io.abc_def.kickstart_fx.page.PrefsPageComp;
 import io.abc_def.kickstart_fx.util.GlobalTimer;
 import io.abc_def.kickstart_fx.util.Hyperlinks;
 import io.abc_def.kickstart_fx.util.ThreadHelper;
@@ -123,7 +123,6 @@ public class AppLayoutModel {
             selected.setValue(entries.get(6));
         });
     }
-
 
     public void selectSettings() {
         PlatformThread.runLaterIfNeeded(() -> {

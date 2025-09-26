@@ -1,6 +1,5 @@
 package io.abc_def.kickstart_fx.core;
 
-import io.abc_def.kickstart_fx.issue.TrackEvent;
 import io.abc_def.kickstart_fx.util.OsType;
 
 import javafx.application.Preloader;

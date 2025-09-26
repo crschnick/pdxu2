@@ -3,26 +3,19 @@ package io.abc_def.kickstart_fx.comp.base;
 import io.abc_def.kickstart_fx.comp.Comp;
 import io.abc_def.kickstart_fx.comp.CompStructure;
 import io.abc_def.kickstart_fx.comp.SimpleCompStructure;
-import io.abc_def.kickstart_fx.core.AppFontSizes;
 import io.abc_def.kickstart_fx.platform.BindingsHelper;
-import io.abc_def.kickstart_fx.util.Hyperlinks;
 
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
-import javafx.util.Duration;
 
 import atlantafx.base.controls.Spacer;
-import atlantafx.base.theme.Styles;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -184,9 +177,5 @@ public class OptionsComp extends Comp<CompStructure<VBox>> {
         return new SimpleCompStructure<>(pane);
     }
 
-    public record Entry(
-            String key,
-            ObservableValue<String> description,
-            ObservableValue<String> name,
-            Comp<?> comp) {}
+    public record Entry(String key, ObservableValue<String> description, ObservableValue<String> name, Comp<?> comp) {}
 }

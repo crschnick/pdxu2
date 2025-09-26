@@ -1,14 +1,14 @@
 package io.abc_def.kickstart_fx.page;
 
-import atlantafx.sampler.page.showcase.OverviewPage;
-import com.oracle.tools.fx.monkey.MainWindow;
 import io.abc_def.kickstart_fx.comp.SimpleComp;
-import javafx.application.Platform;
+
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+
+import com.oracle.tools.fx.monkey.MainWindow;
 
 public class MonkeyTesterPageComp extends SimpleComp {
 

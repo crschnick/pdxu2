@@ -34,9 +34,12 @@ public class AppInstance {
         try {
             var inputs = AppProperties.get().getArguments().getOpenArgs();
             // Assume that we want to open the GUI if we launched again
-            AppBeacon.get().sendRequest(new AppBeaconMessage.FocusRequest());
+            AppBeacon.get().sendRequest(AppBeaconMessage.FocusRequest.builder().build());
             if (!inputs.isEmpty()) {
-                AppBeacon.get().sendRequest(new AppBeaconMessage.OpenRequest(inputs));
+                AppBeacon.get()
+                        .sendRequest(AppBeaconMessage.OpenRequest.builder()
+                                .arguments(inputs)
+                                .build());
             }
         } catch (Exception ex) {
             ErrorEventFactory.fromThrowable(ex).handle();
@@ -46,7 +49,10 @@ public class AppInstance {
         if (OsType.ofLocal() == OsType.MACOS) {
             Desktop.getDesktop().setOpenURIHandler(e -> {
                 try {
-                    AppBeacon.get().sendRequest(new AppBeaconMessage.OpenRequest(List.of(e.getURI().toString())));
+                    AppBeacon.get()
+                            .sendRequest(AppBeaconMessage.OpenRequest.builder()
+                                    .arguments(List.of(e.getURI().toString()))
+                                    .build());
                 } catch (Exception ex) {
                     ErrorEventFactory.fromThrowable(ex).expected().omit().handle();
                 }

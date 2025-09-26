@@ -20,8 +20,7 @@ public abstract class AppBeacon {
         } catch (Exception ex) {
             // Not terminal!
             // We can still continue without the running server
-            ErrorEventFactory.fromThrowable("Unable to start beacon", ex)
-                    .handle();
+            ErrorEventFactory.fromThrowable("Unable to start beacon", ex).handle();
         }
     }
 

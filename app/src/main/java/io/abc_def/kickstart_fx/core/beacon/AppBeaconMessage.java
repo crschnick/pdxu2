@@ -1,11 +1,12 @@
 package io.abc_def.kickstart_fx.core.beacon;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.abc_def.kickstart_fx.core.AppOpenArguments;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
 import io.abc_def.kickstart_fx.core.window.AppMainWindow;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -14,9 +15,9 @@ import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AppBeaconMessage.FocusRequest.class),
-        @JsonSubTypes.Type(value = AppBeaconMessage.ExitRequest.class),
-        @JsonSubTypes.Type(value = AppBeaconMessage.OpenRequest.class)
+    @JsonSubTypes.Type(value = AppBeaconMessage.FocusRequest.class),
+    @JsonSubTypes.Type(value = AppBeaconMessage.ExitRequest.class),
+    @JsonSubTypes.Type(value = AppBeaconMessage.OpenRequest.class)
 })
 public interface AppBeaconMessage {
 
@@ -26,7 +27,7 @@ public interface AppBeaconMessage {
     @Builder
     @Jacksonized
     @JsonTypeName("focus")
-    public static class FocusRequest implements AppBeaconMessage {
+    class FocusRequest implements AppBeaconMessage {
 
         @Override
         public void handle() {
@@ -40,7 +41,6 @@ public interface AppBeaconMessage {
             }
         }
     }
-
 
     @Value
     @Builder

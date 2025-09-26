@@ -167,7 +167,8 @@ public class AppMainWindow {
     }
 
     public void focus(boolean force) {
-        if (!force && AppPrefs.get() != null
+        if (!force
+                && AppPrefs.get() != null
                 && !AppPrefs.get().focusWindowOnNotifications().get()) {
             return;
         }

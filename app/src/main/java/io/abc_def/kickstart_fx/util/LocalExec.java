@@ -14,7 +14,8 @@ public class LocalExec {
                     .handle();
 
             var pb = new ProcessBuilder(command)
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD).redirectError(ProcessBuilder.Redirect.DISCARD);
+                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD);
             var env = pb.environment();
             // https://bugs.openjdk.org/browse/JDK-8360500
             env.remove("_JPACKAGE_LAUNCHER");

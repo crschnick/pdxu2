@@ -1,23 +1,17 @@
 package io.abc_def.kickstart_fx.issue;
 
-import io.abc_def.kickstart_fx.comp.Comp;
 import io.abc_def.kickstart_fx.comp.base.*;
-import io.abc_def.kickstart_fx.core.AppFontSizes;
 import io.abc_def.kickstart_fx.core.AppI18n;
 import io.abc_def.kickstart_fx.core.AppLogs;
-import io.abc_def.kickstart_fx.core.AppResources;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-import atlantafx.base.controls.Popover;
 import atlantafx.base.controls.Spacer;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class UserReportComp extends ModalOverlayContentComp {

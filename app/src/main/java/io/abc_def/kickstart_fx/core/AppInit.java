@@ -13,7 +13,9 @@ import io.abc_def.kickstart_fx.update.AppDistributionType;
 import io.abc_def.kickstart_fx.util.GlobalTimer;
 import io.abc_def.kickstart_fx.util.ModuleLayerLoader;
 import io.abc_def.kickstart_fx.util.ThreadHelper;
+
 import javafx.application.Platform;
+
 import lombok.SneakyThrows;
 
 public class AppInit {
@@ -21,9 +23,7 @@ public class AppInit {
     private static void handleUncaught(Thread thread, Throwable ex) {
         // It seems like a few exceptions are thrown in the quantum renderer
         // when in shutdown. We can ignore these
-        if (AppOperationMode.isInShutdown()
-                && Platform.isFxApplicationThread()
-                && ex instanceof NullPointerException) {
+        if (AppOperationMode.isInShutdown() && Platform.isFxApplicationThread() && ex instanceof NullPointerException) {
             return;
         }
 

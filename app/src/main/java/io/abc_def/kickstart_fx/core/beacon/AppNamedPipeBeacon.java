@@ -1,14 +1,15 @@
 package io.abc_def.kickstart_fx.core.beacon;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sun.jna.platform.win32.*;
-import com.sun.jna.ptr.IntByReference;
 import io.abc_def.kickstart_fx.core.AppNames;
 import io.abc_def.kickstart_fx.core.mode.AppOperationMode;
 import io.abc_def.kickstart_fx.issue.ErrorEventFactory;
 import io.abc_def.kickstart_fx.issue.TrackEvent;
 import io.abc_def.kickstart_fx.util.JacksonMapper;
 import io.abc_def.kickstart_fx.util.ThreadHelper;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sun.jna.platform.win32.*;
+import com.sun.jna.ptr.IntByReference;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
@@ -34,14 +35,8 @@ public class AppNamedPipeBeacon extends AppBeacon {
             return;
         }
 
-        WinNT.HANDLE hPipe = Kernel32.INSTANCE.CreateFile(pipeName,
-                WinNT.GENERIC_READ | WinNT.GENERIC_WRITE,
-                0,
-                null,
-                WinNT.OPEN_EXISTING,
-                0,
-                null
-        );
+        WinNT.HANDLE hPipe = Kernel32.INSTANCE.CreateFile(
+                pipeName, WinNT.GENERIC_READ | WinNT.GENERIC_WRITE, 0, null, WinNT.OPEN_EXISTING, 0, null);
         if (WinBase.INVALID_HANDLE_VALUE.equals(hPipe)) {
             return;
         }
@@ -65,17 +60,18 @@ public class AppNamedPipeBeacon extends AppBeacon {
 
     private void createServerNamedPipe() throws IOException {
         var pipeName = getNamedPipeLocation().toString();
-        WinNT.HANDLE hNamedPipe= Kernel32.INSTANCE.CreateNamedPipe(
+        WinNT.HANDLE hNamedPipe = Kernel32.INSTANCE.CreateNamedPipe(
                 pipeName,
                 WinBase.PIPE_ACCESS_DUPLEX,
-                WinBase.PIPE_TYPE_MESSAGE  | WinBase.PIPE_READMODE_MESSAGE | WinBase.PIPE_WAIT,
+                WinBase.PIPE_TYPE_MESSAGE | WinBase.PIPE_READMODE_MESSAGE | WinBase.PIPE_WAIT,
                 1,
                 Byte.MAX_VALUE,
                 Byte.MAX_VALUE,
                 30000,
                 null);
         if (WinBase.INVALID_HANDLE_VALUE.equals(hNamedPipe)) {
-            throw new IOException("Unable to create named pipe at " + pipeName + ". " + Kernel32Util.getLastErrorMessage());
+            throw new IOException(
+                    "Unable to create named pipe at " + pipeName + ". " + Kernel32Util.getLastErrorMessage());
         }
 
         serverPipeHandle = hNamedPipe;
@@ -83,43 +79,49 @@ public class AppNamedPipeBeacon extends AppBeacon {
 
     private void runThread() {
         ThreadHelper.createPlatformThread("beacon", false, () -> {
-            while (true) {
-                var connected = Kernel32.INSTANCE.ConnectNamedPipe(serverPipeHandle, null);
-                if (!connected && Kernel32.INSTANCE.GetLastError() != Kernel32.ERROR_PIPE_CONNECTED) {
-                    break;
-                }
+                    while (true) {
+                        var connected = Kernel32.INSTANCE.ConnectNamedPipe(serverPipeHandle, null);
+                        if (!connected && Kernel32.INSTANCE.GetLastError() != Kernel32.ERROR_PIPE_CONNECTED) {
+                            break;
+                        }
 
-                byte[] readBuffer = new byte[MAX_BUFFER_SIZE];
-                IntByReference lpNumberOfBytesRead = new IntByReference(0);
-                Kernel32.INSTANCE.ReadFile(serverPipeHandle, readBuffer, readBuffer.length, lpNumberOfBytesRead, null);
+                        byte[] readBuffer = new byte[MAX_BUFFER_SIZE];
+                        IntByReference lpNumberOfBytesRead = new IntByReference(0);
+                        Kernel32.INSTANCE.ReadFile(
+                                serverPipeHandle, readBuffer, readBuffer.length, lpNumberOfBytesRead, null);
 
-                Kernel32.INSTANCE.DisconnectNamedPipe(serverPipeHandle);
+                        Kernel32.INSTANCE.DisconnectNamedPipe(serverPipeHandle);
 
-                try {
-                    var message = new String(readBuffer, 0, lpNumberOfBytesRead.getValue()).replaceAll("\r\n", "\n");
-                    var parsed = JacksonMapper.getDefault().readValue(message, AppBeaconMessage.class);
+                        try {
+                            var message =
+                                    new String(readBuffer, 0, lpNumberOfBytesRead.getValue()).replaceAll("\r\n", "\n");
+                            var parsed = JacksonMapper.getDefault().readValue(message, AppBeaconMessage.class);
 
-                    if (parsed instanceof AppBeaconMessage.ExitRequest) {
-                        break;
+                            if (parsed instanceof AppBeaconMessage.ExitRequest) {
+                                break;
+                            }
+
+                            TrackEvent.withTrace("Received message")
+                                    .tag("message", message)
+                                    .tag("parsed", parsed)
+                                    .handle();
+
+                            if (AppOperationMode.isInStartup() || AppOperationMode.isInShutdown()) {
+                                continue;
+                            }
+
+                            if (parsed != null) {
+                                parsed.handle();
+                            }
+                        } catch (JsonProcessingException e) {
+                            ErrorEventFactory.fromThrowable(e).omit().handle();
+                        }
                     }
 
-                    TrackEvent.withTrace("Received message").tag("message", message).tag("parsed", parsed).handle();
-
-                    if (AppOperationMode.isInStartup() || AppOperationMode.isInShutdown()) {
-                        continue;
-                    }
-
-                    if (parsed != null) {
-                        parsed.handle();
-                    }
-                } catch (JsonProcessingException e) {
-                    ErrorEventFactory.fromThrowable(e).omit().handle();
-                }
-            }
-
-            Kernel32.INSTANCE.CloseHandle(serverPipeHandle);
-            serverPipeHandle = null;
-        }).start();
+                    Kernel32.INSTANCE.CloseHandle(serverPipeHandle);
+                    serverPipeHandle = null;
+                })
+                .start();
     }
 
     protected void stop() {

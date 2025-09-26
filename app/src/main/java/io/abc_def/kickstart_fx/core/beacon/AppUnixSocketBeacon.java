@@ -43,59 +43,63 @@ public class AppUnixSocketBeacon extends AppBeacon {
     }
 
     private static UnixDomainSocketAddress getSocketAddress() {
-        var file = AppSystemInfo.ofCurrent().getTemp().resolve(AppNames.ofCurrent().getKebapName() + ".sock");
+        var file =
+                AppSystemInfo.ofCurrent().getTemp().resolve(AppNames.ofCurrent().getKebapName() + ".sock");
         return UnixDomainSocketAddress.of(file);
     }
 
     private void createSocket() throws IOException {
-        ServerSocketChannel serverChannel = ServerSocketChannel
-                .open(StandardProtocolFamily.UNIX);
+        ServerSocketChannel serverChannel = ServerSocketChannel.open(StandardProtocolFamily.UNIX);
         serverChannel.bind(getSocketAddress());
         serverSocket = serverChannel;
     }
 
     private void runThread() {
         ThreadHelper.createPlatformThread("beacon", false, () -> {
-            while (true) {
-                try {
-                    SocketChannel channel = serverSocket.accept();
-                    ByteBuffer buffer = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-                    int bytesRead = channel.read(buffer);
-                    if (bytesRead < 0) {
-                        break;
+                    while (true) {
+                        try {
+                            SocketChannel channel = serverSocket.accept();
+                            ByteBuffer buffer = ByteBuffer.allocate(MAX_BUFFER_SIZE);
+                            int bytesRead = channel.read(buffer);
+                            if (bytesRead < 0) {
+                                break;
+                            }
+
+                            byte[] bytes = new byte[bytesRead];
+                            buffer.flip();
+                            buffer.get(bytes);
+                            var message = new String(bytes);
+
+                            var parsed = JacksonMapper.getDefault().readValue(message, AppBeaconMessage.class);
+                            if (parsed instanceof AppBeaconMessage.ExitRequest) {
+                                break;
+                            }
+
+                            TrackEvent.withTrace("Received message")
+                                    .tag("message", message)
+                                    .tag("parsed", parsed)
+                                    .handle();
+
+                            if (AppOperationMode.isInStartup() || AppOperationMode.isInShutdown()) {
+                                continue;
+                            }
+
+                            if (parsed != null) {
+                                parsed.handle();
+                            }
+                        } catch (Exception e) {
+                            ErrorEventFactory.fromThrowable(e).omit().handle();
+                        }
                     }
 
-                    byte[] bytes = new byte[bytesRead];
-                    buffer.flip();
-                    buffer.get(bytes);
-                    var message = new String(bytes);
-
-                    var parsed = JacksonMapper.getDefault().readValue(message, AppBeaconMessage.class);
-                    if (parsed instanceof AppBeaconMessage.ExitRequest) {
-                        break;
+                    try {
+                        serverSocket.close();
+                    } catch (IOException e) {
+                        ErrorEventFactory.fromThrowable(e).handle();
                     }
-
-                    TrackEvent.withTrace("Received message").tag("message", message).tag("parsed", parsed).handle();
-
-                    if (AppOperationMode.isInStartup() || AppOperationMode.isInShutdown()) {
-                        continue;
-                    }
-
-                    if (parsed != null) {
-                        parsed.handle();
-                    }
-                } catch (Exception e) {
-                    ErrorEventFactory.fromThrowable(e).omit().handle();
-                }
-            }
-
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                ErrorEventFactory.fromThrowable(e).handle();
-            }
-            serverSocket = null;
-        }).start();
+                    serverSocket = null;
+                })
+                .start();
     }
 
     protected void stop() {

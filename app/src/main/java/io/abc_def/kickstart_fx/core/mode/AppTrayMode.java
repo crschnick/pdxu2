@@ -4,7 +4,6 @@ import io.abc_def.kickstart_fx.core.AppTray;
 import io.abc_def.kickstart_fx.issue.*;
 import io.abc_def.kickstart_fx.platform.PlatformInit;
 import io.abc_def.kickstart_fx.platform.PlatformThread;
-import io.abc_def.kickstart_fx.util.OsType;
 
 import java.awt.*;
 
