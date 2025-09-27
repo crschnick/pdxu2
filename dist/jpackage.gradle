@@ -108,11 +108,6 @@ tasks.register('prepareMacOSResources', DefaultTask) {
 
 tasks.register('finalizeMacOSResources', DefaultTask) {
     doLast {
-        copy {
-            from file("$projectDir/logo/Assets.car")
-            into file("$distDir/jpackage/${jpackageExecutableName}.app/Contents/Resources")
-        }
-
         file("$distDir/jpackage/${jpackageExecutableName}.app/Contents/Resources/${jpackageExecutableName}.icns")
                 .renameTo(file("$distDir/jpackage/${jpackageExecutableName}.app/Contents/Resources/logo.icns"))
     }

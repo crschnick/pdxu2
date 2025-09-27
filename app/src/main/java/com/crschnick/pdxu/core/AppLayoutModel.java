@@ -112,12 +112,6 @@ public class AppLayoutModel {
         });
     }
 
-    public void selectMonkeyTester() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(5));
-        });
-    }
-
     public void selectDeveloper() {
         PlatformThread.runLaterIfNeeded(() -> {
             selected.setValue(entries.get(6));
@@ -156,11 +150,6 @@ public class AppLayoutModel {
                         AppI18n.observable("markdown"),
                         new LabelGraphic.IconGraphic("mdi2l-language-markdown-outline"),
                         new MarkdownPageComp(),
-                        null),
-                new Entry(
-                        AppI18n.observable("monkeyTester"),
-                        new LabelGraphic.IconGraphic("mdi2s-shape"),
-                        new MonkeyTesterPageComp(),
                         null),
                 new Entry(
                         AppI18n.observable("developer"),
