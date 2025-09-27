@@ -4,10 +4,9 @@
 
 	<?define UpgradeCode = "$(var.DynamicProductCode)" ?>
 
-	<!-- TODO: Do you want the installer to install into AppData, ProgramFiles, or both? Adapt the scope based on that -->
 	<Package Name="$(var.DynamicProductName)" Language="!(loc.Language)" Version="$(var.BuildVersion)"
 			 Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="500"
-			 Scope="perUserOrMachine">
+			 Scope="perUser">
 
 		<SummaryInformation Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" />
 
@@ -19,10 +18,9 @@
 		<Icon Id="StartMenuIcon" SourceFile="$(var.ProjectDir)\..\logo\logo.ico" />
 		
 		<Property Id="ARPPRODUCTICON" Value="Icon" />
-		<!-- TODO: Put your own links here, they will show up in the control panel -->
-		<Property Id="ARPHELPLINK" Value="https://kickstartfx.xpipe.io/" />
-		<Property Id="ARPURLINFOABOUT" Value="https://kickstartfx.xpipe.io" />
-		<Property Id="ARPURLUPDATEINFO" Value="https://kickstartfx.xpipe.io" />
+		<Property Id="ARPHELPLINK" Value="https://github.com/crschnick/pdx_unlimiter" />
+		<Property Id="ARPURLINFOABOUT" Value="https://github.com/crschnick/pdx_unlimiter" />
+		<Property Id="ARPURLUPDATEINFO" Value="https://github.com/crschnick/pdx_unlimiter" />
 		
 		<SetProperty Id="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" After="CostFinalize" />
 

@@ -15,7 +15,7 @@ public class AppDownloads {
 
     // TODO: Put your own repo URL here
     // For demo purposes, the xpipe updates are shown
-    private static final String GITHUB_REPOSITORY = "xpipe-io/xpipe";
+    private static final String GITHUB_REPOSITORY = "crschnick/pdx-unlimiter";
 
     private static GHRepository repository;
 

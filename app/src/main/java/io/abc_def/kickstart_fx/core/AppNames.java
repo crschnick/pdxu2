@@ -7,8 +7,6 @@ public abstract class AppNames {
     }
 
     public static AppNames ofCurrent() {
-        // TODO: If you are using multiple different distributions
-        // e.g. a release build and a test/beta build, you can implement custom naming here
         return new Main();
     }
 
@@ -40,32 +38,32 @@ public abstract class AppNames {
 
         @Override
         public String getName() {
-            return "Kickstart FX";
+            return "Pdx-Unlimiter";
         }
 
         @Override
         public String getKebapName() {
-            return "kickstart-fx";
+            return "pdx-unlimiter";
         }
 
         @Override
         public String getSnakeName() {
-            return "kickstart_fx";
+            return "pdx_unlimiter";
         }
 
         @Override
         public String getUppercaseName() {
-            return "KICKSTART_FX";
+            return "PDX_UNLIMITER";
         }
 
         @Override
         public String getGroupName() {
-            return "io.abc_def";
+            return "com.crschnick";
         }
 
         @Override
         public String getExecutableName() {
-            return "kickstartfx";
+            return "pdx-unlimiter";
         }
     }
 }

@@ -83,7 +83,7 @@ jlink {
             imageOptions = ["--mac-package-identifier", jpackageMacOsBundleName]
         }
         // TODO: Change vendor
-        vendor = 'XPipe UG (haftungsbeschränkt)'
+        vendor = 'Christopher Schnick'
         skipInstaller = true
     }
 }

@@ -2,22 +2,20 @@ def pkgName = kebapProductName
 def targetDir = "/opt/$pkgName"
 
 ospackage {
-    // TODO: Change package information
     packager = "crschnick"
-    vendor = "XPipe UG (haftungsbeschränkt) <hello@xpipe.io>"
     packageName = pkgName
     packageGroup = 'default'
     version = project.canonicalVersionString
     release = versionReleaseNumber
-    packageDescription = 'Kickstart your JavaFX application'
-    url = 'https://kickstartfx.xpipe.io'
+    packageDescription = 'A smart savegame manager, editor, and toolbox for all current major Paradox Grand Strategy games'
+    url = 'https://github.com/crschnick/pdx_unlimiter'
     user = 'root'
-    maintainer = 'Christopher Schnick <crschnick@xpipe.io>'
+    maintainer = 'Christopher Schnick <cr@crschnick.com>'
 
     def desktopSource = replaceVariablesInFile("$projectDir/linux_packages/app.desktop", Map.of(
             '__NAME__', productName,
             '__TARGET__', targetDir,
-            '__DESCRIPTION__', 'Kickstart your JavaFX application',
+            '__DESCRIPTION__', 'A smart savegame manager, editor, and toolbox for all current major Paradox Grand Strategy games',
             '__ICON__', pkgName,
             '__EXECUTABLE_NAME__', jpackageExecutableName
     ))

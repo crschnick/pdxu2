@@ -144,14 +144,14 @@ project.ext {
     enableAot = ci
 
     // Names of your app
-    productName = 'Kickstart FX'
-    kebapProductName = 'kickstart-fx'
-    snakeProductName = 'kickstart_fx'
+    productName = 'Pdx-Unlimiter'
+    kebapProductName = 'pdx-unlimiter'
+    snakeProductName = 'pdx_unlimiter'
     // The names of your packages
-    groupName = 'io.abc_def'
-    artifactName = 'kickstart_fx'
+    groupName = 'com.crschnick'
+    artifactName = 'pdx-unlimiter'
     // The base name of the generated packages
-    distName = "kickstartfx"
+    distName = "pdx-unlimiter"
 
     // Version info
     rawVersion = file('version').text.strip()
@@ -201,9 +201,7 @@ project.ext {
     // Define a custom JavaFX SDK location to use custom JavaFX jars instead of the default one
     customJavaFxPath = null
 
-    // TODO: Set your own Sentry DSN. If you don't want to use Sentry, set this to null
-    // This value is not a secret
-    sentryUrl = "https://546869d72f781857d77d45ec610181bc@o1084459.ingest.us.sentry.io/4509999907405824"
+    sentryUrl = "https://cff56f4c1d624f46b64f51a8301d3543@sentry.io/5466262"
     if (sentryUrl != null) {
         jpackageReleaseArguments += "-D" + propertyName("sentryUrl") + "=" + sentryUrl
     }
