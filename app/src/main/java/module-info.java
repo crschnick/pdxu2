@@ -1,25 +1,25 @@
-import io.abc_def.kickstart_fx.core.AppLogs;
-import io.abc_def.kickstart_fx.util.AppJacksonModule;
-import io.abc_def.kickstart_fx.util.ModuleLayerLoader;
+import com.crschnick.pdxu.core.AppLogs;
+import com.crschnick.pdxu.util.AppJacksonModule;
+import com.crschnick.pdxu.util.ModuleLayerLoader;
 
 import com.fasterxml.jackson.databind.Module;
 import org.slf4j.spi.SLF4JServiceProvider;
 
-open module io.abc_def.kickstart_fx {
-    exports io.abc_def.kickstart_fx.core;
-    exports io.abc_def.kickstart_fx.util;
-    exports io.abc_def.kickstart_fx;
-    exports io.abc_def.kickstart_fx.issue;
-    exports io.abc_def.kickstart_fx.comp.base;
-    exports io.abc_def.kickstart_fx.core.mode;
-    exports io.abc_def.kickstart_fx.prefs;
-    exports io.abc_def.kickstart_fx.update;
-    exports io.abc_def.kickstart_fx.core.check;
-    exports io.abc_def.kickstart_fx.core.window;
-    exports io.abc_def.kickstart_fx.comp;
-    exports io.abc_def.kickstart_fx.platform;
-    exports io.abc_def.kickstart_fx.page;
-    exports io.abc_def.kickstart_fx.core.beacon;
+open module com.crschnick.pdxu {
+    exports com.crschnick.pdxu.core;
+    exports com.crschnick.pdxu.util;
+    exports com.crschnick.pdxu;
+    exports com.crschnick.pdxu.issue;
+    exports com.crschnick.pdxu.comp.base;
+    exports com.crschnick.pdxu.core.mode;
+    exports com.crschnick.pdxu.prefs;
+    exports com.crschnick.pdxu.update;
+    exports com.crschnick.pdxu.core.check;
+    exports com.crschnick.pdxu.core.window;
+    exports com.crschnick.pdxu.comp;
+    exports com.crschnick.pdxu.platform;
+    exports com.crschnick.pdxu.page;
+    exports com.crschnick.pdxu.core.beacon;
 
     requires static lombok;
     requires com.sun.jna;
