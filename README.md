@@ -10,7 +10,7 @@
 
 KickstartFX is an advanced, ready-to-use template for JavaFX applications. It can serve as a solid foundation for your own JavaFX application as everything is fully customizable and extendable. You can find the documentation at [https://kickstartfx.xpipe.io](https://kickstartfx.xpipe.io).
 
-KickstartFX is much more than just a basic template that opens a simple window. It contains a lot of code to handle the challenges of applications in the real world to achieve the best possible desktop application experience across all operating systems. The code is based on [XPipe](https://github.com/xpipe-io/kickstartfx), a well-established JavaFX application, and is the result of years of experience developing a desktop application that is used by many thousands of users right now.
+KickstartFX is much more than just a basic template that opens a simple window. It contains a lot of code to handle the challenges of applications in the real world to achieve the best possible desktop application experience across all operating systems. The code is based on [XPipe](https://github.com/xpipe-io/xpipe), a well-established JavaFX application, and is the result of years of experience developing a desktop application that is used by many thousands of users right now.
 
 It features the following features that you won't find in other templates:
 - A fully up-to-date build using the latest features of JDK25, Gradle 9, JavaFX 25, WiX 6, and much more
