@@ -11,7 +11,7 @@ public abstract class AppNames {
     }
 
     public static String propertyName(String name) {
-        return ofCurrent().getGroupName() + "." + ofCurrent().getSnakeName() + "." + name;
+        return ofCurrent().getGroupName() + "." + ofCurrent().getArtifactName() + "." + name;
     }
 
     public static String packageName() {
