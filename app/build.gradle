@@ -2,10 +2,6 @@ plugins {
     id 'application'
 }
 
-repositories {
-    mavenCentral()
-}
-
 apply from: "$rootDir/gradle/gradle_scripts/java.gradle"
 apply from: "$rootDir/gradle/gradle_scripts/javafx.gradle"
 apply from: "$rootDir/gradle/gradle_scripts/jna.gradle"
@@ -56,10 +52,15 @@ dependencies {
     implementation 'io.github.mkpaz:atlantafx-base:2.1.0'
     implementation "org.kohsuke:github-api:1.330"
 
-    implementation files("$rootDir/gradle/gradle_scripts/atlantafx-sampler-2.1.0.jar")
-    implementation ("net.datafaker:datafaker:1.3.0") {
-        exclude group: "com.github.mifmif", module: "generex"
-    }
+    implementation 'com.github.tmyroadctfig:com.realityinteractive.imageio.tga:master-SNAPSHOT'
+    implementation("com.github.kwhat:jnativehook:2.2.2")
+    implementation "org.apache.commons:commons-collections4:4.5.0"
+    implementation 'io.github.ititus:ddsiio:3.1.0'
+    compileOnly group: 'org.graalvm.polyglot', name: 'polyglot', version: '25.0.0'
+    compileOnly group: 'org.graalvm.js', name: 'js-community', version: '25.0.0'
+    implementation project(':pdxu-io')
+    implementation project(':pdxu-model')
+    implementation 'com.jfoenix:jfoenix:9.0.10'
 }
 
 application {

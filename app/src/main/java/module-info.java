@@ -1,25 +1,26 @@
-import com.crschnick.pdxu.core.AppLogs;
-import com.crschnick.pdxu.util.AppJacksonModule;
-import com.crschnick.pdxu.util.ModuleLayerLoader;
+import com.crschnick.pdxu.app.core.AppLogs;
+import com.crschnick.pdxu.app.util.AppJacksonModule;
+import com.crschnick.pdxu.app.util.EditorProvider;
+import com.crschnick.pdxu.app.util.ModuleLayerLoader;
 
 import com.fasterxml.jackson.databind.Module;
 import org.slf4j.spi.SLF4JServiceProvider;
 
 open module com.crschnick.pdxu {
-    exports com.crschnick.pdxu.core;
-    exports com.crschnick.pdxu.util;
-    exports com.crschnick.pdxu;
-    exports com.crschnick.pdxu.issue;
-    exports com.crschnick.pdxu.comp.base;
-    exports com.crschnick.pdxu.core.mode;
-    exports com.crschnick.pdxu.prefs;
-    exports com.crschnick.pdxu.update;
-    exports com.crschnick.pdxu.core.check;
-    exports com.crschnick.pdxu.core.window;
-    exports com.crschnick.pdxu.comp;
-    exports com.crschnick.pdxu.platform;
-    exports com.crschnick.pdxu.page;
-    exports com.crschnick.pdxu.core.beacon;
+    exports com.crschnick.pdxu.app.core;
+    exports com.crschnick.pdxu.app.util;
+    exports com.crschnick.pdxu.app.issue;
+    exports com.crschnick.pdxu.app.comp.base;
+    exports com.crschnick.pdxu.app.core.mode;
+    exports com.crschnick.pdxu.app.prefs;
+    exports com.crschnick.pdxu.app.update;
+    exports com.crschnick.pdxu.app.core.check;
+    exports com.crschnick.pdxu.app.core.window;
+    exports com.crschnick.pdxu.app.comp;
+    exports com.crschnick.pdxu.app.platform;
+    exports com.crschnick.pdxu.app.page;
+    exports com.crschnick.pdxu.app.core.beacon;
+    exports com.crschnick.pdxu.app;
 
     requires static lombok;
     requires com.sun.jna;
@@ -62,13 +63,20 @@ open module com.crschnick.pdxu {
     requires org.kordamp.ikonli.feather;
     requires jdk.zipfs;
 
-    // AtlantaFX Sampler modules
-    requires atlantafx.sampler;
-    requires datafaker;
-    requires javafx.fxml;
+    // Pdxu modules
+    requires com.crschnick.pdxu.io;
+    requires com.crschnick.pdxu.model;
+    requires com.jfoenix;
+    requires org.apache.commons.collections4;
+    requires com.realityinteractive.imageio.tga;
+    requires java.desktop;
+    requires com.github.kwhat.jnativehook;
+    requires org.graalvm.truffle.compiler;
+    requires io.github.ititus.ddsiio;
 
     uses ModuleLayerLoader;
     uses Module;
+    uses EditorProvider;
 
     provides Module with
             AppJacksonModule;

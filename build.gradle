@@ -149,7 +149,7 @@ project.ext {
     snakeProductName = 'pdx_unlimiter'
     // The names of your packages
     groupName = 'com.crschnick'
-    artifactName = 'pdxu'
+    artifactName = 'pdxu.app'
     // The base name of the generated packages
     distName = "pdx-unlimiter"
 

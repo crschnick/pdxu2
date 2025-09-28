@@ -1,2 +1,5 @@
 include 'app'
 include 'dist'
+
+include 'pdxu-io'
+include 'pdxu-model'
