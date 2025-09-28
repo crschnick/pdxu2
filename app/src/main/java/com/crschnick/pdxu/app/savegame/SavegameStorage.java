@@ -105,7 +105,7 @@ public abstract class SavegameStorage<
         return (SavegameStorage<T, I>) found.map(Map.Entry::getValue).orElse(null);
     }
 
-    public static void init() throws Exception {
+    public static void init() {
         ALL.put(Game.EU4, new SavegameStorage<>(
                 "eu4",
                 GameDateType.EU4,
@@ -198,8 +198,13 @@ public abstract class SavegameStorage<
                 return "Unknown";
             }
         });
+
         for (SavegameStorage<?, ?> s : ALL.values()) {
-            s.loadData();
+            try {
+                s.loadData();
+            } catch (Exception e) {
+                ErrorEventFactory.fromThrowable(e).term().handle();
+            }
         }
     }
 

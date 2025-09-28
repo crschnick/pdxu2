@@ -6,7 +6,7 @@ import com.crschnick.pdxu.app.util.ModuleLayerLoader;
 import com.fasterxml.jackson.databind.Module;
 import org.slf4j.spi.SLF4JServiceProvider;
 
-open module com.crschnick.pdxu {
+open module com.crschnick.pdxu.app {
     exports com.crschnick.pdxu.app.core;
     exports com.crschnick.pdxu.app.util;
     exports com.crschnick.pdxu.app.issue;

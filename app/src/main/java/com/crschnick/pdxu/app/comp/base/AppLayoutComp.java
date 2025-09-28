@@ -3,6 +3,7 @@ package com.crschnick.pdxu.app.comp.base;
 import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.CompStructure;
 import com.crschnick.pdxu.app.core.AppLayoutModel;
+import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.PlatformThread;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 
@@ -45,7 +46,8 @@ public class AppLayoutComp extends Comp<AppLayoutComp.Structure> {
         var sidebarR = sidebar.createRegion();
         pane.setLeft(sidebarR);
         model.getSelected().addListener((c, o, n) -> {
-            if (o != null && o.equals(model.getEntries().get(5))) {
+            var wasPrefs = o != null && o.comp() instanceof PrefsPageComp;
+            if (wasPrefs) {
                 AppPrefs.get().save();
             }
         });

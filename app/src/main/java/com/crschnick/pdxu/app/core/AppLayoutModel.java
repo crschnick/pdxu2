@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.core;
 
 import com.crschnick.pdxu.app.comp.Comp;
+import com.crschnick.pdxu.app.gui.GuiLayout;
 import com.crschnick.pdxu.app.page.*;
 import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
@@ -126,6 +127,16 @@ public class AppLayoutModel {
 
     private List<Entry> createEntryList() {
         var l = new ArrayList<>(List.of(
+                new Entry(
+                        AppI18n.observable("settings"),
+                        new LabelGraphic.IconGraphic("mdsmz-miscellaneous_services"),
+                        Comp.of(() -> {
+                            var gl = new GuiLayout();
+                            gl.setup();
+                            gl.finishSetup();
+                            return gl.getContent();
+                        }),
+                        null),
                 new Entry(
                         AppI18n.observable("settings"),
                         new LabelGraphic.IconGraphic("mdsmz-miscellaneous_services"),
