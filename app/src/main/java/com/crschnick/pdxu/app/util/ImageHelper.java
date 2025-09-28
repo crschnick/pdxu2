@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.util;
 
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.realityinteractive.imageio.tga.TGAImageReaderSpi;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.*;
@@ -51,12 +52,12 @@ public class ImageHelper {
         }
 
         if (!Files.isRegularFile(p)) {
-            LoggerFactory.getLogger(ImageHelper.class).error("Image file " + p.toString() + " not found.");
+            TrackEvent.error("Image file " + p.toString() + " not found.");
             return DEFAULT_IMAGE;
         }
 
         if (!Files.isReadable(p)) {
-            LoggerFactory.getLogger(ImageHelper.class).error("Image file " + p.toString() + " not readable.");
+            TrackEvent.error("Image file " + p.toString() + " not readable.");
             return DEFAULT_IMAGE;
         }
 
@@ -64,7 +65,7 @@ public class ImageHelper {
         try {
             image = ImageIO.read(p.toFile());
         } catch (IOException e) {
-            LoggerFactory.getLogger(ImageHelper.class).error("Image file " + p.toString() + " not readable.", e);
+            ErrorEventFactory.fromThrowable("Image file " + p.toString() + " not readable.", e).omit().handle();
             return DEFAULT_IMAGE;
         }
 
@@ -97,7 +98,7 @@ public class ImageHelper {
             }
             return image;
         } catch (IOException e) {
-            LoggerFactory.getLogger(ImageHelper.class).error("Image file " + input.toString() + " not readable.", e);
+            ErrorEventFactory.fromThrowable("Image file " + input.toString() + " not readable.", e).omit().handle();
             return DEFAULT_AWT_IMAGE;
         }
     }

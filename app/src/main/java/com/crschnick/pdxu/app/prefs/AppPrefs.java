@@ -4,6 +4,8 @@ import com.crschnick.pdxu.app.core.AppLayoutModel;
 import com.crschnick.pdxu.app.core.AppProperties;
 import com.crschnick.pdxu.app.core.AppTheme;
 import com.crschnick.pdxu.app.core.mode.AppOperationMode;
+import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.installation.dist.GameDists;
 import com.crschnick.pdxu.app.platform.GlobalBooleanProperty;
 import com.crschnick.pdxu.app.platform.GlobalDoubleProperty;
 import com.crschnick.pdxu.app.platform.GlobalObjectProperty;
@@ -386,6 +388,10 @@ public final class AppPrefs {
             writable.setValue(newValue);
         });
         save();
+    }
+
+    public void determineDefaults() {
+        eu4Directory.setValue(GameDists.detectDist(Game.EU4, true).map(gameDist -> gameDist.getInstallLocation()).orElse(null));
     }
 
     private void fixLocalValues() {

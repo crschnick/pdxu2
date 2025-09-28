@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.installation;
 
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.app.util.JacksonMapper;
 import com.crschnick.pdxu.app.util.OsType;
@@ -719,7 +720,7 @@ public interface GameInstallType {
             modPaths.forEach(f -> {
                 GameMod.fromVictoria3Directory(f).ifPresent(m -> {
                     mods.add(m);
-                    LoggerFactory.getLogger(GameInstallType.class).debug("Found mod " + m.getName().orElse("?") +
+                    TrackEvent.debug("Found mod " + m.getName().orElse("?") +
                                                                                  " at " + m.getContentPath().orElse(null) + ".");
                 });
             });
@@ -984,7 +985,7 @@ public interface GameInstallType {
                         mods.add(m);
 
                         var ex = m.getAbsoluteContentPath(installation.getUserDir()).map(Files::exists).orElse(null);
-                        LoggerFactory.getLogger(GameInstallType.class).debug("Found mod " + m.getName().orElse("<no name>") +
+                        TrackEvent.debug("Found mod " + m.getName().orElse("<no name>") +
                                                                                      " at " + m.getModFile().toString() + ". Content exists: " + ex +
                                                                                      ". Legacy: " + m.isLegacyArchive());
                     });

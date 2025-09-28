@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.dist.GameDistLauncher;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.EditorProvider;
 import com.crschnick.pdxu.app.util.RakalyHelper;
@@ -201,7 +202,7 @@ public class SavegameActions {
     public static <T, I extends SavegameInfo<T>> void reloadSavegame(SavegameEntry<T, I> e) {
         TaskExecutor.getInstance().submitTask(() -> {
             SavegameContext.withSavegameContext(e, ctx -> {
-                LoggerFactory.getLogger(SavegameActions.class).debug("Reloading savegame");
+                TrackEvent.debug("Reloading savegame");
                 e.unload();
                 ctx.getStorage().invalidateSavegameInfo(e);
                 ctx.getStorage().loadEntry(e);

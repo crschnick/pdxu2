@@ -4,6 +4,7 @@ package com.crschnick.pdxu.app.installation;
 import com.crschnick.pdxu.app.installation.dist.GameDist;
 import com.crschnick.pdxu.app.installation.dist.GameDists;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.model.GameVersion;
@@ -23,7 +24,6 @@ import java.util.Optional;
 public final class GameInstallation {
 
     public static final BidiMap<Game, GameInstallation> ALL = new DualHashBidiMap<>();
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final GameInstallType type;
     private final GameDist dist;
@@ -69,7 +69,7 @@ public final class GameInstallation {
                 p -> ALL.put(Game.CK2, new GameInstallation(Game.CK2.getInstallType(), GameDists.detectDistFromDirectory(Game.CK2, p))));
         Optional.ofNullable(pr.vic2Directory().getValue()).ifPresent(
                 p -> ALL.put(Game.VIC2, new GameInstallation(Game.VIC2.getInstallType(), GameDists.detectDistFromDirectory(Game.VIC2, p))));
-        Optional.ofNullable(pr.vic2Directory().getValue()).ifPresent(
+        Optional.ofNullable(pr.vic3Directory().getValue()).ifPresent(
                 p -> ALL.put(Game.VIC3, new GameInstallation(Game.VIC3.getInstallType(), GameDists.detectDistFromDirectory(Game.VIC3, p))));
 
         for (Game g : Game.values()) {
@@ -100,10 +100,10 @@ public final class GameInstallation {
     }
 
     public void initOptional() throws Exception {
-        LoggerFactory.getLogger(getClass()).debug("Initializing optional data ...");
+        TrackEvent.debug("Initializing optional data ...");
         loadDlcs();
         this.mods.addAll(type.loadMods(this));
-        LoggerFactory.getLogger(getClass()).debug("Finished initializing optional data\n");
+        TrackEvent.debug("Finished initializing optional data\n");
     }
 
     private void loadDlcs() throws IOException {
@@ -140,7 +140,7 @@ public final class GameInstallation {
 
     public void loadData() throws InvalidInstallationException {
         Game g = ALL.inverseBidiMap().get(this);
-        LoggerFactory.getLogger(getClass()).debug("Initializing " + g.getTranslatedAbbreviation() + " installation ...");
+        TrackEvent.debug("Initializing " + g.getTranslatedAbbreviation() + " installation ...");
 
         if (getInstallDir().startsWith(FileSystemHelper.getUserDocumentsPath().resolve("Paradox Interactive"))) {
             throw new InvalidInstallationException("INSTALL_DIR_IS_USER_DIR", g.getInstallationName(), g.getInstallationName());
@@ -151,11 +151,11 @@ public final class GameInstallation {
             throw new InvalidInstallationException("EXECUTABLE_NOT_FOUND", g.getInstallationName(), exec.toString(), getInstallDir().toString());
         }
 
-        logger.debug(g.getTranslatedAbbreviation() + " distribution type: " + this.dist.getName());
+        TrackEvent.debug(g.getTranslatedAbbreviation() + " distribution type: " + this.dist.getName());
 
         try {
             this.userDir = dist.determineUserDir();
-            logger.debug(g.getTranslatedAbbreviation() + " user dir: " + this.userDir);
+            TrackEvent.debug(g.getTranslatedAbbreviation() + " user dir: " + this.userDir);
             if (!Files.exists(this.userDir)) {
                 throw new InvalidInstallationException(
                         "GAME_DATA_PATH_DOES_NOT_EXIST", g.getTranslatedAbbreviation(), this.userDir.toString());
@@ -164,11 +164,11 @@ public final class GameInstallation {
             this.version = dist.determineVersion().map(type::getVersion)
                     .orElse(type.determineVersionFromInstallation(getInstallDir()))
                     .orElse(null);
-            logger.debug(g.getTranslatedAbbreviation() + " version: " + (this.version != null ? this.version : "unknown"));
+            TrackEvent.debug(g.getTranslatedAbbreviation() + " version: " + (this.version != null ? this.version : "unknown"));
             this.language = type.determineLanguage(getInstallDir(), userDir).orElse(null);
-            logger.debug(g.getTranslatedAbbreviation() + " language: " +
+            TrackEvent.debug(g.getTranslatedAbbreviation() + " language: " +
                     (this.language != null ? this.language.getId() : "unknown"));
-            LoggerFactory.getLogger(getClass()).debug("Finished initialization");
+            TrackEvent.debug("Finished initialization");
         } catch (InvalidInstallationException e) {
             throw e;
         } catch (Exception e) {
@@ -209,30 +209,30 @@ public final class GameInstallation {
     }
 
     public List<GameMod> queryEnabledMods() throws Exception {
-        logger.debug("Loading enabled mods ...");
+        TrackEvent.debug("Loading enabled mods ...");
         var enabledMods = new ArrayList<GameMod>();
         type.getEnabledMods(getInstallDir(), userDir).forEach(s -> {
             var mod = getModForLauncherId(s);
             mod.ifPresentOrElse(m -> {
                 enabledMods.add(m);
-                logger.debug("Detected enabled mod " + m.getName());
+                TrackEvent.debug("Detected enabled mod " + m.getName());
             }, () -> {
-                logger.warn("Detected enabled but unrecognized mod " + s);
+                TrackEvent.warn("Detected enabled but unrecognized mod " + s);
             });
         });
         return enabledMods;
     }
 
     public List<GameDlc> queryDisabledDlcs() throws Exception {
-        logger.debug("Loading disabled dlcs ...");
+        TrackEvent.debug("Loading disabled dlcs ...");
         var disabledDlcs = new ArrayList<GameDlc>();
         type.getDisabledDlcs(getInstallDir(), userDir).forEach(s -> {
             var dlc = getDlcForLauncherId(s);
             dlc.ifPresentOrElse(m -> {
                 disabledDlcs.add(m);
-                logger.debug("Detected disabled dlc " + m.getName());
+                TrackEvent.debug("Detected disabled dlc " + m.getName());
             }, () -> {
-                logger.warn("Detected disabled but unrecognized dlc " + s);
+                TrackEvent.warn("Detected disabled but unrecognized dlc " + s);
             });
         });
         return disabledDlcs;

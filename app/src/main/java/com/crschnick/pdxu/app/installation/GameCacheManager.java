@@ -2,6 +2,7 @@ package com.crschnick.pdxu.app.installation;
 
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,6 @@ import java.util.Map;
 
 public class GameCacheManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(GameCacheManager.class);
     private static GameCacheManager INSTANCE;
     private final Map<Class<? extends Cache>, Cache> caches = new HashMap<>();
 
@@ -28,12 +28,12 @@ public class GameCacheManager {
     }
 
     public void onSelectedGameChange() {
-        logger.debug("Clearing game caches");
+        TrackEvent.debug("Clearing game caches");
         caches.clear();
     }
 
     public void onSelectedSavegameCollectionChange() {
-        logger.debug("Clearing savegame collection caches");
+        TrackEvent.debug("Clearing savegame collection caches");
         caches.entrySet().removeIf(e -> e.getValue().scope.equals(Scope.SAVEGAME_CAMPAIGN_SPECIFIC));
     }
 

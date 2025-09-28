@@ -3,6 +3,7 @@ package com.crschnick.pdxu.app.installation;
 
 import com.crschnick.pdxu.app.core.AppResources;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.savegame.SavegameActions;
 import com.crschnick.pdxu.app.util.ThreadHelper;
@@ -19,7 +20,6 @@ import java.util.Optional;
 
 public final class GameAppManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(GameAppManager.class);
     private static final GameAppManager INSTANCE = new GameAppManager();
 
     private final ObjectProperty<GameApp> activeGame = new SimpleObjectProperty<>(null);
@@ -86,7 +86,7 @@ public final class GameAppManager {
                 }
             }
             if (process.isPresent()) {
-                logger.info("Detected new running game instance of " + process.get().getGame().getId());
+                TrackEvent.info("Detected new running game instance of " + process.get().getGame().getId());
                 activeGame.set(process.get());
                 activeGame.get().onStart();
             }
@@ -95,15 +95,15 @@ public final class GameAppManager {
 
             if (!activeGame.get().isAlive()) {
                 var deadGame = activeGame.get().getGame();
-                logger.info("Game instance of " + deadGame.getId() + " is dead");
+                TrackEvent.info("Game instance of " + deadGame.getId() + " is dead");
                 activeGame.get().onShutdown();
                 activeGame.set(null);
 
                 if (AppPrefs.get().importOnGameNormalExit().getValue()) {
-                    logger.info("Import on normal exit is enabled");
+                    TrackEvent.info("Import on normal exit is enabled");
                     boolean exitedNormally = lastKill == null || Duration.between(lastKill, Instant.now()).getSeconds() > 10;
                     if (exitedNormally) {
-                        logger.info("Game instance of " + deadGame.getId() + " exited normally. Importing latest savegame");
+                        TrackEvent.info("Game instance of " + deadGame.getId() + " exited normally. Importing latest savegame");
                         SavegameActions.importLatestSavegame(deadGame);
                     }
                 }
@@ -122,7 +122,7 @@ public final class GameAppManager {
 
         if (Duration.between(lastImport, Instant.now()).compareTo(
                 Duration.of(AppPrefs.get().timedImportsInterval().getValue(), ChronoUnit.MINUTES)) > 0) {
-            logger.info("Importing latest savegame because timed imports is enabled");
+            TrackEvent.info("Importing latest savegame because timed imports is enabled");
             playImportSound();
             importLatest();
             lastImport = Instant.now();
@@ -139,13 +139,13 @@ public final class GameAppManager {
     public void importLatest() {
         var g = getActiveGame();
         if (g != null && g.getGame().isEnabled()) {
-            logger.info("Importing latest savegame");
+            TrackEvent.info("Importing latest savegame");
             SavegameActions.importLatestSavegame(g.getGame());
         }
     }
 
     public void killGame(GameApp g) {
-        logger.info("Killing game");
+        TrackEvent.info("Killing game");
         lastKill = Instant.now();
         g.kill();
     }
@@ -161,7 +161,7 @@ public final class GameAppManager {
         }
 
         if (g.getGame().isEnabled()) {
-            logger.info("Import latest savegame and launch");
+            TrackEvent.info("Import latest savegame and launch");
             killGame(g);
             SavegameActions.importLatestAndLaunch(g.getGame());
         }
@@ -178,7 +178,7 @@ public final class GameAppManager {
         }
 
         if (g.getGame().isEnabled()) {
-            logger.info("Loading latest checkpoint");
+            TrackEvent.info("Loading latest checkpoint");
             killGame(g);
             SavegameActions.loadLatestSavegameCheckpoint(g.getGame());
         }
@@ -187,7 +187,7 @@ public final class GameAppManager {
     public void kill() {
         var g = getActiveGame();
         if (g != null && g.getGame().isEnabled()) {
-            logger.info("Killing active game");
+            TrackEvent.info("Killing active game");
             killGame(g);
         }
     }

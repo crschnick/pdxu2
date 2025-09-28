@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class IntegrityManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(IntegrityManager.class);
     private static IntegrityManager INSTANCE;
 
     private final Map<Game, String> checksums = new HashMap<>();

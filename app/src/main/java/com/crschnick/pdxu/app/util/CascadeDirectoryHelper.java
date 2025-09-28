@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.GameFileContext;
 import com.crschnick.pdxu.app.installation.GameMod;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.slf4j.Logger;
@@ -18,8 +19,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class CascadeDirectoryHelper {
-
-    private static final Logger logger = LoggerFactory.getLogger(CascadeDirectoryHelper.class);
 
     public static void traverseDirectoryInverse(
             Path dir,
@@ -121,7 +120,7 @@ public class CascadeDirectoryHelper {
                 return r;
             }
         }
-        logger.warn("File " + file.toString() + " not found");
+        TrackEvent.warn("File " + file.toString() + " not found");
         return Optional.empty();
     }
 
@@ -132,8 +131,7 @@ public class CascadeDirectoryHelper {
                 return Optional.of(abs);
             }
         } catch (Exception e) {
-            LoggerFactory.getLogger(CascadeDirectoryHelper.class)
-                    .trace("Exception while loading file " + file + " from directory " + dir, e);
+            ErrorEventFactory.fromThrowable("Exception while loading file " + file + " from directory " + dir, e).omit().handle();
         }
         return Optional.empty();
     }

@@ -1,5 +1,7 @@
 package com.crschnick.pdxu.app.installation;
 
+import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.JacksonMapper;
 import com.crschnick.pdxu.io.node.Node;
 import com.crschnick.pdxu.io.parser.TextFormatParser;
@@ -41,7 +43,7 @@ public class GameMod {
             return Optional.of(mod);
         } catch (Exception ex) {
             // Don't report mod parsing errors
-            LoggerFactory.getLogger(GameMod.class).error("Could not parse malformed mod file " + p.toString(), ex);
+            ErrorEventFactory.fromThrowable("Could not parse malformed mod file " + p.toString(), ex).omit().handle();
         }
 
         return Optional.of(mod);
@@ -86,7 +88,7 @@ public class GameMod {
             return Optional.of(mod);
         } catch (Exception ex) {
             // Don't report mod parsing errors
-            LoggerFactory.getLogger(GameMod.class).error("Could not parse malformed mod file " + p.toString(), ex);
+            ErrorEventFactory.fromThrowable("Could not parse malformed mod file " + p.toString(), ex).omit().handle();
         }
 
         return Optional.of(mod);

@@ -2,6 +2,7 @@ package com.crschnick.pdxu.app.installation;
 
 
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BOMInputStream;
@@ -89,7 +90,7 @@ public class GameLocalisationHelper {
                 var group = matcher.group();
                 s = s.replace(group, v);
             } else {
-                LoggerFactory.getLogger(GameLocalisationHelper.class).warn("No match found for value " + v + " in string " + s);
+                TrackEvent.warn("No match found for value " + v + " in string " + s);
             }
         }
         return s;

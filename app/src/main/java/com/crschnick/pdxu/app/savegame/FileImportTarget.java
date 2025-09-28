@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.io.savegame.SavegameParseResult;
 import com.crschnick.pdxu.io.savegame.SavegameType;
 import org.apache.commons.io.FileUtils;
@@ -36,7 +37,7 @@ public abstract class FileImportTarget {
         try {
             p = Path.of(toImport);
         } catch (InvalidPathException ignored) {
-            LoggerFactory.getLogger(FileImportTarget.class).warn("Unable to determine import target for " + toImport);
+            TrackEvent.warn("Unable to determine import target for " + toImport);
             return List.of();
         }
 

@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameCacheManager;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.savegame.SavegameCampaign;
 import com.crschnick.pdxu.app.savegame.SavegameContext;
 import com.crschnick.pdxu.app.savegame.SavegameEntry;
@@ -22,8 +23,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public class SavegameManagerState<T, I extends SavegameInfo<T>> {
-
-    private static final Logger logger = LoggerFactory.getLogger(SavegameManagerState.class);
 
     private static final SavegameManagerState<?, ?> INSTANCE = new SavegameManagerState<>();
     private final SimpleObjectProperty<Game> current = new SimpleObjectProperty<>();
@@ -56,8 +55,8 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
                 INSTANCE.selectGame(foundGame.get());
             } else {
                 AppCache.clear("activeGame");
-                return;
             }
+            return;
         }
 
         // If no active game is set, select the first one available (if existent)
@@ -141,7 +140,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 
     public void unloadCollectionAsync(SavegameCampaign<T, I> col) {
         TaskExecutor.getInstance().submitTask(() -> {
-            logger.debug("Unloading collection " + col.getName());
+            TrackEvent.debug("Unloading collection " + col.getName());
             for (var e : col.getSavegames()) {
                 e.setInactive();
             }
@@ -287,7 +286,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 
         unselectCollectionAndEntry();
         current.set(newGame);
-        logger.debug("Selected game " + (newGame != null ? newGame.getInstallationName() : "null"));
+        TrackEvent.debug("Selected game " + (newGame != null ? newGame.getInstallationName() : "null"));
         updateShownCollections();
     }
 
@@ -312,7 +311,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 
             if (c == null || !shownCollections.contains(c)) {
                 unselectCollectionAndEntry();
-                logger.debug("Unselected campaign");
+                TrackEvent.debug("Unselected campaign");
                 return;
             }
 
@@ -323,7 +322,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 
             globalSelectedCampaignPropertyInternal().set(c);
             updateShownEntries();
-            logger.debug("Selected campaign " + c.getName());
+            TrackEvent.debug("Selected campaign " + c.getName());
         }, false);
     }
 
@@ -348,7 +347,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
                 }
 
                 globalSelectedEntryPropertyInternal().set(e);
-                logger.debug("Selected campaign entry " + e.getName());
+                TrackEvent.debug("Selected campaign entry " + e.getName());
             });
         }
     }

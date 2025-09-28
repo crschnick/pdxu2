@@ -15,6 +15,7 @@ import com.crschnick.pdxu.app.info.vic3.Vic3SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameLocalisation;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ConfigHelper;
 import com.crschnick.pdxu.app.util.ImageHelper;
@@ -61,7 +62,6 @@ public abstract class SavegameStorage<
 
 
     public static final BidiMap<Game, SavegameStorage<?, ?>> ALL = new DualHashBidiMap<>();
-    private final Logger logger;
     private final Class<I> infoClass;
     private final FailableBiFunction<SavegameContent, Boolean, I, Throwable> infoFactory;
     private final String name;
@@ -89,7 +89,6 @@ public abstract class SavegameStorage<
         this.dateType = dateType;
         this.path = AppPrefs.get().storageDirectory().getValue().resolve(name);
         this.infoClass = infoClass;
-        this.logger = LoggerFactory.getLogger("SavegameStorage (" + getName() + ")");
     }
 
     @SuppressWarnings("unchecked")
@@ -315,7 +314,7 @@ public abstract class SavegameStorage<
             try {
                 ImageHelper.writePng(col.getImage(), imgFile);
             } catch (IOException e) {
-                logger.error("Couldn't write image " + imgFile, e);
+                ErrorEventFactory.fromThrowable("Couldn't write image " + imgFile, e).omit().handle();
             }
 
             ObjectNode campaignNode = JsonNodeFactory.instance.objectNode()
@@ -345,7 +344,7 @@ public abstract class SavegameStorage<
                 SavegameNotes.empty(),
                 sourceFileChecksum != null ? List.of(sourceFileChecksum) : List.of());
         if (this.getSavegameCampaign(campainUuid).isEmpty()) {
-            logger.debug("Adding new campaign " + getDefaultCampaignName(info));
+            TrackEvent.debug("Adding new campaign " + getDefaultCampaignName(info));
             var img = GameGuiFactory.<T, I>get(ALL.inverseBidiMap().get(this))
                     .tagImage(info, info.getData().getTag());
             SavegameCampaign<T, I> newCampaign = new SavegameCampaign<>(
@@ -358,7 +357,7 @@ public abstract class SavegameStorage<
         }
 
         SavegameCampaign<T, I> c = this.getSavegameCampaign(campainUuid).get();
-        logger.debug("Adding new entry " + e.getName());
+        TrackEvent.debug("Adding new entry " + e.getName());
         c.add(e);
         c.onSavegamesChange();
     }
@@ -393,7 +392,7 @@ public abstract class SavegameStorage<
         } catch (IOException e) {
             // Don't show the user this error. It sometimes happens when the file is
             // used by another process or even an antivirus program
-            logger.error("Could not delete collection " + c.getName(), c);
+            ErrorEventFactory.fromThrowable("Could not delete collection " + c.getName(), e).omit().handle();
         }
 
         this.collections.remove(c);
@@ -414,7 +413,7 @@ public abstract class SavegameStorage<
         } catch (IOException ex) {
             // Don't show the user this error. It sometimes happens when the file is
             // used by another process or even an antivirus program
-            logger.error("Could not delete entry " + e.getName(), ex);
+            ErrorEventFactory.fromThrowable("Could not delete entry " + e.getName(), ex).omit().handle();
         }
 
         c.getSavegames().remove(e);
@@ -439,7 +438,7 @@ public abstract class SavegameStorage<
         }
 
         if (Files.exists(getSavegameInfoFile(e))) {
-            logger.debug("Info file already exists. Loading from file " + getSavegameInfoFile(e));
+            TrackEvent.debug("Info file already exists. Loading from file " + getSavegameInfoFile(e));
             try {
                 e.startLoading();
                 e.load(JacksonMapper.getDefault().readValue(getSavegameInfoFile(e).toFile(), infoClass));
@@ -475,7 +474,7 @@ public abstract class SavegameStorage<
             @Override
             public void success(SavegameParseResult.Success s) {
                 try {
-                    logger.debug("Parsing was successful. Loading info ...");
+                    TrackEvent.debug("Parsing was successful. Loading info ...");
                     I info = infoFactory.apply(s.content, melted);
                     e.load(info);
                     getSavegameCampaign(e).onSavegameLoad(e);
@@ -485,7 +484,7 @@ public abstract class SavegameStorage<
                     try (var list = Files.list(getSavegameDataDirectory(e))) {
                         list.filter(p -> !p.equals(getSavegameFile(e))).forEach(p -> {
                             try {
-                                logger.debug("Deleting old info file " + p);
+                                TrackEvent.debug("Deleting old info file " + p);
                                 Files.delete(p);
                             } catch (IOException ioException) {
                                 ErrorEventFactory.fromThrowable(ioException).handle();
@@ -493,7 +492,7 @@ public abstract class SavegameStorage<
                         });
                     }
 
-                    logger.debug("Writing new info to file " + getSavegameInfoFile(e));
+                    TrackEvent.debug("Writing new info to file " + getSavegameInfoFile(e));
                     JacksonMapper.getDefault().writeValue(getSavegameInfoFile(e).toFile(), info);
                 } catch (Throwable ex) {
                     ErrorEventFactory.fromThrowable(ex).handle();
@@ -619,7 +618,7 @@ public abstract class SavegameStorage<
 
     public synchronized void invalidateSavegameInfo(SavegameEntry<T, I> e) {
         if (Files.exists(getSavegameInfoFile(e))) {
-            logger.debug("Invalidating " + getSavegameInfoFile(e));
+            TrackEvent.debug("Invalidating " + getSavegameInfoFile(e));
             try {
                 Files.delete(getSavegameInfoFile(e));
             } catch (Exception ex) {
@@ -650,7 +649,7 @@ public abstract class SavegameStorage<
             boolean checkDuplicate,
             String sourceFileChecksum,
             UUID customCampaignId) {
-        logger.debug("Parsing file " + file.toString());
+        TrackEvent.debug("Parsing file " + file.toString());
         final SavegameParseResult[] result = new SavegameParseResult[1];
         String checksum;
         byte[] bytes;
@@ -658,17 +657,17 @@ public abstract class SavegameStorage<
         try {
             bytes = Files.readAllBytes(file);
             checksum = checksum(bytes);
-            logger.debug("Checksum is " + checksum);
+            TrackEvent.debug("Checksum is " + checksum);
             if (checkDuplicate) {
                 var exists = getSavegameForChecksum(checksum);
                 if (exists.isPresent()) {
-                    logger.debug("Entry " + exists.get().getName() + " with checksum already in storage");
+                    TrackEvent.debug("Entry " + exists.get().getName() + " with checksum already in storage");
                     if (sourceFileChecksum != null) {
                         exists.get().addSourceFileChecksum(sourceFileChecksum);
                     }
                     return Optional.empty();
                 } else {
-                    logger.debug("No entry with checksum found");
+                    TrackEvent.debug("No entry with checksum found");
                 }
             }
 
@@ -692,7 +691,7 @@ public abstract class SavegameStorage<
         result[0].visit(new SavegameParseResult.Visitor() {
             @Override
             public void success(SavegameParseResult.Success s) {
-                logger.debug("Parsing was successful. Loading info ...");
+                TrackEvent.debug("Parsing was successful. Loading info ...");
                 I info = null;
                 try {
                     info = infoFactory.apply(s.content, melted);
@@ -707,13 +706,13 @@ public abstract class SavegameStorage<
 
             @Override
             public void error(SavegameParseResult.Error e) {
-                logger.error("An error occured during parsing: " + e.error.getMessage());
+                ErrorEventFactory.fromThrowable("An error occured during parsing", e.error).omit().handle();
                 resultToReturn[0] = e;
             }
 
             @Override
             public void invalid(SavegameParseResult.Invalid iv) {
-                logger.error("Savegame is invalid: " + iv.message);
+                ErrorEventFactory.fromMessage("Savegame is invalid: " + iv.message).omit().handle();
                 resultToReturn[0] = iv;
             }
         });
@@ -721,10 +720,10 @@ public abstract class SavegameStorage<
     }
 
     private void addEntryToCollection(UUID campaignId, FailableConsumer<Path, Exception> writer, String checksum, I info, String sourceFileChecksum, String defaultCampaignName) {
-        logger.debug("Campaign UUID is " + campaignId.toString());
+        TrackEvent.debug("Campaign UUID is " + campaignId.toString());
 
         UUID saveUuid = UUID.randomUUID();
-        logger.debug("Generated savegame UUID " + saveUuid.toString());
+        TrackEvent.debug("Generated savegame UUID " + saveUuid.toString());
 
         Path entryPath = getSavegameDataDirectory().resolve(campaignId.toString()).resolve(saveUuid.toString());
         try {

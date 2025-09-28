@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.core;
 
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -38,22 +39,22 @@ public class TaskExecutor {
         try {
             // Should terminate fast
             executorService.awaitTermination(10, TimeUnit.DAYS);
-            LoggerFactory.getLogger(TaskExecutor.class).debug("Task executor stopped");
+            TrackEvent.debug("Task executor stopped");
         } catch (InterruptedException e) {
             ErrorEventFactory.fromThrowable(e).handle();
         }
     }
 
     public void stop(Runnable finalize) {
-        LoggerFactory.getLogger(TaskExecutor.class).debug("Stopping task executor ...");
+        TrackEvent.debug("Stopping task executor ...");
 
         active = false;
 
-        LoggerFactory.getLogger(TaskExecutor.class).debug("Waiting for tasks to finish ...");
+        TrackEvent.debug("Waiting for tasks to finish ...");
         executorService.submit(() -> {
-            LoggerFactory.getLogger(TaskExecutor.class).debug("Performing finalizing task");
+            TrackEvent.debug("Performing finalizing task");
             if (finalize != null) finalize.run();
-            LoggerFactory.getLogger(TaskExecutor.class).debug("Task executor finished");
+            TrackEvent.debug("Task executor finished");
         });
         executorService.shutdown();
     }

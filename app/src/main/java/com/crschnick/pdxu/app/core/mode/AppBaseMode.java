@@ -70,9 +70,11 @@ public class AppBaseMode extends AppOperationMode {
         AppImages.init();
 
         TaskExecutor.getInstance().start();
+        AppPrefs.get().determineDefaults();
         GameCacheManager.init();
         GameInstallation.init();
         SavegameStorage.init();
+        SavegameManagerState.init();
         AppFileWatcher.init();
         SavegameWatcher.init();
         GameAppManager.init();
