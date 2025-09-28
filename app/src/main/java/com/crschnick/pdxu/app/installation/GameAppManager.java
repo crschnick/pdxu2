@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.installation;
 
 
+import com.crschnick.pdxu.app.core.AppResources;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.savegame.SavegameActions;
@@ -98,7 +99,7 @@ public final class GameAppManager {
                 activeGame.get().onShutdown();
                 activeGame.set(null);
 
-                if (Settings.getInstance().importOnGameNormalExit.getValue()) {
+                if (AppPrefs.get().importOnGameNormalExit().getValue()) {
                     logger.info("Import on normal exit is enabled");
                     boolean exitedNormally = lastKill == null || Duration.between(lastKill, Instant.now()).getSeconds() > 10;
                     if (exitedNormally) {
@@ -111,7 +112,7 @@ public final class GameAppManager {
     }
 
     private void updateImportTimer() {
-        if (!Settings.getInstance().enabledTimedImports.getValue()) {
+        if (!AppPrefs.get().enabledTimedImports().getValue()) {
             return;
         }
 
@@ -120,7 +121,7 @@ public final class GameAppManager {
         }
 
         if (Duration.between(lastImport, Instant.now()).compareTo(
-                Duration.of(Settings.getInstance().timedImportsInterval.getValue(), ChronoUnit.MINUTES)) > 0) {
+                Duration.of(AppPrefs.get().timedImportsInterval().getValue(), ChronoUnit.MINUTES)) > 0) {
             logger.info("Importing latest savegame because timed imports is enabled");
             playImportSound();
             importLatest();
@@ -129,9 +130,8 @@ public final class GameAppManager {
     }
 
     public void playImportSound() {
-        if (AppPrefs.get().playSoundOnBackgroundImport.getValue()) {
-            var clip = new AudioClip(PdxuInstallation.getInstance().getResourceDir().resolve("sound")
-                    .resolve("import.wav").toUri().toString());
+        if (AppPrefs.get().playSoundOnBackgroundImport().getValue()) {
+            var clip = new AudioClip(AppResources.getResourceURL(AppResources.MAIN_MODULE, "sounds/import.wav").toString());
             clip.play(0.2);
         }
     }

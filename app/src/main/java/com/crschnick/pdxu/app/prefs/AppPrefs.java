@@ -169,6 +169,18 @@ public final class AppPrefs {
             .requiresRestart(false)
             .build());
 
+    public ObservableValue<Path> ck3toeu4Directory() {
+        return ck3toeu4Directory;
+    }
+
+    public ObservableValue<Path> eu4tovic3Directory() {
+        return eu4tovic3Directory;
+    }
+
+    public ObservableValue<Path> vic3tohoi4Directory() {
+        return vic3tohoi4Directory;
+    }
+
     public ObservableValue<Path> eu4Directory() {
         return eu4Directory;
     }
@@ -199,6 +211,30 @@ public final class AppPrefs {
 
     public ObservableValue<Path> ironyDirectory() {
         return ironyDirectory;
+    }
+
+    public ObservableValue<Path> storageDirectory() {
+        return storageDirectory;
+    }
+
+    public ObservableValue<Boolean> launchIrony() {
+        return launchIrony;
+    }
+
+    public ObservableValue<Boolean> importOnGameNormalExit() {
+        return importOnGameNormalExit;
+    }
+
+    public ObservableValue<Boolean> enabledTimedImports() {
+        return enabledTimedImports;
+    }
+
+    public ObservableValue<Boolean> playSoundOnBackgroundImport() {
+        return playSoundOnBackgroundImport;
+    }
+
+    public ObservableValue<Integer> timedImportsInterval() {
+        return timedImportsInterval;
     }
 
     final BooleanProperty disableHardwareAcceleration = map(Mapping.builder()

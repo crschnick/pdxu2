@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.installation.dist.SteamDist;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.savegame.SavegameEntry;
 import com.crschnick.pdxu.app.savegame.SavegameStorage;
 import javafx.application.Platform;
@@ -33,12 +34,12 @@ import java.util.function.Supplier;
 public class ConverterSupport {
 
     public static final ConverterSupport CK3_TO_EU4 = new ConverterSupport(
-            Game.CK3, Game.EU4, "CK3", "EU4", Settings.getInstance().ck3toeu4Dir, "https://github.com/ParadoxGameConverters/CK3toEU4/releases",
+            Game.CK3, Game.EU4, "CK3", "EU4", () -> AppPrefs.get().ck3toeu4Directory().getValue(), "https://github.com/ParadoxGameConverters/CK3toEU4/releases",
             "D5A23363-3092-48F1-8838-7AC4B2B5BBC5", true
     );
 
     public static final ConverterSupport EU4_TO_VIC3 = new ConverterSupport(
-            Game.EU4, Game.VIC3, "EU4", "VIC3", Settings.getInstance().eu4tovic3Dir, "https://github.com/ParadoxGameConverters/EU4ToVic3/releases",
+            Game.EU4, Game.VIC3, "EU4", "VIC3", () -> AppPrefs.get().eu4tovic3Directory().getValue(), "https://github.com/ParadoxGameConverters/EU4ToVic3/releases",
             "38314A5E-B83C-4C08-B031-F4596A091C11", false
     ) {
         @Override
@@ -48,7 +49,7 @@ public class ConverterSupport {
     };
 
     public static final ConverterSupport VIC3_TO_HOI4 = new ConverterSupport(
-            Game.VIC3, Game.HOI4, "VIC3", "HOI4", Settings.getInstance().vic3tohoi4Dir, "https://github.com/ParadoxGameConverters/Vic3ToHoI4/releases",
+            Game.VIC3, Game.HOI4, "VIC3", "HOI4", () -> AppPrefs.get().vic3tohoi4Directory().getValue(), "https://github.com/ParadoxGameConverters/Vic3ToHoI4/releases",
             "820C5B58-D3E7-4BCA-A9E4-4805A4A6CFA1", true
     ) {
         @Override

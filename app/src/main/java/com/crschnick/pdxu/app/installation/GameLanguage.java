@@ -1,40 +1,43 @@
 package com.crschnick.pdxu.app.installation;
 
+import com.crschnick.pdxu.app.prefs.SupportedLocale;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
+import lombok.experimental.FieldDefaults;
+
+import java.util.Arrays;
 import java.util.Locale;
 
-public class GameLanguage {
+@Getter
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public enum GameLanguage {
 
-    public static GameLanguage ENGLISH = new GameLanguage(Locale.ENGLISH, "l_english", "English");
-    public static GameLanguage TRANSLATION_HELPER = new GameLanguage(Locale.ENGLISH, "l_translate", "Translation Helper");
+    ENGLISH("l_english", SupportedLocale.ENGLISH),
+    GERMAN("l_german", SupportedLocale.GERMAN),
+    FRENCH("l_french", SupportedLocale.FRENCH),
+    SPANISH("l_spanish", SupportedLocale.SPANISH),
+    POLISH("l_polish", SupportedLocale.POLISH),
+    CHINESE("l_chinese", SupportedLocale.CHINESE_SIMPLIFIED),
+    JAPANESE("l_japanese", SupportedLocale.JAPANESE),
+    RUSSIAN("l_russian", SupportedLocale.RUSSIAN),
+    PORTUGUESE("l_portuguese", SupportedLocale.PORTUGUESE);
 
     public static GameLanguage byId(String langId) {
-        return ENGLISH;
+        return Arrays.stream(values()).filter(gameLanguage -> gameLanguage.getId().equals(langId)).findFirst().orElse(ENGLISH);
     }
 
-    private final Locale locale;
-    private final String id;
-    private final String displayName;
-
-    public GameLanguage(Locale locale, String id, String displayName) {
-        this.locale = locale;
-        this.id = id;
-        this.displayName = displayName;
+    public static GameLanguage bySupportedLocale(SupportedLocale supportedLocale) {
+        return Arrays.stream(values()).filter(gameLanguage -> gameLanguage.getSupportedLocale().equals(supportedLocale)).findFirst().orElse(ENGLISH);
     }
+
+    String id;
+    SupportedLocale supportedLocale;
 
     @Override
     public String toString() {
-        return displayName;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public String getId() {
         return id;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 }

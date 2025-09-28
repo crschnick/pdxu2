@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.gui.dialog.GuiSavegameNotes;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.*;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.savegame.FileExportTarget;
 import com.crschnick.pdxu.app.savegame.SavegameCompatibility;
 import com.crschnick.pdxu.app.savegame.SavegameContext;
@@ -28,7 +29,7 @@ public class GameDistLauncher {
                 return;
             }
 
-            if (Settings.getInstance().launchIrony.getValue()) {
+            if (AppPrefs.get().launchIrony().getValue()) {
                 IronyHelper.launchEntry(game, false);
             } else {
                 GameInstallation.ALL.get(game).getDist().startLauncher(Map.of());
@@ -107,13 +108,13 @@ public class GameDistLauncher {
     }
 
     public static boolean canChangeMods(Game game) {
-        return Settings.getInstance().launchIrony.getValue() ||
+        return AppPrefs.get().launchIrony().getValue() ||
                 GameInstallation.ALL.get(game).getDist().supportsLauncher();
     }
 
     private static void startLauncherDirectly() throws IOException {
         var game = SavegameManagerState.get().current();
-        if (Settings.getInstance().launchIrony.getValue()) {
+        if (AppPrefs.get().launchIrony().getValue()) {
             IronyHelper.launchEntry(game, true);
         } else {
             if (!GameInstallation.ALL.get(game).getDist().supportsLauncher()) {
@@ -141,7 +142,7 @@ public class GameDistLauncher {
             return;
         }
 
-        if (Settings.getInstance().launchIrony.getValue()) {
+        if (AppPrefs.get().launchIrony().getValue()) {
             IronyHelper.launchEntry(ctx.getGame(), true);
         } else {
             ctx.getInstallation().startDirectly(debug);

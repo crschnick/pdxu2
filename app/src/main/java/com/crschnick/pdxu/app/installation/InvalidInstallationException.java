@@ -8,6 +8,7 @@ public final class InvalidInstallationException extends Exception {
     private final String msgId;
     private final String[] variables;
 
+    @SuppressWarnings("all")
     public InvalidInstallationException(String msgId, String... vars) {
         super(AppI18n.get(msgId, vars));
         this.msgId = msgId;

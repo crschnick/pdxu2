@@ -13,9 +13,12 @@ import com.crschnick.pdxu.app.info.stellaris.StellarisSavegameInfo;
 import com.crschnick.pdxu.app.info.vic2.Vic2SavegameInfo;
 import com.crschnick.pdxu.app.info.vic3.Vic3SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.installation.GameLocalisation;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ConfigHelper;
 import com.crschnick.pdxu.app.util.ImageHelper;
+import com.crschnick.pdxu.app.util.JacksonMapper;
 import com.crschnick.pdxu.app.util.RakalyHelper;
 import com.crschnick.pdxu.io.savegame.SavegameContent;
 import com.crschnick.pdxu.io.savegame.SavegameFormatException;
@@ -84,7 +87,7 @@ public abstract class SavegameStorage<
         this.name = name;
         this.type = type;
         this.dateType = dateType;
-        this.path = Settings.getInstance().storageDirectory.getValue().resolve(name);
+        this.path = AppPrefs.get().storageDirectory().getValue().resolve(name);
         this.infoClass = infoClass;
         this.logger = LoggerFactory.getLogger("SavegameStorage (" + getName() + ")");
     }
@@ -262,7 +265,7 @@ public abstract class SavegameStorage<
                 continue;
             }
 
-            JsonNode campaignNode = JsonHelper.read(colFile);
+            JsonNode campaignNode = JacksonMapper.getDefault().readTree(colFile.toFile());
             StreamSupport.stream(campaignNode.required("entries").spliterator(), false).forEach(entryNode -> {
                 UUID eId = UUID.fromString(entryNode.required("uuid").textValue());
                 String name = Optional.ofNullable(entryNode.get("name")).map(JsonNode::textValue).orElse(null);
@@ -356,7 +359,7 @@ public abstract class SavegameStorage<
     }
 
     private String getDefaultEntryName(I info) {
-        return info.getData().getDate().toDisplayString(LanguageManager.getInstance().getActiveLanguage().getLocale());
+        return info.getData().getDate().toDisplayString(AppPrefs.get().language().getValue().getLocale());
     }
 
     protected abstract String getDefaultCampaignName(I info);
@@ -434,7 +437,7 @@ public abstract class SavegameStorage<
             logger.debug("Info file already exists. Loading from file " + getSavegameInfoFile(e));
             try {
                 e.startLoading();
-                e.load(JsonHelper.readObject(infoClass, getSavegameInfoFile(e)));
+                e.load(JacksonMapper.getDefault().readValue(getSavegameInfoFile(e).toFile(), infoClass));
                 getSavegameCampaign(e).onSavegameLoad(e);
                 return;
             } catch (Exception ex) {
@@ -486,7 +489,7 @@ public abstract class SavegameStorage<
                     }
 
                     logger.debug("Writing new info to file " + getSavegameInfoFile(e));
-                    JsonHelper.writeObject(info, getSavegameInfoFile(e));
+                    JacksonMapper.getDefault().writeValue(getSavegameInfoFile(e).toFile(), info);
                 } catch (Throwable ex) {
                     ErrorEventFactory.fromThrowable(ex).handle();
                     e.fail();
@@ -496,13 +499,13 @@ public abstract class SavegameStorage<
             @Override
             public void error(SavegameParseResult.Error er) {
                 e.fail();
-                ErrorHandler.handleException(er.error, null);
+                ErrorEventFactory.fromThrowable(er.error).handle();
             }
 
             @Override
             public void invalid(SavegameParseResult.Invalid iv) {
                 e.fail();
-                ErrorHandler.handleException(new IllegalArgumentException(iv.message), null);
+                ErrorEventFactory.fromMessage(iv.message).handle();
             }
         });
     }
@@ -723,7 +726,7 @@ public abstract class SavegameStorage<
             FileUtils.forceMkdir(entryPath.toFile());
             var file = entryPath.resolve(getSaveFileName());
             writer.accept(file);
-            JsonHelper.writeObject(info, entryPath.resolve(getInfoFileName()));
+            JacksonMapper.getDefault().writeValue(entryPath.resolve(getInfoFileName()).toFile(), info);
 
             addNewEntryToCampaign(campaignId, saveUuid, checksum, info, null, sourceFileChecksum, defaultCampaignName);
         } catch (Exception e) {

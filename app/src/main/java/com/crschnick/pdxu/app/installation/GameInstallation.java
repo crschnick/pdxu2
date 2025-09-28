@@ -167,7 +167,7 @@ public final class GameInstallation {
             logger.debug(g.getTranslatedAbbreviation() + " version: " + (this.version != null ? this.version : "unknown"));
             this.language = type.determineLanguage(getInstallDir(), userDir).orElse(null);
             logger.debug(g.getTranslatedAbbreviation() + " language: " +
-                    (this.language != null ? this.language.getDisplayName() : "unknown"));
+                    (this.language != null ? this.language.getId() : "unknown"));
             LoggerFactory.getLogger(getClass()).debug("Finished initialization");
         } catch (InvalidInstallationException e) {
             throw e;
