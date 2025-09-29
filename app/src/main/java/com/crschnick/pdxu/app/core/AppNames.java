@@ -36,6 +36,8 @@ public abstract class AppNames {
 
     public abstract String getExecutableName();
 
+    public abstract String getDistName();
+
     private static class Main extends AppNames {
 
         @Override
@@ -70,6 +72,11 @@ public abstract class AppNames {
 
         @Override
         public String getExecutableName() {
+            return "pdx-unlimiter";
+        }
+
+        @Override
+        public String getDistName() {
             return "pdx-unlimiter";
         }
     }

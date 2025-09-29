@@ -22,7 +22,7 @@ public class AppDesktopIntegration {
                     }
 
                     if (AppLayoutModel.get() != null) {
-                        AppLayoutModel.get().selectFileBrowser();
+                        AppLayoutModel.get().selectSettings();
                     }
                 });
 

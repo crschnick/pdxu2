@@ -11,11 +11,9 @@ import org.kohsuke.github.authorization.AuthorizationProvider;
 import java.io.IOException;
 import java.util.Optional;
 
-public class AppDownloads {
+public class AppReleases {
 
-    // TODO: Put your own repo URL here
-    // For demo purposes, the xpipe updates are shown
-    private static final String GITHUB_REPOSITORY = "crschnick/pdx-unlimiter";
+    private static final String GITHUB_REPOSITORY = "crschnick/pdx_unlimiter";
 
     private static GHRepository repository;
 

@@ -54,6 +54,7 @@ jlink {
         addExtraModulePath(layout.projectDirectory.dir("javafx/${platformName}/${arch}").toString())
     }
     addExtraModulePath(layout.projectDirectory.dir("jna/${platformName}/${arch}").toString())
+    addExtraModulePath(layout.projectDirectory.dir("jnativehook/${platformName}/${arch}").toString())
 
     // Include debugger module in dev build
     if (!ci || !isFullRelease) {
@@ -82,7 +83,6 @@ jlink {
             appVersion = macVersion
             imageOptions = ["--mac-package-identifier", jpackageMacOsBundleName]
         }
-        // TODO: Change vendor
         vendor = 'Christopher Schnick'
         skipInstaller = true
     }

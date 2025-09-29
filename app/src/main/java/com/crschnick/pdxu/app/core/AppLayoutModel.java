@@ -2,6 +2,8 @@ package com.crschnick.pdxu.app.core;
 
 import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.gui.GuiLayout;
+import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
+import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.page.*;
 import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
@@ -83,45 +85,10 @@ public class AppLayoutModel {
         }
     }
 
-    public void selectBlueprints() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.getFirst());
-        });
-    }
-
-    public void selectMusicPlayer() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(1));
-        });
-    }
-
-    public void selectFileBrowser() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(2));
-        });
-    }
-
-    public void selectOverview() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(3));
-        });
-    }
-
-    public void selectMarkdown() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(4));
-        });
-    }
-
-    public void selectDeveloper() {
-        PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(6));
-        });
-    }
-
     public void selectSettings() {
         PlatformThread.runLaterIfNeeded(() -> {
-            selected.setValue(entries.get(7));
+            var found = entries.stream().filter(entry -> entry.comp instanceof PrefsPageComp).findFirst();
+            selected.setValue(found.orElseThrow());
         });
     }
 
@@ -129,7 +96,16 @@ public class AppLayoutModel {
         var l = new ArrayList<>(List.of(
                 new Entry(
                         AppI18n.observable("settings"),
-                        new LabelGraphic.IconGraphic("mdsmz-miscellaneous_services"),
+                        new LabelGraphic.NodeGraphic(() -> {
+                            var pane = GameGuiFactory.get(Game.EU4).createIcon();
+                            pane.setMaxWidth(20);
+                            pane.setMaxHeight(20);
+                            pane.setPrefWidth(20);
+                            pane.setPrefHeight(20);
+                            pane.setMinWidth(20);
+                            pane.setMinHeight(20);
+                            return pane;
+                        }),
                         Comp.of(() -> {
                             var gl = new GuiLayout();
                             gl.setup();

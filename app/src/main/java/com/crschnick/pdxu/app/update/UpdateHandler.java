@@ -98,6 +98,7 @@ public abstract class UpdateHandler {
         String sourceDist;
         String version;
         String releaseUrl;
+        String repository;
         String body;
         Instant checkTime;
         boolean isUpdate;
