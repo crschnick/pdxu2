@@ -1,27 +1,38 @@
 package com.crschnick.pdxu.app.gui;
 
-import com.jfoenix.controls.JFXListView;
+import com.crschnick.pdxu.app.comp.Comp;
+import com.crschnick.pdxu.app.comp.SimpleComp;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-public class GuiListView {
+@AllArgsConstructor
+public class GuiListViewComp<T> extends SimpleComp {
 
+    private  final ListProperty<T> list;
+    private  final Function<T, Comp<?>> nodeFactory;
+    private  final boolean fixSize;
+
+    private Region createForItem(T li, Function<T, Comp<?>> nodeFactory) {
+        var node = nodeFactory.apply(li).createRegion();
+        node.getProperties().put("list-item", li);
+        return node;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
-    public static <T> Region createViewOfList(
-            ListProperty<T> list,
-            Function<T, Node> nodeFactory,
-            boolean fixSize
-    ) {
+    protected Region createSimple() {
         Pane pane = new Pane();
 
         Platform.runLater(() -> {
-            JFXListView<Node> listView = new JFXListView<>();
+            ListView<Node> listView = new ListView<>();
             var newItems = list.stream()
                     .map(li -> createForItem(li, nodeFactory)).toList();
 
@@ -34,16 +45,15 @@ public class GuiListView {
                 listView.fixedCellSizeProperty().bind(((Region) newItems.get(0)).heightProperty());
             }
             newItems.forEach(li -> listView.getItems().add(li));
-            listView.setExpanded(true);
         });
 
         list.addListener((c, o, n) -> {
             Platform.runLater(() -> {
-                var map = new HashMap<T, Node>();
-                ((JFXListView<Node>) pane.getChildren().get(0))
-                        .getItems().forEach(node -> map.put((T) node.getProperties().get("list-item"), node));
+                var map = new HashMap<T, Region>();
+                ((ListView<Node>) pane.getChildren().get(0))
+                        .getItems().forEach(node -> map.put((T) node.getProperties().get("list-item"), (Region) node));
 
-                JFXListView<Node> listView = new JFXListView<>();
+                ListView<Node> listView = new ListView<>();
                 var newItems = n.stream()
                         .map(li -> {
                             var def = map.get(li);
@@ -58,7 +68,7 @@ public class GuiListView {
                 listView.prefWidthProperty().bind(pane.widthProperty());
                 listView.prefHeightProperty().bind(pane.heightProperty());
 
-                var old = (JFXListView<?>) pane.getChildren().get(0);
+                var old = (ListView<?>) pane.getChildren().get(0);
                 old.getItems().clear();
                 pane.getChildren().setAll(listView);
 
@@ -66,15 +76,8 @@ public class GuiListView {
                     listView.fixedCellSizeProperty().bind(((Region) newItems.get(0)).heightProperty());
                 }
                 newItems.forEach(li -> listView.getItems().add(li));
-                listView.setExpanded(true);
             });
         });
         return pane;
-    }
-
-    private static <T> Node createForItem(T li, Function<T, Node> nodeFactory) {
-        var node = nodeFactory.apply(li);
-        node.getProperties().put("list-item", li);
-        return node;
     }
 }

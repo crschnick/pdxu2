@@ -1,5 +1,6 @@
 package com.crschnick.pdxu.app.gui;
 
+import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.AppResources;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
@@ -35,15 +36,19 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import lombok.AllArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.*;
 
-public class GuiSavegameEntry {
+@AllArgsConstructor
+public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
     private static Image FILE_ICON;
+
+    private  final SavegameEntry<T, I> e;
 
     private static <T, I extends SavegameInfo<T>> Region setupTopBar(SavegameEntry<T, I> e) {
         BorderPane topBar = new BorderPane();
@@ -114,35 +119,6 @@ public class GuiSavegameEntry {
             });
             me.consume();
         });
-    }
-
-    public static <T, I extends SavegameInfo<T>> Node createSavegameEntryNode(SavegameEntry<T, I> e) {
-        VBox entryNode = new VBox();
-        entryNode.setAlignment(Pos.CENTER);
-        entryNode.setFillWidth(true);
-        entryNode.getStyleClass().add(CLASS_ENTRY);
-        entryNode.setOnMouseClicked(event -> SavegameManagerState.<T, I>get().selectEntry(e));
-        entryNode.accessibleTextProperty().bind(e.nameProperty());
-
-        setupDragAndDrop(entryNode, e);
-
-        var topBar = setupTopBar(e);
-        entryNode.getChildren().add(topBar);
-        // Important!
-        // Set view order to force top bar to be in front of the savegame info node
-        // In case the masonry pane overflows, the top bar can not be blocked that way
-        topBar.setViewOrder(-1);
-
-        Node content = createSavegameInfoNode(e);
-        entryNode.getChildren().add(content);
-
-        // For debugging memory leaks
-//        for (int i = 0; i < 1000; i++) {
-//            var c = createSavegameInfoNode(e);
-//        }
-
-        content.setCursor(Cursor.HAND);
-        return entryNode;
     }
 
     @SuppressWarnings("unchecked")
@@ -405,5 +381,35 @@ public class GuiSavegameEntry {
         });
 
         return stack;
+    }
+
+    @Override
+    protected Region createSimple() {
+        VBox entryNode = new VBox();
+        entryNode.setAlignment(Pos.CENTER);
+        entryNode.setFillWidth(true);
+        entryNode.getStyleClass().add(CLASS_ENTRY);
+        entryNode.setOnMouseClicked(event -> SavegameManagerState.<T, I>get().selectEntry(e));
+        entryNode.accessibleTextProperty().bind(e.nameProperty());
+
+        setupDragAndDrop(entryNode, e);
+
+        var topBar = setupTopBar(e);
+        entryNode.getChildren().add(topBar);
+        // Important!
+        // Set view order to force top bar to be in front of the savegame info node
+        // In case the masonry pane overflows, the top bar can not be blocked that way
+        topBar.setViewOrder(-1);
+
+        Node content = createSavegameInfoNode(e);
+        entryNode.getChildren().add(content);
+
+        // For debugging memory leaks
+//        for (int i = 0; i < 1000; i++) {
+//            var c = createSavegameInfoNode(e);
+//        }
+
+        content.setCursor(Cursor.HAND);
+        return entryNode;
     }
 }

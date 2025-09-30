@@ -1,5 +1,6 @@
 package com.crschnick.pdxu.app.gui;
 
+import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.gui.dialog.GuiImporter;
@@ -15,32 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class GuiSavegameEntryList {
-
-    public static Pane createCampaignEntryList() {
-        Region grid = GuiListView.createViewOfList(
-                SavegameManagerState.get().getShownEntries(),
-                GuiSavegameEntry::createSavegameEntryNode,
-                true);
-        grid.setOpacity(0.9);
-        grid.getStyleClass().add(GuiStyle.CLASS_ENTRY_LIST);
-
-        var ncn = createNoCampaignNode();
-        StackPane pane = new StackPane(ncn, grid);
-        ncn.prefWidthProperty().bind(pane.widthProperty());
-        ncn.prefHeightProperty().bind(pane.heightProperty());
-        grid.prefWidthProperty().bind(pane.widthProperty());
-        grid.prefHeightProperty().bind(pane.heightProperty());
-
-        grid.setVisible(!SavegameManagerState.get().isStorageEmpty());
-        ncn.setVisible(SavegameManagerState.get().isStorageEmpty());
-        SavegameManagerState.get().storageEmptyProperty().addListener((c, o, n) -> {
-            grid.setVisible(!n);
-            ncn.setVisible(n);
-        });
-        grid.setAccessibleText("Campaign savegames");
-        return pane;
-    }
+public class GuiSavegameEntryListComp extends SimpleComp {
 
     private static Region createNoCampaignNode() {
         VBox v = new VBox();
@@ -80,5 +56,32 @@ public class GuiSavegameEntryList {
         v.setSpacing(10);
         v.setAlignment(Pos.CENTER);
         return v;
+    }
+
+    @Override
+    protected Region createSimple() {
+        Region grid = new GuiListViewComp<>(
+                SavegameManagerState.get().getShownEntries(),
+                GuiSavegameEntryComp::new,
+                true)
+                .createRegion();
+        grid.setOpacity(0.9);
+        grid.getStyleClass().add(GuiStyle.CLASS_ENTRY_LIST);
+
+        var ncn = createNoCampaignNode();
+        StackPane pane = new StackPane(ncn, grid);
+        ncn.prefWidthProperty().bind(pane.widthProperty());
+        ncn.prefHeightProperty().bind(pane.heightProperty());
+        grid.prefWidthProperty().bind(pane.widthProperty());
+        grid.prefHeightProperty().bind(pane.heightProperty());
+
+        grid.setVisible(!SavegameManagerState.get().isStorageEmpty());
+        ncn.setVisible(SavegameManagerState.get().isStorageEmpty());
+        SavegameManagerState.get().storageEmptyProperty().addListener((c, o, n) -> {
+            grid.setVisible(!n);
+            ncn.setVisible(n);
+        });
+        grid.setAccessibleText("Campaign savegames");
+        return pane;
     }
 }

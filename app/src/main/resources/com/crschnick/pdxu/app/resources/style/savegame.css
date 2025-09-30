@@ -1,22 +1,30 @@
+.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover .entry {
+    -fx-background-color: -color-bg-default;
+}
+
+.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused .entry {
+    -fx-border-color: -color-accent-emphasis;
+}
+
 .entry {
--fx-background-color: #AAAAAA55;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-background-color: -color-bg-default-transparent;
+    -fx-border-color: -color-border-default;
 }
 
-.entry-list .jfx-list-view {
--fx-background-color: #FFFFFFAA;
--fx-background-insets: 0;
--fx-background-radius: 0;
+.entry-list .list-cell {
+    -fx-padding: 8 8 0 8;
 }
 
-.entry-list .jfx-list-cell {
- -fx-padding: 0;
--fx-border-color: transparent;
--fx-border-width: 0 0.4em 0 0.4em;
--fx-background-insets: 0 0.4em 0 0.4em;
-}
 
 .entry-bar {
--fx-padding: 0.4em 0.4em 0.4em 0.4em;
+-fx-padding: 0.3em;
 -fx-spacing: 0.5em;
 }
 

@@ -50,12 +50,12 @@ public class GuiLayout {
     }
 
     private void fillLayout() {
-        layout.setBottom(GuiStatusBar.createStatusBar());
+        layout.setBottom(new GuiStatusBarComp().createRegion());
 
-        var pane = GuiSavegameEntryList.createCampaignEntryList();
+        var pane = new GuiSavegameEntryListComp().createRegion();
         layout.setCenter(pane);
 
-        layout.setLeft(GuiSavegameCollectionList.createCampaignList());
+        layout.setLeft(new GuiSavegameCollectionListComp<>().createRegion());
     }
 
     private void setGameLookAndFeel(Game g) {

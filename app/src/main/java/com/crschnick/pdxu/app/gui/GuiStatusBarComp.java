@@ -1,5 +1,7 @@
 package com.crschnick.pdxu.app.gui;
 
+import com.crschnick.pdxu.app.comp.SimpleComp;
+import com.crschnick.pdxu.app.core.AppFontSizes;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
@@ -9,7 +11,6 @@ import com.crschnick.pdxu.app.installation.GameAppManager;
 import com.crschnick.pdxu.app.installation.dist.GameDistLauncher;
 import com.crschnick.pdxu.app.savegame.*;
 import com.crschnick.pdxu.app.util.Hyperlinks;
-import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -23,40 +24,12 @@ import java.util.List;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.*;
 
-public class GuiStatusBar {
+public class GuiStatusBarComp extends SimpleComp {
 
     private static StatusBar bar;
 
     public static StatusBar getStatusBar() {
         return bar;
-    }
-
-    public static Pane createStatusBar() {
-        Pane pane = new Pane();
-        bar = new StatusBar(pane);
-        SavegameManagerState.get().globalSelectedEntryProperty().addListener((c, o, n) -> {
-            Platform.runLater(() -> {
-                if (n != null) {
-                    bar.select(n);
-                } else {
-                    bar.unselect();
-                }
-            });
-        });
-
-        GameAppManager.getInstance().activeGameProperty().addListener((c, o, n) -> {
-            if (n != null) {
-                bar.setRunning(n.getGame());
-            } else {
-                bar.stopRunning();
-            }
-        });
-        var g = GameAppManager.getInstance().activeGameProperty().get();
-        if (g != null) {
-            bar.setRunning(g.getGame());
-        }
-
-        return pane;
     }
 
     private static Region createRunningBar(Game g) {
@@ -140,6 +113,8 @@ public class GuiStatusBar {
             Label text = new Label(
                     ctx.getStorage().getEntryName(e),
                     ctx.getGuiFactory().createIcon());
+            AppFontSizes.xl(text);
+            text.setGraphicTextGap(9);
             text.getStyleClass().add("text");
             barPane.setLeft(text);
             BorderPane.setAlignment(text, Pos.CENTER);
@@ -153,6 +128,7 @@ public class GuiStatusBar {
             }
             {
                 Button export = new Button(AppI18n.get("EXPORT"));
+                AppFontSizes.sm(export);
                 export.setGraphic(new FontIcon());
                 export.getStyleClass().add(CLASS_EXPORT);
                 export.setOnAction(event -> {
@@ -167,6 +143,7 @@ public class GuiStatusBar {
 
             if (e.getInfo() != null && ctx.getInstallation().getDist().supportsLauncher()) {
                 Button launch = new Button(AppI18n.get("START_LAUNCHER"));
+                AppFontSizes.sm(launch);
                 launch.setGraphic(new FontIcon());
                 launch.getStyleClass().add("launcher-button");
                 launch.setOnAction(event -> {
@@ -200,6 +177,7 @@ public class GuiStatusBar {
                     launch = new Button(AppI18n.get("CONTINUE_GAME"));
                 }
 
+                AppFontSizes.sm(launch);
                 launch.setGraphic(new FontIcon());
                 launch.getStyleClass().add("continue-button");
                 launch.setOnAction(event -> {
@@ -213,6 +191,7 @@ public class GuiStatusBar {
 
             {
                 Button help = new Button();
+                AppFontSizes.sm(help);
                 help.setGraphic(new FontIcon());
                 help.getStyleClass().add("help-button");
                 help.setOnAction(event -> {
@@ -224,6 +203,35 @@ public class GuiStatusBar {
         });
 
         return barPane;
+    }
+
+    @Override
+    protected Region createSimple() {
+        Pane pane = new Pane();
+        bar = new StatusBar(pane);
+        SavegameManagerState.get().globalSelectedEntryProperty().addListener((c, o, n) -> {
+            Platform.runLater(() -> {
+                if (n != null) {
+                    bar.select(n);
+                } else {
+                    bar.unselect();
+                }
+            });
+        });
+
+        GameAppManager.getInstance().activeGameProperty().addListener((c, o, n) -> {
+            if (n != null) {
+                bar.setRunning(n.getGame());
+            } else {
+                bar.stopRunning();
+            }
+        });
+        var g = GameAppManager.getInstance().activeGameProperty().get();
+        if (g != null) {
+            bar.setRunning(g.getGame());
+        }
+
+        return pane;
     }
 
     public static class StatusBar {
