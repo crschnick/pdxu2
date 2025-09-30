@@ -127,7 +127,7 @@ public class SavegameActions {
             return;
         }
 
-        // FileImporter.importTargets(Set.of(savegames.get(0)));
+        FileImporter.importTargets(Set.of(savegames.get(0)));
     }
 
     public static void importLatestAndLaunch(Game g) {

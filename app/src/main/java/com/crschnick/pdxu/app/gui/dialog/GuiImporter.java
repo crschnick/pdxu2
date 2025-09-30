@@ -2,6 +2,7 @@ package com.crschnick.pdxu.app.gui.dialog;
 
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.savegame.FileImportTarget;
+import com.crschnick.pdxu.app.savegame.FileImporter;
 import com.crschnick.pdxu.io.savegame.SavegameParseResult;
 import com.jfoenix.controls.JFXCheckBox;
 import javafx.application.Platform;
@@ -89,7 +90,7 @@ public class GuiImporter {
         alert.getButtonTypes().add(importType);
         Button importB = (Button) alert.getDialogPane().lookupButton(importType);
         importB.setOnAction(e -> {
-            // FileImporter.importTargets(state.getSelectedTargets());
+            FileImporter.importTargets(state.getSelectedTargets());
             e.consume();
         });
 

@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.installation.dist;
 
 import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.app.util.OsType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -32,8 +33,6 @@ public class GameDists {
             NoLauncherDist::getDist
     );
 
-    private static final Logger logger = LoggerFactory.getLogger(GameDists.class);
-
     public static Optional<GameDist> detectDist(Game g, boolean checkXbox) {
         return getCompoundDistFromDirectory(g, null, checkXbox)
                 .or(() -> {
@@ -59,12 +58,12 @@ public class GameDists {
         // Basic dists do require a directory
         Objects.requireNonNull(dir);
 
-        logger.trace("Looking for basic dist in " + dir);
+        TrackEvent.trace("Looking for basic dist in " + dir);
         for (var e : BASIC_DISTS) {
-            logger.trace("Testing dist " + e.toString());
+            TrackEvent.trace("Testing dist " + e.toString());
             var r = e.apply(g, dir);
             if (r.isPresent()) {
-                logger.trace("Found working dist " + r.get().getName());
+                TrackEvent.trace("Found working dist " + r.get().getName());
                 return r;
             }
         }
@@ -72,12 +71,12 @@ public class GameDists {
     }
 
     private static Optional<GameDist> getCompoundDistFromDirectory(Game g, Path dir, boolean checkXbox) {
-        logger.trace("Looking for compound dist in " + dir);
+        TrackEvent.trace("Looking for compound dist in " + dir);
         for (var e : checkXbox ? ALL_COMPOUND_TYPES : FAST_COMPOUND_TYPES) {
-            logger.trace("Testing dist " + e.toString());
+            TrackEvent.trace("Testing dist " + e.toString());
             var r = e.apply(g, dir);
             if (r.isPresent()) {
-                logger.trace("Found working dist " + r.get().getName());
+                TrackEvent.trace("Found working dist " + r.get().getName());
                 return r;
             }
         }

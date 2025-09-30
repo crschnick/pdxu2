@@ -1,12 +1,9 @@
 package com.crschnick.pdxu.app.core;
 
-import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
-import com.crschnick.pdxu.io.savegame.SavegameType;
-import com.crschnick.pdxu.model.GameDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.xpipe.modulefs.ModuleFileSystem;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,46 +21,27 @@ public class IntegrityManager {
 
     private final Map<Game, String> checksums = new HashMap<>();
 
-    public static void init() throws Exception {
+    private static ModuleFileSystem openFileSystemIfNeeded(String module) throws IOException {
+        var layer = ModuleLayer.boot();
+        var fs = (ModuleFileSystem) FileSystems.newFileSystem(URI.create("module:/" + module), Map.of("layer", layer));
+        return fs;
+    }
+
+    private static Path getPackagePath(String module, String file) throws IOException {
+        var fs = openFileSystemIfNeeded(module);
+        var f = fs.getPath(file);
+        return f;
+    }
+
+    @SneakyThrows
+    public static void init() {
         INSTANCE = new IntegrityManager();
 
-        Path modelPackage;
-        Path ioPackage;
-        Path infoPackage;
-        if (AppProperties.get().isImage()) {
-            modelPackage = FileSystems.getFileSystem(URI.create("jrt:/")).getPath(
-                    "modules",
-                    "com.crschnick.pdxu.model",
-                    "com/crschnick/pdxu/model");
-            ioPackage = FileSystems.getFileSystem(URI.create("jrt:/")).getPath(
-                    "modules",
-                    "com.crschnick.pdxu.io",
-                    "com/crschnick/pdxu/io");
-            infoPackage = FileSystems.getFileSystem(URI.create("jrt:/")).getPath(
-                    "modules",
-                    "com.crschnick.pdxu.app",
-                    "com/crschnick/pdxu/app/info");
-            for (Game g : Game.values()) {
-                INSTANCE.checksums.put(g, calc(ioPackage, modelPackage, infoPackage, g.getId()));
-            }
-        } else {
-            var modelUri = new URI("jar:" + GameDate.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().toString());
-            var ioUri = new URI("jar:" + SavegameType.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().toString());
-            var infoUri = new URI("jar:" + SavegameInfo.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().toString());
-            try (var modelFs = FileSystems.newFileSystem(modelUri, Map.of());
-                 var ioFs = FileSystems.newFileSystem(ioUri, Map.of());
-                 var infoFs = FileSystems.newFileSystem(infoUri, Map.of())) {
-                modelPackage = modelFs.getPath("/com/crschnick/pdxu/model");
-                ioPackage = ioFs.getPath("/com/crschnick/pdxu/io");
-                infoPackage = infoFs.getPath("/com/crschnick/pdxu/app/info");
-
-                for (Game g : Game.values()) {
-                    INSTANCE.checksums.put(g, calc(ioPackage, modelPackage, infoPackage, g.getId()));
-                }
-            }
+        var modelPackage = getPackagePath("com.crschnick.pdxu.model", "/com/crschnick/pdxu/model");
+        var ioPackage = getPackagePath("com.crschnick.pdxu.io", "/com/crschnick/pdxu/io");
+        var infoPackage = getPackagePath("com.crschnick.pdxu.app", "/com/crschnick/pdxu/app/info");
+        for (Game g : Game.values()) {
+            INSTANCE.checksums.put(g, calc(ioPackage, modelPackage, infoPackage, g.getId()));
         }
     }
 

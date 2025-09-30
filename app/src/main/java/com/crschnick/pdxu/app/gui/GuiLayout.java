@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
 import com.crschnick.pdxu.app.gui.game.GameImage;
 import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.savegame.FileImporter;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.FadeTransition;
@@ -49,9 +50,6 @@ public class GuiLayout {
     }
 
     private void fillLayout() {
-        var menu = GuiMenuBar.createMenu();
-        layout.setTop(menu);
-
         layout.setBottom(GuiStatusBar.createStatusBar());
 
         var pane = GuiSavegameEntryList.createCampaignEntryList();
@@ -107,7 +105,7 @@ public class GuiLayout {
             if (event.getGestureSource() == null && event.getDragboard().hasFiles()) {
                 event.setDropCompleted(true);
                 Dragboard db = event.getDragboard();
-                // FileImporter.onFileDrop(db.getFiles());
+                FileImporter.onFileDrop(db.getFiles());
             }
             event.consume();
         });

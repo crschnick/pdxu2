@@ -83,26 +83,6 @@ public abstract class Comp<S extends CompStructure<?>> {
         return apply(struc -> struc.get().setPrefHeight(height));
     }
 
-    public <T extends Comp<S>> T onSceneAssign(CompAugment<S> augment) {
-        return apply(struc -> struc.get().sceneProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                augment.augment(struc);
-            }
-        }));
-    }
-
-    public void focusOnShow() {
-        onSceneAssign(struc -> {
-            Platform.runLater(() -> {
-                Platform.runLater(() -> {
-                    Platform.runLater(() -> {
-                        struc.get().requestFocus();
-                    });
-                });
-            });
-        });
-    }
-
     public Comp<S> minWidth(double width) {
         return apply(struc -> struc.get().setMinWidth(width));
     }
@@ -125,18 +105,6 @@ public abstract class Comp<S extends CompStructure<?>> {
 
     public Comp<S> vgrow() {
         return apply(struc -> VBox.setVgrow(struc.get(), Priority.ALWAYS));
-    }
-
-    public Comp<S> focusTraversable() {
-        return apply(struc -> struc.get().setFocusTraversable(true));
-    }
-
-    public Comp<S> focusTraversable(boolean b) {
-        return apply(struc -> struc.get().setFocusTraversable(b));
-    }
-
-    public Comp<S> focusTraversableForAccessibility() {
-        return apply(struc -> struc.get().focusTraversableProperty().bind(Platform.accessibilityActiveProperty()));
     }
 
     public Comp<S> visible(ObservableValue<Boolean> o) {
@@ -199,66 +167,6 @@ public abstract class Comp<S extends CompStructure<?>> {
 
     public Comp<S> accessibleTextKey(String key) {
         return apply(struc -> struc.get().accessibleTextProperty().bind(AppI18n.observable(key)));
-    }
-
-    public Comp<S> grow(boolean width, boolean height) {
-        return apply(struc -> {
-            struc.get().parentProperty().addListener((c, o, n) -> {
-                if (o instanceof Region) {
-                    if (width) {
-                        struc.get().prefWidthProperty().unbind();
-                    }
-                    if (height) {
-                        struc.get().prefHeightProperty().unbind();
-                    }
-                }
-
-                bindGrow(struc.get(), n, width, height);
-            });
-
-            bindGrow(struc.get(), struc.get().getParent(), width, height);
-        });
-    }
-
-    private void bindGrow(Region r, Node parent, boolean width, boolean height) {
-        if (!(parent instanceof Region p)) {
-            return;
-        }
-
-        if (width) {
-            r.prefWidthProperty()
-                    .bind(Bindings.createDoubleBinding(
-                            () -> {
-                                var val = p.getWidth()
-                                        - p.getInsets().getLeft()
-                                        - p.getInsets().getRight();
-                                if (val <= 0) {
-                                    return Region.USE_COMPUTED_SIZE;
-                                }
-
-                                // Floor to prevent rounding issues which cause an infinite growing
-                                return Math.floor(val);
-                            },
-                            p.widthProperty(),
-                            p.insetsProperty()));
-        }
-        if (height) {
-            r.prefHeightProperty()
-                    .bind(Bindings.createDoubleBinding(
-                            () -> {
-                                var val = p.getHeight()
-                                        - p.getInsets().getTop()
-                                        - p.getInsets().getBottom();
-                                if (val <= 0) {
-                                    return Region.USE_COMPUTED_SIZE;
-                                }
-
-                                // Floor to prevent rounding issues which cause an infinite growing
-                                return Math.floor(val);
-                            },
-                            p.heightProperty(),
-                            p.insetsProperty()));
-        }
     }
 
     public Comp<S> tooltip(ObservableValue<String> text) {

@@ -14,12 +14,19 @@ public class LinksCategory extends AppPrefsCategory {
                 .addTitle("links")
                 .addComp(Comp.vspacer(19))
                 .addComp(
+                        new TileButtonComp("discord", "discordDescription", "bi-discord", e -> {
+                            Hyperlinks.open(Hyperlinks.DISCORD);
+                            e.consume();
+                        })
+                                .maxWidth(2000),
+                        null)
+                .addComp(
                         new TileButtonComp(
                                         "documentation", "documentationDescription", "mdi2b-book-open-variant", e -> {
                                             Hyperlinks.open(Hyperlinks.DOCS);
                                             e.consume();
                                         })
-                                .grow(true, false),
+                                .maxWidth(2000),
                         null)
                 .addComp(
                         new TileButtonComp("thirdParty", "thirdPartyDescription", "mdi2o-open-source-initiative", e -> {
@@ -29,7 +36,7 @@ public class LinksCategory extends AppPrefsCategory {
                                     var modal = ModalOverlay.of("openSourceNotices", comp);
                                     modal.show();
                                 })
-                                .grow(true, false))
+                                .maxWidth(2000))
                 .addComp(Comp.vspacer(40))
                 .buildComp();
     }

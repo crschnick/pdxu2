@@ -127,7 +127,12 @@ public class AppLayoutModel {
                         AppI18n.observable("visitGithubRepository"),
                         new LabelGraphic.IconGraphic("mdi2g-github"),
                         null,
-                        () -> Hyperlinks.open(Hyperlinks.GITHUB))));
+                        () -> Hyperlinks.open(Hyperlinks.GITHUB)),
+                new Entry(
+                        AppI18n.observable("discord"),
+                        new LabelGraphic.IconGraphic("bi-discord"),
+                        null,
+                        () -> Hyperlinks.open(Hyperlinks.DISCORD))));
         return l;
     }
 

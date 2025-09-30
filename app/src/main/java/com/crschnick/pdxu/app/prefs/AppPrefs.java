@@ -223,6 +223,10 @@ public final class AppPrefs {
         return launchIrony;
     }
 
+    public ObservableValue<Boolean> deleteOnImport() {
+        return deleteOnImport;
+    }
+
     public ObservableValue<Boolean> importOnGameNormalExit() {
         return importOnGameNormalExit;
     }
