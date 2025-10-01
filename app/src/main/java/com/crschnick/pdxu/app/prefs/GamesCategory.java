@@ -18,7 +18,7 @@ public class GamesCategory extends AppPrefsCategory {
 
     @Override
     protected LabelGraphic getIcon() {
-        return new LabelGraphic.IconGraphic("mdi2d-download-box-outline");
+        return new LabelGraphic.IconGraphic("mdi2a-animation-play-outline");
     }
 
     public Comp<?> create() {

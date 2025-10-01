@@ -14,7 +14,7 @@ public class ConvertersCategory extends AppPrefsCategory {
 
     @Override
     protected LabelGraphic getIcon() {
-        return new LabelGraphic.IconGraphic("mdi2d-download-box-outline");
+        return new LabelGraphic.IconGraphic("mdi2f-file-arrow-left-right-outline");
     }
 
     public Comp<?> create() {

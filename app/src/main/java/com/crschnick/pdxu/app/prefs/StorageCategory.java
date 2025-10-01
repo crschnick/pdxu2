@@ -18,12 +18,12 @@ public class StorageCategory extends AppPrefsCategory {
 
     @Override
     public String getId() {
-        return "converters";
+        return "storage";
     }
 
     @Override
     protected LabelGraphic getIcon() {
-        return new LabelGraphic.IconGraphic("mdi2d-download-box-outline");
+        return new LabelGraphic.IconGraphic("mdi-import");
     }
 
     public Comp<?> create() {

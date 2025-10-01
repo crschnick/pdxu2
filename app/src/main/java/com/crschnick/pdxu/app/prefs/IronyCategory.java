@@ -14,7 +14,7 @@ public class IronyCategory extends AppPrefsCategory {
 
     @Override
     protected LabelGraphic getIcon() {
-        return new LabelGraphic.IconGraphic("mdi2d-download-box-outline");
+        return new LabelGraphic.IconGraphic("mdi2a-auto-mode");
     }
 
     public Comp<?> create() {

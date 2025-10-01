@@ -15,7 +15,7 @@ public class ImportsCategory extends AppPrefsCategory {
 
     @Override
     public String getId() {
-        return "converters";
+        return "imports";
     }
 
     @Override
