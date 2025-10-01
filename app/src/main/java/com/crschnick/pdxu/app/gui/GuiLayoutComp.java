@@ -1,5 +1,6 @@
 package com.crschnick.pdxu.app.gui;
 
+import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
@@ -18,58 +19,26 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import lombok.AllArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class GuiLayout {
+@AllArgsConstructor
+public class GuiLayoutComp extends SimpleComp {
 
-    private StackPane stack;
-    private BorderPane layout;
-    private Pane loadingBg;
-    private StackPane fileDropOverlay;
+    private final SavegameManagerState<?, ?> savegameManagerState;
 
-    public void setup() {
-        layout = new BorderPane();
+    private BorderPane createLayout() {
+        var layout = new BorderPane();
+        layout.setBottom(new GuiStatusBarComp<>(savegameManagerState).createRegion());
 
-        JFXSpinner loading = new JFXSpinner();
-        loadingBg = new StackPane(loading);
-        loadingBg.getStyleClass().add(GuiStyle.CLASS_LOADING);
-        loadingBg.setVisible(false);
-        TaskExecutor.getInstance().busyProperty().addListener((c, o, n) -> {
-            setBusy(n);
-        });
-        loadingBg.setMinWidth(Pane.USE_COMPUTED_SIZE);
-        loadingBg.setPrefHeight(Pane.USE_COMPUTED_SIZE);
-
-        fileDropOverlay = new StackPane(new FontIcon());
-        fileDropOverlay.setAlignment(Pos.CENTER);
-        fileDropOverlay.getStyleClass().add("file-drag");
-        fileDropOverlay.setVisible(false);
-
-        stack = new StackPane(new Pane(), layout, loadingBg, fileDropOverlay);
-        stack.setOpacity(0);
-    }
-
-    private void fillLayout() {
-        layout.setBottom(new GuiStatusBarComp().createRegion());
-
-        var pane = new GuiSavegameEntryListComp().createRegion();
+        var pane = new GuiSavegameEntryListComp<>(savegameManagerState).createRegion();
         layout.setCenter(pane);
 
-        layout.setLeft(new GuiSavegameCollectionListComp<>().createRegion());
+        layout.setLeft(new GuiSavegameCollectionListComp<>(savegameManagerState).createRegion());
+        return layout;
     }
 
-    private void setGameLookAndFeel(Game g) {
-        Platform.runLater(() -> {
-            if (g != null) {
-                var bg = GameGuiFactory.ALL.get(g).background();
-                stack.getChildren().set(0, bg);
-            } else {
-                stack.getChildren().set(0, new Pane());
-            }
-        });
-    }
-
-    private void setBusy(boolean busy) {
+    private void setBusy(Region loadingBg, boolean busy) {
         if (!busy) {
             ThreadHelper.createPlatformThread("loading delay", true, () -> {
                 ThreadHelper.sleep(50);
@@ -82,7 +51,7 @@ public class GuiLayout {
         }
     }
 
-    private void setupDragAndDrop() {
+    private void setupDragAndDrop(StackPane stack, StackPane fileDropOverlay) {
         stack.setOnDragOver(event -> {
             if (event.getGestureSource() == null && event.getDragboard().hasFiles()) {
                 event.acceptTransferModes(TransferMode.COPY);
@@ -111,27 +80,40 @@ public class GuiLayout {
         });
     }
 
-    public void finishSetup() {
-        SavegameManagerState.get().onGameChange(n -> {
-            GameImage.loadGameImages(n);
-            setGameLookAndFeel(n);
+    @Override
+    protected Region createSimple() {
+        var layout = createLayout();
+
+        JFXSpinner loading = new JFXSpinner();
+        var loadingBg = new StackPane(loading);
+        loadingBg.getStyleClass().add(GuiStyle.CLASS_LOADING);
+        loadingBg.setVisible(false);
+        TaskExecutor.getInstance().busyProperty().addListener((c, o, n) -> {
+            setBusy(loadingBg, n);
+        });
+        loadingBg.setMinWidth(Pane.USE_COMPUTED_SIZE);
+        loadingBg.setPrefHeight(Pane.USE_COMPUTED_SIZE);
+
+        var fileDropOverlay = new StackPane(new FontIcon());
+        fileDropOverlay.setAlignment(Pos.CENTER);
+        fileDropOverlay.getStyleClass().add("file-drag");
+        fileDropOverlay.setVisible(false);
+
+        var stack = new StackPane(new Pane(), layout, loadingBg, fileDropOverlay);
+        setupDragAndDrop(stack, fileDropOverlay);
+
+        stack.sceneProperty().subscribe(scene -> {
+            Platform.runLater(() -> {
+                if (scene != null) {
+                    GameImage.loadGameImages(savegameManagerState.getGame());
+                    var bg = GameGuiFactory.ALL.get(savegameManagerState.getGame()).background();
+                    stack.getChildren().set(0, bg);
+                } else {
+                    stack.getChildren().set(0, new Pane());
+                }
+            });
         });
 
-        Platform.runLater(() -> {
-            // Disable focus on startup
-            layout.requestFocus();
-
-            fillLayout();
-            setupDragAndDrop();
-
-            FadeTransition ft = new FadeTransition(Duration.millis(1500), stack);
-            ft.setFromValue(0.0);
-            ft.setToValue(1.0);
-            ft.play();
-        });
-    }
-
-    public Region getContent() {
         return stack;
     }
 }

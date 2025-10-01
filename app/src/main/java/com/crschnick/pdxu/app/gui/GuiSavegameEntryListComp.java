@@ -4,6 +4,7 @@ import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.gui.dialog.GuiImporter;
+import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.util.Hyperlinks;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -14,25 +15,22 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import lombok.AllArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class GuiSavegameEntryListComp extends SimpleComp {
+@AllArgsConstructor
+public class GuiSavegameEntryListComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
-    private static Region createNoCampaignNode() {
+    private final SavegameManagerState<T, I> savegameManagerState;
+
+    private Region createNoCampaignNode() {
         VBox v = new VBox();
         Label text = new Label();
         v.getChildren().add(text);
-        SavegameManagerState.get().onGameChange(n -> {
-            if (n != null) {
-                Platform.runLater(() -> {
-                    text.setText(AppI18n.get("noSavegames", n.getTranslatedFullName()) + "\n");
-                });
-            }
-        });
 
         Button importB = new Button(AppI18n.get("importSavegames"));
         importB.setOnAction(e -> {
-            GuiImporter.createImporterDialog();
+            GuiImporter.createImporterDialog(savegameManagerState.getGame());
             e.consume();
         });
         importB.setGraphic(new FontIcon());
@@ -61,8 +59,8 @@ public class GuiSavegameEntryListComp extends SimpleComp {
     @Override
     protected Region createSimple() {
         Region grid = new GuiListViewComp<>(
-                SavegameManagerState.get().getShownEntries(),
-                GuiSavegameEntryComp::new,
+                savegameManagerState.getShownEntries(),
+                savegameEntry -> new GuiSavegameEntryComp<>(savegameEntry, savegameManagerState),
                 true)
                 .createRegion();
         grid.setOpacity(0.9);
@@ -75,9 +73,9 @@ public class GuiSavegameEntryListComp extends SimpleComp {
         grid.prefWidthProperty().bind(pane.widthProperty());
         grid.prefHeightProperty().bind(pane.heightProperty());
 
-        grid.setVisible(!SavegameManagerState.get().isStorageEmpty());
-        ncn.setVisible(SavegameManagerState.get().isStorageEmpty());
-        SavegameManagerState.get().storageEmptyProperty().addListener((c, o, n) -> {
+        grid.setVisible(!savegameManagerState.isStorageEmpty());
+        ncn.setVisible(savegameManagerState.isStorageEmpty());
+        savegameManagerState.storageEmptyProperty().addListener((c, o, n) -> {
             grid.setVisible(!n);
             ncn.setVisible(n);
         });

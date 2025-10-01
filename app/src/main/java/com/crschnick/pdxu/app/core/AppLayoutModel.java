@@ -1,10 +1,10 @@
 package com.crschnick.pdxu.app.core;
 
 import com.crschnick.pdxu.app.comp.Comp;
-import com.crschnick.pdxu.app.gui.GuiLayout;
+import com.crschnick.pdxu.app.gui.GuiLayoutComp;
 import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
 import com.crschnick.pdxu.app.installation.Game;
-import com.crschnick.pdxu.app.page.*;
+import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import com.crschnick.pdxu.app.platform.PlatformThread;
@@ -21,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.jackson.Jacksonized;
 
@@ -46,8 +47,25 @@ public class AppLayoutModel {
     public AppLayoutModel(SavedState savedState) {
         this.savedState = savedState;
         this.entries = createEntryList();
-        this.selected = new SimpleObjectProperty<>(entries.getFirst());
+        this.selected = new SimpleObjectProperty<>(getInitialEntry());
         this.queueEntries = FXCollections.observableArrayList();
+    }
+
+    private Entry getInitialEntry() {
+        var activeGame = AppCache.getNonNull("activeGame", String.class, () -> null);
+        if (activeGame != null) {
+            var foundGame = GameInstallation.ALL.keySet().stream().filter(game -> game.getId().equals(activeGame)).findFirst();
+            // Check if stored active game is no longer valid
+            if (foundGame.isPresent()) {
+                return entries.stream().filter(entry -> entry instanceof GameEntry ge && ge.game == foundGame.get()).findFirst().orElseThrow();
+            } else {
+                AppCache.clear("activeGame");
+                return entries.getFirst();
+            }
+        }
+
+        // If no active game is set, select the first one available (if existent)
+        return entries.getFirst();
     }
 
     public static AppLayoutModel get() {
@@ -93,26 +111,12 @@ public class AppLayoutModel {
     }
 
     private List<Entry> createEntryList() {
-        var l = new ArrayList<>(List.of(
-                new Entry(
-                        AppI18n.observable("settings"),
-                        new LabelGraphic.NodeGraphic(() -> {
-                            var pane = GameGuiFactory.get(Game.EU4).createIcon();
-                            pane.setMaxWidth(20);
-                            pane.setMaxHeight(20);
-                            pane.setPrefWidth(20);
-                            pane.setPrefHeight(20);
-                            pane.setMinWidth(20);
-                            pane.setMinHeight(20);
-                            return pane;
-                        }),
-                        Comp.of(() -> {
-                            var gl = new GuiLayout();
-                            gl.setup();
-                            gl.finishSetup();
-                            return gl.getContent();
-                        }),
-                        null),
+        var l = new ArrayList<Entry>();
+        GameInstallation.ALL.forEach((game, gameInstallation) -> {
+            l.add(new GameEntry(game));
+        });
+
+        l.addAll(List.of(
                 new Entry(
                         AppI18n.observable("settings"),
                         new LabelGraphic.IconGraphic("mdsmz-miscellaneous_services"),
@@ -145,7 +149,53 @@ public class AppLayoutModel {
         double browserConnectionsWidth;
     }
 
-    public record Entry(ObservableValue<String> name, LabelGraphic icon, Comp<?> comp, Runnable action) {}
+    @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+    @NonFinal
+    @EqualsAndHashCode
+    public class Entry {
+        ObservableValue<String> name;
+        LabelGraphic icon;
+        Comp<?> comp;
+        Runnable action;
+
+        public ObservableValue<String> name() {
+            return name;
+        }
+
+        public LabelGraphic icon() {
+            return icon;
+        }
+
+        public Comp<?> comp() {
+            return comp;
+        }
+
+        public Runnable action() {
+            return action;
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode(callSuper = true)
+    public class GameEntry extends Entry{
+
+        Game game;
+
+        private GameEntry(Game game) {
+            super(AppI18n.observable(game.getId()), new LabelGraphic.NodeGraphic(() -> {
+                var pane = GameGuiFactory.get(game).createIcon();
+                pane.setMaxWidth(20);
+                pane.setMaxHeight(20);
+                pane.setPrefWidth(20);
+                pane.setPrefHeight(20);
+                pane.setMinWidth(20);
+                pane.setMinHeight(20);
+                return pane;
+            }), new GuiLayoutComp(new SavegameManagerState<>(game)), null);
+            this.game = game;
+        }
+    }
 
     @Value
     @NonFinal

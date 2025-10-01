@@ -75,7 +75,6 @@ public class AppBaseMode extends AppOperationMode {
         GameCacheManager.init();
         GameInstallation.init();
         SavegameStorage.init();
-        SavegameManagerState.init();
         AppFileWatcher.init();
         SavegameWatcher.init();
         GameAppManager.init();
@@ -124,7 +123,6 @@ public class AppBaseMode extends AppOperationMode {
     @Override
     public void finalTeardown() {
         AppFileWatcher.reset();
-        SavegameManagerState.reset();
         GameAppManager.reset();
         SavegameWatcher.reset();
         SavegameStorage.reset();

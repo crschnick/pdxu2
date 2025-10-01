@@ -223,7 +223,7 @@ public abstract class FileImportTarget {
                 return false;
             }
 
-            return SavegameStorage.get(SavegameManagerState.get().current()).hasImportedSourceFile(cs);
+            return savegameStorage.hasImportedSourceFile(cs);
         }
 
         @Override

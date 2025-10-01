@@ -39,11 +39,14 @@ import static com.crschnick.pdxu.app.gui.GuiStyle.*;
 public class GuiSavegameCampaignComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
     private final SavegameCampaign<T, I> campaign;
+    private final Runnable onSelect;
 
     @Override
     protected Region createSimple() {
         HBox btn = new HBox();
-        btn.setOnMouseClicked((m) -> SavegameManagerState.<T, I>get().selectCollectionAsync(campaign));
+        btn.setOnMouseClicked((m) -> {
+            onSelect.run();
+        });
         btn.setAlignment(Pos.CENTER);
         btn.getStyleClass().add(CLASS_CAMPAIGN_LIST_ENTRY);
 

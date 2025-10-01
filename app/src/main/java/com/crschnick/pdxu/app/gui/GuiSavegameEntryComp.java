@@ -49,9 +49,10 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
 
     private static Image FILE_ICON;
 
-    private  final SavegameEntry<T, I> e;
+    private final SavegameEntry<T, I> e;
+    private final SavegameManagerState<T, I> savegameManagerState;
 
-    private static <T, I extends SavegameInfo<T>> Region setupTopBar(SavegameEntry<T, I> e) {
+    private Region setupTopBar(SavegameEntry<T, I> e) {
         BorderPane topBar = new BorderPane();
         topBar.getStyleClass().add(CLASS_ENTRY_BAR);
         SavegameContext.withSavegameInfoContextAsync(e, ctx -> {
@@ -104,7 +105,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         return topBar;
     }
 
-    private static <T, I extends SavegameInfo<T>> void setupDragAndDrop(Region r, SavegameEntry<T, I> e) {
+    private void setupDragAndDrop(Region r, SavegameEntry<T, I> e) {
         r.setOnDragDetected(me -> {
             if (FILE_ICON == null) {
                 var url = AppResources.getResourceURL(AppResources.MAIN_MODULE, "img/graphics/file_icon.png");
@@ -123,7 +124,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         });
     }
 
-    private static <T, I extends SavegameInfo<T>> HBox createButtonBar(SavegameEntry<T, I> e) {
+    private HBox createButtonBar(SavegameEntry<T, I> e) {
         HBox staticButtons = new HBox();
         staticButtons.setAlignment(Pos.CENTER);
         staticButtons.getStyleClass().add(CLASS_BUTTON_BAR);
@@ -132,7 +133,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             export.setGraphic(new FontIcon());
             export.setOnMouseClicked((m) -> {
                 SavegameActions.exportSavegame(e);
-                SavegameManagerState.<T, I>get().selectEntry(null);
+                savegameManagerState.selectEntry(null);
             });
             export.getStyleClass().add(CLASS_EXPORT);
             export.setAccessibleText("Export");
@@ -295,7 +296,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         return buttonBar;
     }
 
-    private static JFXMasonryPane createEmptyContainer() {
+    private JFXMasonryPane createEmptyContainer() {
         JFXMasonryPane container = new JFXMasonryPane();
         container.getStyleClass().add(CLASS_CAMPAIGN_ENTRY_NODE_CONTAINER);
         container.setLayoutMode(JFXMasonryPane.LayoutMode.MASONRY);
@@ -310,7 +311,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         return container;
     }
 
-    private static <T, I extends SavegameInfo<T>> Node createSavegameInfoNode(SavegameEntry<T, I> entry) {
+    private Node createSavegameInfoNode(SavegameEntry<T, I> entry) {
         StackPane stack = new StackPane();
 
         JFXSpinner loading = new JFXSpinner();
@@ -372,7 +373,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             @Override
             public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene n) {
                 if (n != null) {
-                    SavegameManagerState.<T, I>get().loadEntryAsync(entry);
+                    savegameManagerState.loadEntryAsync(entry);
                     stack.sceneProperty().removeListener(this);
                 }
             }
@@ -387,7 +388,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         entryNode.setAlignment(Pos.CENTER);
         entryNode.setFillWidth(true);
         entryNode.getStyleClass().add(CLASS_ENTRY);
-        entryNode.setOnMouseClicked(event -> SavegameManagerState.<T, I>get().selectEntry(e));
+        entryNode.setOnMouseClicked(event -> savegameManagerState.selectEntry(e));
         entryNode.accessibleTextProperty().bind(e.nameProperty());
 
         setupDragAndDrop(entryNode, e);

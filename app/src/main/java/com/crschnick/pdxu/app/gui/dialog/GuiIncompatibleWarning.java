@@ -24,7 +24,7 @@ public class GuiIncompatibleWarning {
     public static boolean showIncompatibleWarning(GameInstallation installation, SavegameEntry<?, ?> entry) {
         var info = SavegameContext.getContext(entry).getInfo();
         StringBuilder builder = new StringBuilder();
-        if (SavegameCompatibility.determineForVersion(info.getData().getVersion()) == SavegameCompatibility.Compatbility.INCOMPATIBLE) {
+        if (SavegameCompatibility.determineForVersion(installation.getDist().getGame(), info.getData().getVersion()) == SavegameCompatibility.Compatbility.INCOMPATIBLE) {
             builder.append("Incompatible versions:\n")
                     .append("- Game version: ")
                     .append(installation.getVersion().toString()).append("\n")

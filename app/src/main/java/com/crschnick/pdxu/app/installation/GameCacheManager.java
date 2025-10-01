@@ -39,8 +39,6 @@ public class GameCacheManager {
 
     @SuppressWarnings("unchecked")
     public <T extends Cache> T get(Class<T> clazz) {
-        var sc = SavegameManagerState.get().globalSelectedCollectionProperty().get();
-
         try {
             if (caches.containsKey(clazz)) {
                 return (T) caches.get(clazz);

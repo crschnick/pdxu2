@@ -18,21 +18,27 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.List;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.*;
 
-public class GuiStatusBarComp extends SimpleComp {
+@RequiredArgsConstructor
+public class GuiStatusBarComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
-    private static StatusBar bar;
-
-    public static StatusBar getStatusBar() {
-        return bar;
+    private enum Status {
+        NONE,
+        SELECTED,
+        RUNNING
     }
 
-    private static Region createRunningBar(Game g) {
+    private final SavegameManagerState<T, I> savegameManagerState;
+    private Status status;
+
+    private Region createRunningBar(Game g) {
         BorderPane barPane = new BorderPane();
         barPane.getStyleClass().add(CLASS_STATUS_BAR);
         barPane.getStyleClass().add(CLASS_STATUS_RUNNING);
@@ -99,7 +105,7 @@ public class GuiStatusBarComp extends SimpleComp {
         return barPane;
     }
 
-    private static <T, I extends SavegameInfo<T>> Region createEntryStatusBar(SavegameEntry<T, I> e) {
+    private Region createEntryStatusBar(SavegameEntry<T, I> e) {
         BorderPane barPane = new BorderPane();
         barPane.getStyleClass().add(CLASS_STATUS_BAR);
 
@@ -120,7 +126,7 @@ public class GuiStatusBarComp extends SimpleComp {
             BorderPane.setAlignment(text, Pos.CENTER);
 
             var externalData = SavegameCompatibility.determineForModsAndDLCs(e);
-            var version = SavegameCompatibility.determineForVersion(ctx.getInfo().getData().getVersion());
+            var version = SavegameCompatibility.determineForVersion(ctx.getGame(), ctx.getInfo().getData().getVersion());
             if (externalData == SavegameCompatibility.Compatbility.INCOMPATIBLE || version == SavegameCompatibility.Compatbility.INCOMPATIBLE) {
                 barPane.getStyleClass().add(CLASS_STATUS_INCOMPATIBLE);
             } else if (externalData == SavegameCompatibility.Compatbility.UNKNOWN || version == SavegameCompatibility.Compatbility.UNKNOWN) {
@@ -133,10 +139,10 @@ public class GuiStatusBarComp extends SimpleComp {
                 export.getStyleClass().add(CLASS_EXPORT);
                 export.setOnAction(event -> {
                     SavegameActions.exportSavegame(e);
-                    SavegameManagerState.<T, I>get().selectEntry(null);
+                    savegameManagerState.selectEntry(null);
 
                     event.consume();
-                    getStatusBar().hide();
+                    hide(barPane);
                 });
                 buttons.getChildren().add(export);
             }
@@ -148,10 +154,10 @@ public class GuiStatusBarComp extends SimpleComp {
                 launch.getStyleClass().add("launcher-button");
                 launch.setOnAction(event -> {
                     GameDistLauncher.startLauncherWithContinueGame(e);
-                    SavegameManagerState.<T, I>get().selectEntry(null);
+                    savegameManagerState.selectEntry(null);
 
                     event.consume();
-                    getStatusBar().hide();
+                    hide(barPane);
                 });
                 buttons.getChildren().add(launch);
             }
@@ -167,9 +173,9 @@ public class GuiStatusBarComp extends SimpleComp {
                     debugItem.getStyleClass().add("continue-button");
                     debugItem.setOnAction(event -> {
                         GameDistLauncher.continueSavegame(e, true);
-                        SavegameManagerState.<T, I>get().selectEntry(null);
+                        savegameManagerState.selectEntry(null);
                         event.consume();
-                        getStatusBar().hide();
+                        hide(barPane);
                     });
                     splitButton.getItems().add(debugItem);
                     launch = splitButton;
@@ -182,9 +188,9 @@ public class GuiStatusBarComp extends SimpleComp {
                 launch.getStyleClass().add("continue-button");
                 launch.setOnAction(event -> {
                     GameDistLauncher.continueSavegame(e, false);
-                    SavegameManagerState.<T, I>get().selectEntry(null);
+                    savegameManagerState.selectEntry(null);
                     event.consume();
-                    getStatusBar().hide();
+                    hide(barPane);
                 });
                 buttons.getChildren().add(launch);
             }
@@ -205,102 +211,86 @@ public class GuiStatusBarComp extends SimpleComp {
         return barPane;
     }
 
+    private void show(Pane pane, Region bar) {
+        Platform.runLater(() -> {
+            pane.getChildren().setAll(bar);
+            bar.prefWidthProperty().bind(pane.widthProperty());
+        });
+    }
+
+    private void hide(Pane pane) {
+        Platform.runLater(() -> {
+            pane.getChildren().clear();
+        });
+    }
+
+    private void select(Pane pane, SavegameEntry<T, I> e) {
+        Region bar = createEntryStatusBar(e);
+        Platform.runLater(() -> {
+            if (status == Status.RUNNING) {
+                return;
+            }
+
+            status = Status.SELECTED;
+            show(pane, bar);
+        });
+    }
+
+    private void unselect(Pane pane) {
+        Platform.runLater(() -> {
+            if (status == Status.RUNNING) {
+                return;
+            }
+
+            hide(pane);
+            status = Status.NONE;
+        });
+    }
+
+    private void setRunning(Pane pane, Game g) {
+        // Create node before Platform thread to avoid async issues!
+        Region bar = createRunningBar(g);
+        Platform.runLater(() -> {
+            show(pane, bar);
+            status = Status.RUNNING;
+        });
+    }
+
+    private void stopRunning(Pane pane) {
+        hide(pane);
+        status = Status.NONE;
+        var sel = savegameManagerState.globalSelectedEntryProperty().get();
+        if (sel != null) {
+            select(pane, sel);
+        }
+    }
+
+
     @Override
     protected Region createSimple() {
         Pane pane = new Pane();
-        bar = new StatusBar(pane);
-        SavegameManagerState.get().globalSelectedEntryProperty().addListener((c, o, n) -> {
+        savegameManagerState.globalSelectedEntryProperty().addListener((c, o, n) -> {
             Platform.runLater(() -> {
                 if (n != null) {
-                    bar.select(n);
+                    select(pane, n);
                 } else {
-                    bar.unselect();
+                    unselect(pane);
                 }
             });
         });
 
         GameAppManager.getInstance().activeGameProperty().addListener((c, o, n) -> {
             if (n != null) {
-                bar.setRunning(n.getGame());
+                setRunning(pane, n.getGame());
             } else {
-                bar.stopRunning();
+                stopRunning(pane);
             }
         });
         var g = GameAppManager.getInstance().activeGameProperty().get();
         if (g != null) {
-            bar.setRunning(g.getGame());
+            setRunning(pane, g.getGame());
         }
 
         return pane;
-    }
-
-    public static class StatusBar {
-        private final Pane pane;
-        private Status status;
-
-        public StatusBar(Pane pane) {
-            this.status = Status.NONE;
-            this.pane = pane;
-        }
-
-        private void show(Region bar) {
-            Platform.runLater(() -> {
-                pane.getChildren().setAll(bar);
-                bar.prefWidthProperty().bind(pane.widthProperty());
-            });
-        }
-
-        private void hide() {
-            Platform.runLater(() -> {
-                pane.getChildren().clear();
-            });
-        }
-
-        private void setRunning(Game g) {
-            // Create node before Platform thread to avoid async issues!
-            Region bar = createRunningBar(g);
-            Platform.runLater(() -> {
-                show(bar);
-                status = Status.RUNNING;
-            });
-        }
-
-        public void stopRunning() {
-            hide();
-            status = Status.NONE;
-            var sel = SavegameManagerState.get().globalSelectedEntryProperty().get();
-            if (sel != null) {
-                select(sel);
-            }
-        }
-
-        private <T, I extends SavegameInfo<T>> void select(SavegameEntry<T, I> e) {
-            Region bar = createEntryStatusBar(e);
-            Platform.runLater(() -> {
-                if (status == Status.RUNNING) {
-                    return;
-                }
-
-                status = Status.SELECTED;
-                show(bar);
-            });
-        }
-
-        private void unselect() {
-            Platform.runLater(() -> {
-                if (status == Status.RUNNING) {
-                    return;
-                }
-
-                hide();
-                status = Status.NONE;
-            });
-        }
-
-        private enum Status {
-            NONE,
-            SELECTED,
-            RUNNING
-        }
     }
 }

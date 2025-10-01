@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.comp.base.ModalButton;
 import com.crschnick.pdxu.app.comp.base.ModalOverlay;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
+import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.savegame.FileImportTarget;
 import com.crschnick.pdxu.app.savegame.FileImporter;
 import com.crschnick.pdxu.io.savegame.SavegameParseResult;
@@ -79,8 +80,8 @@ public class GuiImporter {
         return new HBox(cb, new Label("  "), name);
     }
 
-    public static void createImporterDialog() {
-        GuiImporterState state = new GuiImporterState();
+    public static void createImporterDialog(Game game) {
+        GuiImporterState state = new GuiImporterState(game);
 
         var modal = ModalOverlay.of("importSavegames", Comp.of(() -> createContent(state)));
         modal.addButton(new ModalButton("delete", () -> {

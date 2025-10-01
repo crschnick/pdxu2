@@ -13,6 +13,7 @@ import com.crschnick.pdxu.app.savegame.SavegameStorage;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.SetChangeListener;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +25,8 @@ import java.util.function.Consumer;
 
 public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 
-    private static final SavegameManagerState<?, ?> INSTANCE = new SavegameManagerState<>();
-    private final SimpleObjectProperty<Game> current = new SimpleObjectProperty<>();
+    @Getter
+    private final Game game;
     private final SimpleObjectProperty<SavegameCampaign<T, I>> globalSelectedCollection =
             new SimpleObjectProperty<>();
     private final SimpleObjectProperty<SavegameEntry<T, I>> globalSelectedEntry =
@@ -37,39 +38,9 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
             FXCollections.observableList(new CopyOnWriteArrayList<>()));
     private final BooleanProperty storageEmpty = new SimpleBooleanProperty();
 
-    private SavegameManagerState() {
+    public SavegameManagerState(Game game) {
+        this.game = game;
         addShownContentChangeListeners();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T, I extends SavegameInfo<T>> SavegameManagerState<T, I> get() {
-        return (SavegameManagerState<T, I>) INSTANCE;
-    }
-
-    public static void init() {
-        var activeGame = AppCache.getNonNull("activeGame", String.class, () -> null);
-        if (activeGame != null) {
-            var foundGame = GameInstallation.ALL.keySet().stream().filter(game -> game.getId().equals(activeGame)).findFirst();
-            // Check if stored active game is no longer valid
-            if (foundGame.isPresent()) {
-                INSTANCE.selectGame(foundGame.get());
-            } else {
-                AppCache.clear("activeGame");
-            }
-            return;
-        }
-
-        // If no active game is set, select the first one available (if existent)
-        GameInstallation.ALL.entrySet().stream().findFirst().ifPresent(e -> {
-            INSTANCE.selectGame(e.getKey());
-            AppCache.update("activeGame", e.getKey().getId());
-        });
-    }
-
-    public static void reset() {
-        if (INSTANCE.current() != null) {
-            INSTANCE.selectGame(null);
-        }
     }
 
     private void addShownContentChangeListeners() {
@@ -77,15 +48,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
             updateShownCollections();
             updateShownEntries();
         };
-        current.addListener((c, o, n) -> {
-            if (o != null) {
-                SavegameStorage.get(o).getCollections().removeListener(colListener);
-            }
-            if (n != null) {
-                SavegameStorage.get(n).getCollections().addListener(colListener);
-            }
-        });
-
+        SavegameStorage.get(game).getCollections().addListener(colListener);
 
         var cl = (SetChangeListener<? super SavegameEntry<T, I>>) ch -> updateShownEntries();
         globalSelectedCollection.addListener((c, o, n) -> {
@@ -98,13 +61,6 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
                 n.getSavegames().addListener(cl);
             }
         });
-    }
-
-    public void onGameChange(Consumer<Game> change) {
-        currentGameProperty().addListener((c, o, n) -> {
-            change.accept(n);
-        });
-        change.accept(current());
     }
 
     public ReadOnlyObjectProperty<SavegameCampaign<T, I>> globalSelectedCollectionProperty() {
@@ -148,8 +104,8 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
     }
 
     private void updateShownEntries() {
-        // No integration or campaign selected means no entries are shown
-        if (current() == null || globalSelectedCollection.get() == null) {
+        // No campaign selected means no entries are shown
+        if (globalSelectedCollection.get() == null) {
             shownEntries.clear();
             return;
         }
@@ -190,9 +146,9 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
                 }
 
                 try {
-                    var mod = Files.getLastModifiedTime(SavegameStorage.get(SavegameManagerState.this.current()).getSavegameFile(o1))
+                    var mod = Files.getLastModifiedTime(SavegameStorage.get(game).getSavegameFile(o1))
                                    .compareTo(
-                                           Files.getLastModifiedTime(SavegameStorage.get(SavegameManagerState.this.current()).getSavegameFile(o2)));
+                                           Files.getLastModifiedTime(SavegameStorage.get(game).getSavegameFile(o2)));
                     return mod;
                 } catch (IOException e) {
                     ErrorEventFactory.fromThrowable(e).handle();
@@ -211,16 +167,11 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
     }
 
     private void updateShownCollections() {
-        if (current() == null) {
-            shownCollections.clear();
-            return;
-        }
-
         // Work on copy to reduce list updates
         var newCollections = FXCollections.observableArrayList(shownCollections.get());
 
         newCollections.removeIf(col -> {
-            var remove = !SavegameStorage.get(current()).getCollections().contains(col);
+            var remove = !SavegameStorage.get(game).getCollections().contains(col);
             if (remove) {
                 if (globalSelectedCollection.get() != null && globalSelectedCollection.get().equals(col)) {
                     globalSelectedCollection.set(null);
@@ -229,7 +180,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
             return remove;
         });
 
-        SavegameStorage.<T, I>get(current()).getCollections().forEach(col -> {
+        SavegameStorage.<T, I>get(game).getCollections().forEach(col -> {
             if (!newCollections.contains(col) && filter.shouldShow(col)) {
                 newCollections.add(col);
                 return;
@@ -246,12 +197,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
     }
 
     private void updateStorageEmptyProperty() {
-        if (current() == null) {
-            storageEmpty.set(false);
-            return;
-        }
-
-        int newSize = SavegameStorage.get(current()).getCollections().size();
+        int newSize = SavegameStorage.get(game).getCollections().size();
         storageEmpty.set(newSize == 0);
     }
 
@@ -263,42 +209,10 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
         return shownCollections;
     }
 
-    public Game current() {
-        return current.get();
-    }
-
-    public SimpleObjectProperty<Game> currentGameProperty() {
-        return current;
-    }
-
     private void unselectCollectionAndEntry() {
-        if (current.isNotNull().get()) {
-            globalSelectedEntryPropertyInternal().set(null);
-            globalSelectedCampaignPropertyInternal().set(null);
-        }
+        globalSelectedEntryPropertyInternal().set(null);
+        globalSelectedCampaignPropertyInternal().set(null);
         updateShownEntries();
-    }
-
-    private void selectGame(Game newGame) {
-        if (current.get() == newGame) {
-            return;
-        }
-
-        unselectCollectionAndEntry();
-        current.set(newGame);
-        TrackEvent.debug("Selected game " + (newGame != null ? newGame.getInstallationName() : "null"));
-        updateShownCollections();
-    }
-
-    public void selectGameAsync(Game newGame) {
-        if (current.get() == newGame) {
-            return;
-        }
-
-        TaskExecutor.getInstance().submitTask(() -> {
-            GameCacheManager.getInstance().onSelectedGameChange();
-            selectGame(newGame);
-        }, false);
     }
 
     public void selectCollectionAsync(SavegameCampaign<T, I> c) {
@@ -337,9 +251,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
         }
 
         if (e == null) {
-            if (current.isNotNull().get()) {
-                globalSelectedEntryPropertyInternal().set(null);
-            }
+            globalSelectedEntryPropertyInternal().set(null);
         } else {
             SavegameContext.withSavegameContext(e, ctx -> {
                 if (!ctx.getCollection().equals(globalSelectedCollection.get())) {

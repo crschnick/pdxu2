@@ -12,14 +12,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
+import lombok.AllArgsConstructor;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.CLASS_CAMPAIGN_LIST;
 
+@AllArgsConstructor
 public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends SimpleComp {
+
+    private final SavegameManagerState<T,I> savegameManagerState;
 
     private Comp<?> createImportButton() {
         var b = new IconButtonComp("mdi2l-layers", () -> {
-            GuiImporter.createImporterDialog();
+            GuiImporter.createImporterDialog(savegameManagerState.getGame());
         });
         b.styleClass("import-button");
         b.apply(struc -> {
@@ -32,7 +36,7 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
         var filterProperty = new SimpleStringProperty();
         filterProperty.addListener((observable, oldValue, newValue) -> {
             ThreadHelper.runAsync(() -> {
-                SavegameManagerState.get().getFilter().filterProperty().set(newValue);
+                savegameManagerState.getFilter().filterProperty().set(newValue);
             });
         });
         var filter = new GuiFilterComp(filterProperty).createRegion();
@@ -54,8 +58,8 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
     @Override
     protected Region createSimple() {
         Region list = new GuiListViewComp<>(
-                SavegameManagerState.<T, I>get().getShownCollections(),
-                c -> new GuiSavegameCampaignComp<>(c),
+                savegameManagerState.getShownCollections(),
+                c -> new GuiSavegameCampaignComp<>(c, () -> savegameManagerState.selectCollectionAsync(c)),
                 false)
                 .createRegion();
         list.getStyleClass().add(CLASS_CAMPAIGN_LIST);
