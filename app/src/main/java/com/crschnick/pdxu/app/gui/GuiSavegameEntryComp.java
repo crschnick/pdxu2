@@ -16,7 +16,6 @@ import com.crschnick.pdxu.app.savegame.SavegameEntry;
 import com.crschnick.pdxu.app.util.ConverterSupport;
 import com.crschnick.pdxu.app.util.OsType;
 import com.crschnick.pdxu.app.util.RakalyHelper;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
@@ -24,6 +23,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -31,6 +31,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -78,7 +79,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             topBar.setLeft(tagBar);
         }
         {
-            JFXTextField name = new JFXTextField();
+            var name = new TextField();
             name.setMinWidth(50);
             name.setPrefWidth(50);
             name.getStyleClass().add(CLASS_TEXT_FIELD);
@@ -86,6 +87,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             name.setText(e.getName().equals(dateString) ? "" : e.getName());
             name.setAccessibleText("Custom savegame name");
             topBar.setCenter(name);
+            BorderPane.setMargin(name, new Insets(3, 10, 3, 10));
 
             var nameChange = new ChangeListener<String>() {
                 @Override
@@ -121,13 +123,12 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         });
     }
 
-    @SuppressWarnings("unchecked")
     private static <T, I extends SavegameInfo<T>> HBox createButtonBar(SavegameEntry<T, I> e) {
         HBox staticButtons = new HBox();
         staticButtons.setAlignment(Pos.CENTER);
         staticButtons.getStyleClass().add(CLASS_BUTTON_BAR);
         {
-            Button export = new JFXButton(null, new FontIcon());
+            Button export = new Button(null, new FontIcon());
             export.setGraphic(new FontIcon());
             export.setOnMouseClicked((m) -> {
                 SavegameActions.exportSavegame(e);
@@ -139,7 +140,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             staticButtons.getChildren().add(export);
         }
         {
-            Button copy = new JFXButton(null, new FontIcon());
+            Button copy = new Button(null, new FontIcon());
             copy.setGraphic(new FontIcon());
             copy.setOnMouseClicked((m) -> {
                 SavegameActions.copySavegame(e);
@@ -150,20 +151,19 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             staticButtons.getChildren().add(copy);
         }
         {
-            Button notes = new JFXButton(null, new FontIcon());
-            notes.setGraphic(new FontIcon());
+            Button notes = new Button(null, new FontIcon());
+            notes.setGraphic(new FontIcon("mdi2n-note-text-outline"));
             notes.setOnMouseClicked((m) -> {
                 GuiSavegameNotes.showSavegameNotesDialog(e.getNotes());
             });
-            notes.getStyleClass().add("notes-button");
             notes.setAccessibleText("Notes");
             GuiTooltips.install(notes, AppI18n.get("EDIT_SAVEGAME_NOTES"));
             staticButtons.getChildren().add(notes);
         }
 
         {
-            Button del = new JFXButton(null, new FontIcon());
-            del.setGraphic(new FontIcon());
+            Button del = new Button(null, new FontIcon());
+            del.setGraphic(new FontIcon("mdi2t-trash-can-outline"));
             del.setOnMouseClicked((m) -> {
                 if (AppSideWindow.showBlockingAlert(alert -> {
                     alert.setAlertType(Alert.AlertType.CONFIRMATION);
@@ -174,14 +174,12 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 }
             });
             del.setAccessibleText("Delete");
-            del.getStyleClass().add(CLASS_DELETE);
             GuiTooltips.install(del, AppI18n.get("DELETE_SAVEGAME"));
             staticButtons.getChildren().add(del);
         }
 
-        Button open = new JFXButton(null, new FontIcon());
-        open.setGraphic(new FontIcon());
-        open.getStyleClass().add("open-button");
+        Button open = new Button(null, new FontIcon());
+        open.setGraphic(new FontIcon("mdi2c-content-save-outline"));
         GuiTooltips.install(open, AppI18n.get("OPEN_SAVEGAME"));
         staticButtons.getChildren().add(open);
         open.setOnMouseClicked((m) -> {
@@ -195,7 +193,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
 
 
         {
-            Button melt = new JFXButton(null, new FontIcon());
+            Button melt = new Button(null, new FontIcon());
             melt.setGraphic(new FontIcon());
             melt.setOnMouseClicked((m) -> {
                 SavegameActions.meltSavegame(e);
@@ -218,7 +216,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             }
 
             Platform.runLater(() -> {
-                Button branch = new JFXButton(null, new FontIcon());
+                Button branch = new Button(null, new FontIcon());
                 branch.setGraphic(new FontIcon());
                 branch.setOnMouseClicked((m) -> {
                     SavegameActions.branch(e);
@@ -235,7 +233,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 ConverterSupport.ALL.forEach(converterSupport -> {
                     if (converterSupport.getFromGame().equals(ctx.getGame()) && GameInstallation.ALL.get(converterSupport.getToGame()) != null) {
                         Platform.runLater(() -> {
-                            Button convert = new JFXButton(null, new FontIcon());
+                            Button convert = new Button(null, new FontIcon());
                             convert.setGraphic(new FontIcon());
                             convert.setOnMouseClicked((m) -> {
                                 converterSupport.convert(e);
@@ -250,7 +248,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             });
         }
 
-        Button edit = new JFXButton(null, new FontIcon());
+        Button edit = new Button(null, new FontIcon());
         edit.setOnMouseClicked((m) -> {
             SavegameActions.editSavegame(e);
         });
@@ -292,7 +290,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         e.stateProperty().addListener(stateChange);
 
         HBox buttonBar = new HBox(dynamicButtons, staticButtons);
-        buttonBar.setSpacing(40);
+        buttonBar.setSpacing(30);
         buttonBar.setAlignment(Pos.CENTER);
         return buttonBar;
     }

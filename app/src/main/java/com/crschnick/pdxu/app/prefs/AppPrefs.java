@@ -110,12 +110,6 @@ public final class AppPrefs {
             .valueClass(Boolean.class)
             .requiresRestart(false)
             .build());
-    final BooleanProperty confirmDeletion = map(Mapping.builder()
-            .property(new GlobalBooleanProperty(true))
-            .key("confirmDeletion")
-            .valueClass(Boolean.class)
-            .requiresRestart(false)
-            .build());
     final BooleanProperty importOnGameNormalExit = map(Mapping.builder()
             .property(new GlobalBooleanProperty(false))
             .key("importOnGameNormalExit")
@@ -314,6 +308,11 @@ public final class AppPrefs {
             new AboutCategory(),
             new AppearanceCategory(),
             new SystemCategory(),
+            new GamesCategory(),
+            new StorageCategory(),
+            new ImportsCategory(),
+            new IronyCategory(),
+            new ConvertersCategory(),
             new UpdatesCategory(),
             new TroubleshootCategory(),
             new LinksCategory());

@@ -37,17 +37,24 @@
 }
 
 .entry-bar .text-field {
--fx-max-width: 20em;
--fx-font-size: 1.15em;
- -jfx-label-float: true;
+-fx-background-radius: 4;
 -fx-padding: 0.4em 0.4em 0.4em 0.4em;
 -jfx-unfocus-color: transparent;
--fx-background-color: #AAAAAA66;
+-fx-background-color: #1111;
+}
+
+.root:dark .entry-bar .text-field {
+    -fx-background-color: #1113;
 }
 
 .entry-bar .button-bar {
--fx-spacing: 0.5em;
+-fx-spacing: 0.25em;
 -fx-font-size: 1.35em;
+}
+
+.entry-bar .button-bar .button {
+    -fx-background-color: transparent;
+    -fx-padding: 0.17em 0.35em 0.17em 0.35em;
 }
 
 .entry-loading {
@@ -70,7 +77,7 @@
 }
 
 .node-container {
--fx-padding: 0.6em;
+-fx-padding: 0.5em;
 }
 
 .node-container .image-icon {
@@ -78,13 +85,12 @@
 -fx-max-width: 2.5em;
 -fx-min-height: 2.5em;
 -fx-max-height: 2.5em;
--fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .node-container .node {
 -fx-background-radius: 0.1em;
--fx-background-color: #ffffff55;
--fx-padding: 0.35em;
+-fx-background-color: -color-bg-subtle;
+-fx-padding: 0.15em;
 }
 
 .node-container .node-content {

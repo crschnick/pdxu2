@@ -13,15 +13,15 @@
 }
 
 .compatible {
-     -fx-background-color: #00ee0055;
+     -fx-background-color: -color-success-muted;
 }
 
 .unknown-compatible {
-     -fx-background-color: #99990077;
+     -fx-background-color: -color-warning-muted;
 }
 
 .incompatible {
-     -fx-background-color: #ff000055;
+     -fx-background-color: -color-danger-muted;
 }
 
 .alliance {

@@ -6,6 +6,6 @@ apply from: "$rootDir/gradle/gradle_scripts/java.gradle"
 apply from: "$rootDir/gradle/gradle_scripts/lombok.gradle"
 
 dependencies {
-    compileOnly group: 'org.graalvm.polyglot', name: 'polyglot', version: '25.0.0'
-    compileOnly group: 'org.graalvm.js', name: 'js-community', version: '25.0.0'
+    compileOnly 'org.graalvm.polyglot:polyglot:25.0.0'
+    compileOnly 'org.graalvm.js:js-community:25.0.0'
 }

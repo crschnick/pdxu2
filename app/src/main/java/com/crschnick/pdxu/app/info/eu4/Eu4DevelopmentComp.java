@@ -47,7 +47,6 @@ public class Eu4DevelopmentComp extends SavegameInfoComp {
         var stack = new StackPane(label);
         stack.setAlignment(Pos.CENTER);
         stack.setMinWidth(label.getPrefWidth());
-        stack.getStyleClass().add("number");
         GuiTooltips.install(stack, AppI18n.get("AUTONOMY_DEV") + " / " + AppI18n.get("TOTAL_DEV"));
         return stack;
     }
