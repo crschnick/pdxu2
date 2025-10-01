@@ -27,6 +27,6 @@ public class Vic3GdpComp extends Vic3ChannelComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("GDP");
+        return AppI18n.get("gdp");
     }
 }

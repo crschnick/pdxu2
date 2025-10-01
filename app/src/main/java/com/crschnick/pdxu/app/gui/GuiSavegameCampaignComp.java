@@ -79,8 +79,8 @@ public class GuiSavegameCampaignComp<T, I extends SavegameInfo<T>> extends Simpl
             var del = new IconButtonComp(new LabelGraphic.IconGraphic("mdi2t-trash-can-outline"), () -> {
                 if (AppSideWindow.showBlockingAlert(alert -> {
                     alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle(AppI18n.get("DELETE_CAMPAIGN_TITLE"));
-                    alert.setHeaderText(AppI18n.get("DELETE_CAMPAIGN_QUESTION"));
+                    alert.setTitle(AppI18n.get("deleteCampaigntitle"));
+                    alert.setHeaderText(AppI18n.get("deleteCampaignquestion"));
                 }).map(t -> t.getButtonData().isDefaultButton()).orElse(false)) {
                     SavegameActions.delete(campaign);
                 }

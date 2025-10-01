@@ -29,6 +29,6 @@ public class StellarisPlanetsComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("PLANETS");
+        return AppI18n.get("planets");
     }
 }

@@ -30,6 +30,6 @@ public class Vic3RadicalComp extends Vic3ChannelComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("RADICALS");
+        return AppI18n.get("radicals");
     }
 }

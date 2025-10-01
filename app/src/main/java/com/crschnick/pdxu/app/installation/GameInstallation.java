@@ -143,12 +143,12 @@ public final class GameInstallation {
         TrackEvent.debug("Initializing " + g.getTranslatedAbbreviation() + " installation ...");
 
         if (getInstallDir().startsWith(FileSystemHelper.getUserDocumentsPath().resolve("Paradox Interactive"))) {
-            throw new InvalidInstallationException("INSTALL_DIR_IS_USER_DIR", g.getInstallationName(), g.getInstallationName());
+            throw new InvalidInstallationException("installDirIsUserDir", g.getInstallationName(), g.getInstallationName());
         }
 
         if (!Files.isRegularFile(dist.getExecutable())) {
             var exec = getInstallDir().relativize(dist.getExecutable());
-            throw new InvalidInstallationException("EXECUTABLE_NOT_FOUND", g.getInstallationName(), exec.toString(), getInstallDir().toString());
+            throw new InvalidInstallationException("executableNotFound", g.getInstallationName(), exec.toString(), getInstallDir().toString());
         }
 
         TrackEvent.debug(g.getTranslatedAbbreviation() + " distribution type: " + this.dist.getName());
@@ -158,7 +158,7 @@ public final class GameInstallation {
             TrackEvent.debug(g.getTranslatedAbbreviation() + " user dir: " + this.userDir);
             if (!Files.exists(this.userDir)) {
                 throw new InvalidInstallationException(
-                        "GAME_DATA_PATH_DOES_NOT_EXIST", g.getTranslatedAbbreviation(), this.userDir.toString());
+                        "gameDataPathDoesNotExist", g.getTranslatedAbbreviation(), this.userDir.toString());
             }
 
             this.version = dist.determineVersion().map(type::getVersion)

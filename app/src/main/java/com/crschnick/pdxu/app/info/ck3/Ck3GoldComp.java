@@ -32,6 +32,6 @@ public class Ck3GoldComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("TREASURY_GOLD") + " / " + AppI18n.get("MONTHLY_INCOME");
+        return AppI18n.get("treasuryGold") + " / " + AppI18n.get("monthlyIncome");
     }
 }

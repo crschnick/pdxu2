@@ -24,7 +24,7 @@ public class StellarisIronmanComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("IRONMAN");
+        return AppI18n.get("ironman");
     }
 
     @Override

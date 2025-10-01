@@ -6,10 +6,9 @@ import com.crschnick.pdxu.app.core.AppI18n;
 public final class InvalidInstallationException extends Exception {
 
     private final String msgId;
-    private final String[] variables;
+    private final Object[] variables;
 
-    @SuppressWarnings("all")
-    public InvalidInstallationException(String msgId, String... vars) {
+    public InvalidInstallationException(String msgId, Object... vars) {
         super(AppI18n.get(msgId, vars));
         this.msgId = msgId;
         this.variables = vars;
@@ -17,7 +16,7 @@ public final class InvalidInstallationException extends Exception {
 
     public InvalidInstallationException(Throwable cause) {
         super(cause);
-        this.msgId = "ERROR_OCCURED";
+        this.msgId = "errorOccurred";
         this.variables = new String[]{cause.getMessage()};
     }
 

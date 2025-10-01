@@ -110,9 +110,9 @@ public final class AppPrefs {
             .valueClass(Boolean.class)
             .requiresRestart(false)
             .build());
-    final BooleanProperty importOnGameNormalExit = map(Mapping.builder()
+    final BooleanProperty importOnNormalGameExit = map(Mapping.builder()
             .property(new GlobalBooleanProperty(false))
-            .key("importOnGameNormalExit")
+            .key("importOnNormalGameExit")
             .valueClass(Boolean.class)
             .requiresRestart(false)
             .build());
@@ -152,9 +152,9 @@ public final class AppPrefs {
             .valueClass(Path.class)
             .requiresRestart(false)
             .build());
-    final BooleanProperty enabledTimedImports = map(Mapping.builder()
+    final BooleanProperty enableTimedImports = map(Mapping.builder()
             .property(new GlobalBooleanProperty(false))
-            .key("enabledTimedImports")
+            .key("enableTimedImports")
             .valueClass(Boolean.class)
             .requiresRestart(false)
             .build());
@@ -221,12 +221,12 @@ public final class AppPrefs {
         return deleteOnImport;
     }
 
-    public ObservableValue<Boolean> importOnGameNormalExit() {
-        return importOnGameNormalExit;
+    public ObservableValue<Boolean> importOnNormalGameExit() {
+        return importOnNormalGameExit;
     }
 
-    public ObservableValue<Boolean> enabledTimedImports() {
-        return enabledTimedImports;
+    public ObservableValue<Boolean> enableTimedImports() {
+        return enableTimedImports;
     }
 
     public ObservableValue<Boolean> playSoundOnBackgroundImport() {

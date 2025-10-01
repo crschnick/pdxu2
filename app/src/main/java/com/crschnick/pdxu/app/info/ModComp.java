@@ -39,15 +39,15 @@ public class ModComp extends SavegameInfoComp {
             return null;
         }
 
-        Label label = new Label(AppI18n.get("MODS") + " (" + this.mods.size() + ")");
+        Label label = new Label(AppI18n.get("mods") + " (" + this.mods.size() + ")");
         label.setGraphic(new FontIcon());
         label.getStyleClass().add(CLASS_CONTENT);
 
-        var tooltip = AppI18n.get("MODS_REQUIRED") + ":\n" +
+        var tooltip = AppI18n.get("modsRequired") + ":\n" +
                 mods.stream()
                         .map(s -> {
                             var m = data.installation().getModForSavegameId(s);
-                            return "- " + (m.isPresent() ? m.get().getName().orElse(s) : s + " (" + AppI18n.get("MISSING") + ")");
+                            return "- " + (m.isPresent() ? m.get().getName().orElse(s) : s + " (" + AppI18n.get("missing") + ")");
                         })
                         .collect(Collectors.joining("\n"));
         GuiTooltips.install(label, tooltip);

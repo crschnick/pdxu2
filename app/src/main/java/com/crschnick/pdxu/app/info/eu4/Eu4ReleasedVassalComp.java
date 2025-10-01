@@ -31,6 +31,6 @@ public class Eu4ReleasedVassalComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("RELEASED_VASSAL");
+        return AppI18n.get("releasedVassal");
     }
 }

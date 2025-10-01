@@ -33,6 +33,6 @@ public class Eu4CustomNationComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("CUSTOM_NATION");
+        return AppI18n.get("customNation");
     }
 }

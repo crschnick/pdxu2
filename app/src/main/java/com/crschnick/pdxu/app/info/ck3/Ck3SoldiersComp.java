@@ -30,6 +30,6 @@ public class Ck3SoldiersComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("TOTAL_SOLDIERS");
+        return AppI18n.get("totalSoldiers");
     }
 }

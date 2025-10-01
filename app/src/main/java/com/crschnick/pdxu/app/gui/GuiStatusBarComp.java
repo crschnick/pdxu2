@@ -37,7 +37,7 @@ public class GuiStatusBarComp extends SimpleComp {
         barPane.getStyleClass().add(CLASS_STATUS_BAR);
         barPane.getStyleClass().add(CLASS_STATUS_RUNNING);
 
-        Label text = new Label(g.getTranslatedFullName() + " (" + AppI18n.get("RUNNING") + ")",
+        Label text = new Label(g.getTranslatedFullName() + " (" + AppI18n.get("running") + ")",
                 GameGuiFactory.get(g).createIcon());
         text.getStyleClass().add(CLASS_TEXT);
         barPane.setLeft(text);
@@ -53,15 +53,15 @@ public class GuiStatusBarComp extends SimpleComp {
             Platform.runLater(() -> {
                 var name = watcher.getLatest()
                         .map(FileImportTarget.StandardImportTarget::getName)
-                        .orElse(AppI18n.get("NONE"));
-                latest.setText(AppI18n.get("LATEST") + ": " + name);
+                        .orElse(AppI18n.get("none"));
+                latest.setText(AppI18n.get("latest") + ": " + name);
             });
         };
         watcher.savegamesProperty().addListener(l);
         l.changed(null, null, watcher.savegamesProperty().get());
         barPane.setCenter(latest);
 
-        Button importLatest = new Button(AppI18n.get("IMPORT"));
+        Button importLatest = new Button(AppI18n.get("import"));
         importLatest.setGraphic(new FontIcon());
         importLatest.getStyleClass().add(CLASS_IMPORT);
         importLatest.setOnAction(event -> {
@@ -69,7 +69,7 @@ public class GuiStatusBarComp extends SimpleComp {
             event.consume();
         });
 
-        Button b = new Button(AppI18n.get("KILL"));
+        Button b = new Button(AppI18n.get("kill"));
         b.setGraphic(new FontIcon());
         b.getStyleClass().add(CLASS_KILL);
         b.setOnAction(event -> {
@@ -127,7 +127,7 @@ public class GuiStatusBarComp extends SimpleComp {
                 barPane.getStyleClass().add("status-compatible-unknown");
             }
             {
-                Button export = new Button(AppI18n.get("EXPORT"));
+                Button export = new Button(AppI18n.get("export"));
                 AppFontSizes.sm(export);
                 export.setGraphic(new FontIcon());
                 export.getStyleClass().add(CLASS_EXPORT);
@@ -142,7 +142,7 @@ public class GuiStatusBarComp extends SimpleComp {
             }
 
             if (e.getInfo() != null && ctx.getInstallation().getDist().supportsLauncher()) {
-                Button launch = new Button(AppI18n.get("START_LAUNCHER"));
+                Button launch = new Button(AppI18n.get("startLauncher"));
                 AppFontSizes.sm(launch);
                 launch.setGraphic(new FontIcon());
                 launch.getStyleClass().add("launcher-button");
@@ -160,9 +160,9 @@ public class GuiStatusBarComp extends SimpleComp {
                 ButtonBase launch;
                 if (ctx.getInstallation().getType().debugModeSwitch().isPresent()) {
                     var splitButton = new SplitMenuButton();
-                    splitButton.setText(AppI18n.get("CONTINUE_GAME"));
+                    splitButton.setText(AppI18n.get("continueGame"));
 
-                    var debugItem = new MenuItem(AppI18n.get("DEBUG_MODE"));
+                    var debugItem = new MenuItem(AppI18n.get("debugMode"));
                     debugItem.setGraphic(new FontIcon());
                     debugItem.getStyleClass().add("continue-button");
                     debugItem.setOnAction(event -> {
@@ -174,7 +174,7 @@ public class GuiStatusBarComp extends SimpleComp {
                     splitButton.getItems().add(debugItem);
                     launch = splitButton;
                 } else {
-                    launch = new Button(AppI18n.get("CONTINUE_GAME"));
+                    launch = new Button(AppI18n.get("continueGame"));
                 }
 
                 AppFontSizes.sm(launch);

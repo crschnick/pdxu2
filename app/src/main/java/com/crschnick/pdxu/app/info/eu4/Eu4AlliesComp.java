@@ -22,7 +22,7 @@ public class Eu4AlliesComp extends Eu4DiplomacyRowComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("ALLIES");
+        return AppI18n.get("allies");
     }
 
     @Override

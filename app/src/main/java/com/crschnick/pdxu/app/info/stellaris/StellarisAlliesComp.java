@@ -22,7 +22,7 @@ public class StellarisAlliesComp extends StellarisDiplomacyRowComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("ALLIES");
+        return AppI18n.get("allies");
     }
 
     @Override

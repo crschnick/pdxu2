@@ -40,6 +40,6 @@ public class Eu4DucatsComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("TREASURY") + (loans != 0 ? " / " + AppI18n.get("TREASURY_OWED") : "");
+        return AppI18n.get("treasury") + (loans != 0 ? " / " + AppI18n.get("treasuryOwed") : "");
     }
 }

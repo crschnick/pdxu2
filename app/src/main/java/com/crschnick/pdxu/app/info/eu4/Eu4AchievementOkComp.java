@@ -50,9 +50,9 @@ public class Eu4AchievementOkComp extends SimpleInfoComp {
     @Override
     protected String getTooltip() {
         if (achievementOk) {
-            return AppI18n.get("ACHIEVEMENT_ELIGIBLE");
+            return AppI18n.get("achievementEligible");
         } else {
-            return AppI18n.get("ACHIEVEMENT_INELIGIBLE");
+            return AppI18n.get("achievementIneligible");
         }
     }
 

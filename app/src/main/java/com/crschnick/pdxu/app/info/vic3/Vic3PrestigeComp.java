@@ -22,7 +22,7 @@ public class Vic3PrestigeComp extends Vic3ChannelComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("PRESTIGE");
+        return AppI18n.get("prestige");
     }
 
     @Override

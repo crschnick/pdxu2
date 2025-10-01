@@ -30,6 +30,6 @@ public class Vic3LoyalistComp extends Vic3ChannelComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("LOYALISTS");
+        return AppI18n.get("loyalists");
     }
 }

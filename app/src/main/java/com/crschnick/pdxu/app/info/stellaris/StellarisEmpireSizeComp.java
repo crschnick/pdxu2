@@ -45,6 +45,6 @@ public class StellarisEmpireSizeComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("EMPIRE_SIZE");
+        return AppI18n.get("empireSize");
     }
 }

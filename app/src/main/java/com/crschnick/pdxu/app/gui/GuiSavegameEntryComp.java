@@ -136,7 +136,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             });
             export.getStyleClass().add(CLASS_EXPORT);
             export.setAccessibleText("Export");
-            GuiTooltips.install(export, AppI18n.get("EXPORT_SAVEGAME", SavegameContext.getContext(e).getGame().getTranslatedFullName()));
+            GuiTooltips.install(export, AppI18n.get("exportSavegame", SavegameContext.getContext(e).getGame().getTranslatedFullName()));
             staticButtons.getChildren().add(export);
         }
         {
@@ -147,7 +147,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             });
             copy.getStyleClass().add(CLASS_COPY);
             copy.setAccessibleText("Copy");
-            GuiTooltips.install(copy, AppI18n.get("COPY_SAVEGAME"));
+            GuiTooltips.install(copy, AppI18n.get("copySavegame"));
             staticButtons.getChildren().add(copy);
         }
         {
@@ -157,7 +157,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 GuiSavegameNotes.showSavegameNotesDialog(e.getNotes());
             });
             notes.setAccessibleText("Notes");
-            GuiTooltips.install(notes, AppI18n.get("EDIT_SAVEGAME_NOTES"));
+            GuiTooltips.install(notes, AppI18n.get("editSavegamenotes"));
             staticButtons.getChildren().add(notes);
         }
 
@@ -167,20 +167,20 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             del.setOnMouseClicked((m) -> {
                 if (AppSideWindow.showBlockingAlert(alert -> {
                     alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle(AppI18n.get("DELETE_SAVEGAME_TITLE"));
-                    alert.setHeaderText(AppI18n.get("DELETE_SAVEGAME_QUESTION"));
+                    alert.setTitle(AppI18n.get("deleteSavegametitle"));
+                    alert.setHeaderText(AppI18n.get("deleteSavegamequestion"));
                 }).map(t -> t.getButtonData().isDefaultButton()).orElse(false)) {
                     SavegameActions.delete(e);
                 }
             });
             del.setAccessibleText("Delete");
-            GuiTooltips.install(del, AppI18n.get("DELETE_SAVEGAME"));
+            GuiTooltips.install(del, AppI18n.get("deleteSavegame"));
             staticButtons.getChildren().add(del);
         }
 
         Button open = new Button(null, new FontIcon());
         open.setGraphic(new FontIcon("mdi2c-content-save-outline"));
-        GuiTooltips.install(open, AppI18n.get("OPEN_SAVEGAME"));
+        GuiTooltips.install(open, AppI18n.get("openSavegame"));
         staticButtons.getChildren().add(open);
         open.setOnMouseClicked((m) -> {
             SavegameActions.openSavegame(e);
@@ -200,7 +200,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             });
             melt.getStyleClass().add(CLASS_MELT);
             melt.setAccessibleText("Melt");
-            GuiTooltips.install(melt, AppI18n.get("MELT_SAVEGAME"));
+            GuiTooltips.install(melt, AppI18n.get("meltSavegame"));
             SavegameContext.withSavegameInfoContextAsync(e, ctx -> {
                 if (ctx.getInfo().getData().isBinary() && RakalyHelper.shouldShowButton(ctx)) {
                     Platform.runLater(() -> {
@@ -223,7 +223,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 });
                 branch.getStyleClass().add("branch-button");
                 branch.setAccessibleText("Branch");
-                GuiTooltips.install(branch, AppI18n.get("BRANCH_SAVEGAME"));
+                GuiTooltips.install(branch, AppI18n.get("branchSavegame"));
                 dynamicButtons.getChildren().add(0, branch);
             });
         });
@@ -240,7 +240,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                             });
                             convert.getStyleClass().add(CLASS_CONVERT);
                             convert.setAccessibleText("Convert to " + converterSupport.getToName() + " savegame");
-                            GuiTooltips.install(convert, AppI18n.get("CONVERT_TO_" + converterSupport.getToName()));
+                            GuiTooltips.install(convert, AppI18n.get("convertTo_" + converterSupport.getToName()));
                             dynamicButtons.getChildren().add(convert);
                         });
                     }
@@ -253,7 +253,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             SavegameActions.editSavegame(e);
         });
         edit.setAccessibleText("Edit");
-        GuiTooltips.install(edit, AppI18n.get("EDIT_SAVEGAME"));
+        GuiTooltips.install(edit, AppI18n.get("editSavegame"));
         ChangeListener<SavegameEntry.State> stateChange = new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends SavegameEntry.State> observable, SavegameEntry.State oldValue, SavegameEntry.State n) {

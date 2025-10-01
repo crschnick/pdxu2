@@ -100,6 +100,10 @@ public class OptionsBuilder {
         return addComp(Comp.of(() -> new Spacer(size, Orientation.VERTICAL)));
     }
 
+    public OptionsBuilder nameAndDescription(String key) {
+        return name(key).description(key + "Description");
+    }
+
     public OptionsBuilder name(String nameKey) {
         finishCurrent();
         name = AppI18n.observable(nameKey);

@@ -22,7 +22,7 @@ public class Vic3SolComp extends Vic3ChannelComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("STANDARD_OF_LIVING");
+        return AppI18n.get("standardOfliving");
     }
 
     @Override

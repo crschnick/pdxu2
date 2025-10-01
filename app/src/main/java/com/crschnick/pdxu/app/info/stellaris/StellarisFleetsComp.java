@@ -44,6 +44,6 @@ public class StellarisFleetsComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("FLEETS");
+        return AppI18n.get("fleets");
     }
 }

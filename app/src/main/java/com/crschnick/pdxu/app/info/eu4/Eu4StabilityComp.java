@@ -31,6 +31,6 @@ public class Eu4StabilityComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("STABILITY");
+        return AppI18n.get("stability");
     }
 }

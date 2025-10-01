@@ -42,7 +42,7 @@ public class Ck3TitlesComp extends DiplomacyRowComp<Ck3Title> {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("TITLES");
+        return AppI18n.get("titles");
     }
 
     @Override

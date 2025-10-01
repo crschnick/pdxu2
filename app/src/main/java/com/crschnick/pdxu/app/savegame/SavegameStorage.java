@@ -589,7 +589,7 @@ public abstract class SavegameStorage<
             type.generateNewCampaignIdHeuristic(c);
             var targetCollection = type.getCampaignIdHeuristic(c);
             var info = infoFactory.apply(succ.content, false);
-            var name = getSavegameCampaign(e).getName() + " (" + AppI18n.get("MELTED") + ")";
+            var name = getSavegameCampaign(e).getName() + " (" + AppI18n.get("melted") + ")";
             addEntryToCollection(targetCollection, file -> struc.write(file, c), checksum, info, null, name);
             saveData();
         } catch (Throwable ex) {
@@ -790,7 +790,7 @@ public abstract class SavegameStorage<
         }
 
         var sourceName = getSavegameCampaign(e).getName();
-        var newName = sourceName + " (" + AppI18n.get("NEW_BRANCH") + ")";
+        var newName = sourceName + " (" + AppI18n.get("newBranch") + ")";
         addEntryToCollection(targetId, writer, checksum, info, null, newName);
         saveData();
     }

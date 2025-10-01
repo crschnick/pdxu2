@@ -10,8 +10,6 @@ import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.AudioClip;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -99,7 +97,7 @@ public final class GameAppManager {
                 activeGame.get().onShutdown();
                 activeGame.set(null);
 
-                if (AppPrefs.get().importOnGameNormalExit().getValue()) {
+                if (AppPrefs.get().importOnNormalGameExit().getValue()) {
                     TrackEvent.info("Import on normal exit is enabled");
                     boolean exitedNormally = lastKill == null || Duration.between(lastKill, Instant.now()).getSeconds() > 10;
                     if (exitedNormally) {
@@ -112,7 +110,7 @@ public final class GameAppManager {
     }
 
     private void updateImportTimer() {
-        if (!AppPrefs.get().enabledTimedImports().getValue()) {
+        if (!AppPrefs.get().enableTimedImports().getValue()) {
             return;
         }
 

@@ -36,6 +36,6 @@ public class Eu4RnwComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("RNW");
+        return AppI18n.get("rnw");
     }
 }

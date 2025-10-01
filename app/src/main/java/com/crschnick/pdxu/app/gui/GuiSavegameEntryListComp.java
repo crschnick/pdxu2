@@ -25,12 +25,12 @@ public class GuiSavegameEntryListComp extends SimpleComp {
         SavegameManagerState.get().onGameChange(n -> {
             if (n != null) {
                 Platform.runLater(() -> {
-                    text.setText(AppI18n.get("NO_SAVEGAMES", n.getTranslatedFullName()) + "\n");
+                    text.setText(AppI18n.get("noSavegames", n.getTranslatedFullName()) + "\n");
                 });
             }
         });
 
-        Button importB = new Button(AppI18n.get("IMPORT_SAVEGAMES"));
+        Button importB = new Button(AppI18n.get("importSavegames"));
         importB.setOnAction(e -> {
             GuiImporter.createImporterDialog();
             e.consume();
@@ -40,12 +40,12 @@ public class GuiSavegameEntryListComp extends SimpleComp {
         v.getChildren().add(importB);
 
         v.getChildren().add(new Label());
-        Label text2 = new Label(AppI18n.get("FAMILIARIZE"));
+        Label text2 = new Label(AppI18n.get("familiarize"));
         text2.setWrapText(true);
         text2.setTextAlignment(TextAlignment.CENTER);
         v.getChildren().add(text2);
 
-        Button guide = new Button(AppI18n.get("USER_GUIDE"));
+        Button guide = new Button(AppI18n.get("userGuide"));
         guide.setOnAction((a) -> {
             Hyperlinks.open(Hyperlinks.DOCS);
         });

@@ -46,7 +46,7 @@ public class Ck3AlliesComp extends Ck3DiplomacyRowComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("ALLIES");
+        return AppI18n.get("allies");
     }
 
     @Override

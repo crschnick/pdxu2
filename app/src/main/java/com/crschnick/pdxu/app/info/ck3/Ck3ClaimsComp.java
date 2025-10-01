@@ -42,7 +42,7 @@ public class Ck3ClaimsComp extends DiplomacyRowComp<Ck3Title> {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("CLAIMS");
+        return AppI18n.get("claims");
     }
 
     @Override

@@ -23,8 +23,8 @@ public class GuiSavegameIO {
     public static Optional<Path> showExportDialog() {
         Alert alert = AppSideWindow.createEmptyAlert();
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(AppI18n.get("EXPORT_STORAGE"));
-        alert.setHeaderText(AppI18n.get("EXPORT_STORAGE_INFO"));
+        alert.setTitle(AppI18n.get("exportStorage"));
+        alert.setHeaderText(AppI18n.get("exportStorageinfo"));
 
         HBox dialogPaneContent = new HBox();
         dialogPaneContent.setAlignment(Pos.CENTER);

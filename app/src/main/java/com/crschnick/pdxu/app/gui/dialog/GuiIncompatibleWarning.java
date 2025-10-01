@@ -82,8 +82,8 @@ public class GuiIncompatibleWarning {
     }
 
     public static Optional<Boolean> showNoSavedModsWarning(Game game, List<GameMod> enabledMods) {
-        var launchButton = new ButtonType(AppI18n.get("LAUNCH"));
-        var changeModsButton = new ButtonType(AppI18n.get("CHANGE_MODS"));
+        var launchButton = new ButtonType(AppI18n.get("launch"));
+        var changeModsButton = new ButtonType(AppI18n.get("changeMods"));
 
         var r = AppSideWindow.showBlockingAlert(alert -> {
             alert.setAlertType(Alert.AlertType.WARNING);
@@ -93,8 +93,8 @@ public class GuiIncompatibleWarning {
             if (GameDistLauncher.canChangeMods(game)) {
                 alert.getButtonTypes().add(changeModsButton);
             }
-            alert.setTitle(AppI18n.get("MOD_INFO_TITLE", game.getTranslatedFullName()));
-            alert.setHeaderText(AppI18n.get("MOD_INFO", game.getTranslatedFullName()));
+            alert.setTitle(AppI18n.get("modInfotitle", game.getTranslatedFullName()));
+            alert.setHeaderText(AppI18n.get("modInfo", game.getTranslatedFullName()));
 
             String builder = enabledMods.stream()
                     .map(m -> "- " + m.getName().orElse(m.getModFile().getFileName().toString()))

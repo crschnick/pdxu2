@@ -30,6 +30,6 @@ public class Ck3PrestigeComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("PRESTIGE");
+        return AppI18n.get("prestige");
     }
 }

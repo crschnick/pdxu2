@@ -15,7 +15,7 @@ public abstract class IronmanComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("IRONMAN");
+        return AppI18n.get("ironman");
     }
 
     @Override

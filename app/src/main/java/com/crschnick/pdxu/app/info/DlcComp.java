@@ -39,15 +39,15 @@ public class DlcComp extends SavegameInfoComp {
             return null;
         }
 
-        Label label = new Label(AppI18n.get("DLCS") + " (" + this.dlcs.size() + ")");
+        Label label = new Label(AppI18n.get("dlcs") + " (" + this.dlcs.size() + ")");
         label.setGraphic(new FontIcon());
         label.getStyleClass().add(CLASS_CONTENT);
 
-        var tooltip = AppI18n.get("DLCS_REQUIRED") + ":\n" +
+        var tooltip = AppI18n.get("dlcsRequired") + ":\n" +
                 dlcs.stream()
                         .map(s -> {
                             var m = data.installation().getDlcForSavegameId(s);
-                            return "- " + (m.isPresent() ? m.get().getName() : s + " (" + AppI18n.get("MISSING") + ")");
+                            return "- " + (m.isPresent() ? m.get().getName() : s + " (" + AppI18n.get("missing") + ")");
                         })
                         .collect(Collectors.joining("\n"));
         GuiTooltips.install(label, tooltip);

@@ -23,7 +23,7 @@ public class StorageCategory extends AppPrefsCategory {
 
     @Override
     protected LabelGraphic getIcon() {
-        return new LabelGraphic.IconGraphic("mdi-import");
+        return new LabelGraphic.IconGraphic("mdi2d-database-outline");
     }
 
     public Comp<?> create() {

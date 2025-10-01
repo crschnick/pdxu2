@@ -31,6 +31,6 @@ public class Eu4ManpowerComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("MANPOWER") + " / " + AppI18n.get("MAX_MANPOWER");
+        return AppI18n.get("manpower") + " / " + AppI18n.get("maxManpower");
     }
 }

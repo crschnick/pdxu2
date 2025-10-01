@@ -30,6 +30,6 @@ public class Ck3PietyComp extends SimpleInfoComp {
 
     @Override
     protected String getTooltip() {
-        return AppI18n.get("PIETY");
+        return AppI18n.get("piety");
     }
 }

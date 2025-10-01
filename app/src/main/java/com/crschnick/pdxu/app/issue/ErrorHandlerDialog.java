@@ -32,7 +32,7 @@ public class ErrorHandlerDialog {
             var comp = new ErrorHandlerComp(event, () -> {
                 AppDialog.closeDialog(modal.get());
             });
-            comp.prefWidth(event.getThrowable() != null ? 600 : 500);
+            comp.prefWidth(700);
             var headerId = event.isTerminal() ? "terminalErrorOccured" : "errorOccured";
             var errorModal = ModalOverlay.of(headerId, comp, new LabelGraphic.NodeGraphic(() -> {
                 var graphic = new FontIcon("mdomz-warning");

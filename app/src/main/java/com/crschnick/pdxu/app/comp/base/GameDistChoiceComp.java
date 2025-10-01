@@ -9,10 +9,13 @@ import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.gui.GuiStyle;
 import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.installation.GameInstallation;
+import com.crschnick.pdxu.app.installation.InvalidInstallationException;
 import com.crschnick.pdxu.app.installation.dist.GameDist;
 import com.crschnick.pdxu.app.installation.dist.GameDists;
 import com.crschnick.pdxu.app.installation.dist.SteamDist;
 import com.crschnick.pdxu.app.installation.dist.WindowsStoreDist;
+import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
@@ -42,6 +45,26 @@ public class GameDistChoiceComp extends SimpleComp {
     private final Game game;
     private final Property<GameDist> gameDist;
 
+    private void showInstallErrorMessage(String msg) {
+        String fullMsg = AppI18n.get("gameDirError", game.getTranslatedFullName()) + ":\n\n" +
+                msg + "\n\n" + AppI18n.get("gameDirErrorMsg", game.getTranslatedFullName());
+        ErrorEventFactory.fromMessage(fullMsg).expected().handle();
+    }
+
+    private boolean isValid(GameDist newValue) {
+        try {
+            var i = new GameInstallation(game.getInstallType(), newValue);
+            GameInstallation.initTemporary(game, i);
+            return true;
+        } catch (InvalidInstallationException e) {
+            showInstallErrorMessage(e.getLocalisedMessage());
+            return false;
+        } catch (Exception e) {
+            showInstallErrorMessage(e.getClass().getSimpleName() + ": " + e.getMessage());
+            return false;
+        }
+    }
+
     @Override
     protected Region createSimple() {
         ObjectProperty<GameDist> setDist = new SimpleObjectProperty<>();
@@ -51,7 +74,6 @@ public class GameDistChoiceComp extends SimpleComp {
         var typeLabel = new IconButtonComp(typeIcon);
         typeLabel.apply(struc -> struc.get().getStyleClass().remove(Styles.FLAT));
         typeLabel.tooltip(typeTooltip);
-        typeLabel.disable(new ReadOnlyBooleanWrapper(true));
 
         var location = new SimpleStringProperty(Optional.ofNullable(gameDist.getValue()).map(v -> v.getInstallLocation().toString())
                 .orElse(""));
@@ -62,12 +84,12 @@ public class GameDistChoiceComp extends SimpleComp {
             AppFontSizes.sm(struc.get());
         });
 
-        var browse = new IconButtonComp("mdi-magnify", () -> {
+        var browse = new IconButtonComp("mdi2f-folder-open-outline", () -> {
             DirectoryChooser dirChooser = new DirectoryChooser();
             if (setDist.get() != null && Files.exists(setDist.get().getInstallLocation())) {
                 dirChooser.setInitialDirectory(setDist.get().getInstallLocation().toFile());
             }
-            dirChooser.setTitle(AppI18n.get("SELECT_DIR", AppI18n.get(nameKey)));
+            dirChooser.setTitle(AppI18n.get("selectDir", AppI18n.get(nameKey)));
             File file = dirChooser.showDialog(AppMainWindow.get().getStage());
             if (file != null && file.exists()) {
                 var path = file.toPath();
@@ -75,7 +97,12 @@ public class GameDistChoiceComp extends SimpleComp {
                 if (path.endsWith("binaries")) {
                     path = path.getParent();
                 }
-                setDist.set(GameDists.detectDistFromDirectory(game, path));
+
+
+                var newDist = GameDists.detectDistFromDirectory(game, path);
+                if (isValid(newDist)) {
+                    setDist.set(newDist);
+                }
             }
         });
         browse.tooltipKey("browseDist");
@@ -87,7 +114,9 @@ public class GameDistChoiceComp extends SimpleComp {
                 return;
             }
 
-            setDist.set(dist);
+            if (isValid(dist)) {
+                setDist.set(dist);
+            }
         });
         xbox.tooltipKey("xboxDist");
         xbox.apply(struc -> struc.get().getStyleClass().remove(Styles.FLAT));

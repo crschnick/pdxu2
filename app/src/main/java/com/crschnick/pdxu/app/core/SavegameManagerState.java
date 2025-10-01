@@ -379,6 +379,10 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
         }
 
         public boolean shouldShow(SavegameCampaign<T, I> col) {
+            if (filter.get() == null) {
+                return true;
+            }
+
             if (col.getName().toLowerCase().contains(filter.get().toLowerCase())) {
                 return true;
             }
@@ -388,6 +392,10 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
         }
 
         public boolean shouldShow(SavegameEntry<?, ?> entry) {
+            if (filter.get() == null) {
+                return true;
+            }
+
             return entry.getName().toLowerCase().contains(filter.get().toLowerCase());
         }
     }
