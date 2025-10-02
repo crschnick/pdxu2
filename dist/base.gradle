@@ -37,6 +37,11 @@ if (os.isWindows()) {
 
             file("$distDir/base/app/.jpackage.xml").delete()
 
+            // Don't launch multiple exe instances: https://bugs.openjdk.org/browse/JDK-8340311
+            // We don't need the /app directory to be in the library path
+            def configFile = file("$distDir/base/app/${jpackageExecutableName}.cfg")
+            configFile.text = configFile.text.replace("[Application]", "[Application]\nwin.norestart=true")
+
             def batLauncherFile = file("$distDir/base/runtime/bin/${jpackageExecutableName}.bat")
             def batLauncherContent = batLauncherFile.text
             batLauncherContent = batLauncherContent.replace(" -p \"%~dp0/../app\"", "")
@@ -55,6 +60,44 @@ if (os.isWindows()) {
             copy {
                 from "$distDir/licenses"
                 into "$distDir/base/licenses"
+            }
+
+            def customLauncherDir = file("$projectDir/launcher/windows/$arch")
+            if (customLauncherDir.exists()) {
+                copy {
+                    from customLauncherDir
+                    into "$distDir/base"
+                    rename "launcher.exe", "${jpackageExecutableName}.exe"
+                }
+                def rcedit = "$projectDir\\tools\\rcedit-x64.exe"
+                def exeFile = file("$distDir/base/${jpackageExecutableName}.exe")
+                exeFile.setExecutable(true, false)
+                exeFile.writable = true
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-icon', "$projectDir\\logo\\logo.ico"
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-file-version', windowsSchemaCanonicalVersion
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-product-version', windowsSchemaCanonicalVersion
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-version-string', 'CompanyName', 'Christopher Schnick'
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-version-string', 'FileDescription', 'Pdx-Unlimiter'
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-version-string', 'LegalCopyright', '2025, ' + 'Christopher Schnick'
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-version-string', 'OriginalFilename', "${jpackageExecutableName}.exe"
+                }.getResult().get()
+                providers.exec {
+                    commandLine rcedit, exeFile, '--set-version-string', 'ProductName', 'Pdx-Unlimiter'
+                }.getResult().get()
+                exeFile.writable = false
             }
 
             var signEnv = System.getenv("AZURE_KEY_VAULT_URI")
@@ -86,6 +129,17 @@ if (os.isWindows()) {
             copy {
                 from "$rootDir/lang"
                 into "$distDir/base/lang"
+            }
+
+            def customLauncherDir = file("$projectDir/launcher/linux/$arch")
+            if (customLauncherDir.exists()) {
+                copy {
+                    from customLauncherDir
+                    into "$distDir/base/bin"
+                    rename "launcher", "${jpackageExecutableName}"
+                }
+                def exeFile = file("$distDir/base/bin/${jpackageExecutableName}")
+                exeFile.setExecutable(true, false)
             }
 
             def shLauncherFile = file("$distDir/base/lib/runtime/bin/${jpackageExecutableName}")
