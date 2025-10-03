@@ -34,7 +34,7 @@ public class GuiLayoutComp extends SimpleComp {
         var pane = new GuiSavegameEntryListComp<>(savegameManagerState).createRegion();
         layout.setCenter(pane);
 
-        layout.setLeft(new GuiSavegameCollectionListComp<>(savegameManagerState).createRegion());
+        layout.setLeft(new GuiSavegameCollectionListComp<>(savegameManagerState).hide(savegameManagerState.storageEmptyProperty()).createRegion());
         return layout;
     }
 

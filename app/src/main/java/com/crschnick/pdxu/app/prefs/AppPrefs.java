@@ -469,6 +469,16 @@ public final class AppPrefs {
                 .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
         ck3Directory.setValue(GameDists.detectDist(Game.CK3, AppProperties.get().isInitialLaunch())
                 .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        hoi4Directory.setValue(GameDists.detectDist(Game.HOI4, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        stellarisDirectory.setValue(GameDists.detectDist(Game.STELLARIS, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        ck2Directory.setValue(GameDists.detectDist(Game.CK2, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        vic2Directory.setValue(GameDists.detectDist(Game.VIC2, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        vic3Directory.setValue(GameDists.detectDist(Game.VIC3, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
     }
 
     private void fixLocalValues() {

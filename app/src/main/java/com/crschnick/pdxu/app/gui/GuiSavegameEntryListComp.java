@@ -37,18 +37,6 @@ public class GuiSavegameEntryListComp<T, I extends SavegameInfo<T>> extends Simp
         importB.getStyleClass().add(GuiStyle.CLASS_IMPORT);
         v.getChildren().add(importB);
 
-        v.getChildren().add(new Label());
-        Label text2 = new Label(AppI18n.get("familiarize"));
-        text2.setWrapText(true);
-        text2.setTextAlignment(TextAlignment.CENTER);
-        v.getChildren().add(text2);
-
-        Button guide = new Button(AppI18n.get("userGuide"));
-        guide.setOnAction((a) -> {
-            Hyperlinks.open(Hyperlinks.DOCS);
-        });
-        v.getChildren().add(guide);
-
         v.getStyleClass().add(GuiStyle.CLASS_NO_CAMPAIGN);
         v.setFillWidth(true);
         v.setSpacing(10);

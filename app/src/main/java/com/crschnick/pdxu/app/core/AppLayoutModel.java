@@ -10,6 +10,7 @@ import com.crschnick.pdxu.app.issue.UserReportComp;
 import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import com.crschnick.pdxu.app.platform.PlatformThread;
+import com.crschnick.pdxu.app.util.EditorProvider;
 import com.crschnick.pdxu.app.util.GlobalTimer;
 import com.crschnick.pdxu.app.util.Hyperlinks;
 import com.crschnick.pdxu.app.util.ThreadHelper;
@@ -129,6 +130,13 @@ public class AppLayoutModel {
                         new LabelGraphic.IconGraphic("mdsmz-miscellaneous_services"),
                         new PrefsPageComp(),
                         null),
+                new Entry(
+                        AppI18n.observable("editor"),
+                        new LabelGraphic.IconGraphic("mdi2c-comment-edit-outline"),
+                        null,
+                        () -> {
+                            EditorProvider.get().browseExternalFile();
+                        }),
                 new Entry(
                         AppI18n.observable("docs"),
                         new LabelGraphic.IconGraphic("mdi2b-book-open-variant"),

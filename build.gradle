@@ -81,7 +81,8 @@ def getJvmArgs() {
             "--enable-native-access=javafx.web",
             "--sun-misc-unsafe-memory-access=allow",
             "--enable-native-access=javafx.media",
-            "--enable-native-access=com.github.kwhat.jnativehook"
+            "--enable-native-access=com.github.kwhat.jnativehook",
+            "--enable-native-access=org.graalvm.truffle"
     ]
 
     // Module access fixes

@@ -90,7 +90,8 @@ public enum Game {
     }
 
     public String getTranslatedAbbreviation() {
-        return AppI18n.get(abbreviation + "Abbreviation");
+        String base = abbreviation.toLowerCase();
+        return AppI18n.get(base.substring(0, 1).toUpperCase() + base.substring(1) + "Abbreviation");
     }
 
     public String getId() {

@@ -76,8 +76,8 @@ open module com.crschnick.pdxu.app {
     requires com.realityinteractive.imageio.tga;
     requires java.desktop;
     requires com.github.kwhat.jnativehook;
-    requires org.graalvm.truffle.compiler;
     requires io.github.ititus.ddsiio;
+    requires org.graalvm.polyglot;
 
     uses ModuleLayerLoader;
     uses Module;
