@@ -3,3 +3,4 @@ include 'dist'
 
 include 'pdxu-io'
 include 'pdxu-model'
+include 'pdxu-editor'

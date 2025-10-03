@@ -21,6 +21,11 @@ open module com.crschnick.pdxu.app {
     exports com.crschnick.pdxu.app.page;
     exports com.crschnick.pdxu.app.core.beacon;
     exports com.crschnick.pdxu.app;
+    exports com.crschnick.pdxu.app.savegame;
+    exports com.crschnick.pdxu.app.info;
+    exports com.crschnick.pdxu.app.installation;
+    exports com.crschnick.pdxu.app.gui;
+    exports com.crschnick.pdxu.app.gui.game;
 
     requires static lombok;
     requires com.sun.jna;

@@ -61,6 +61,7 @@ dependencies {
     compileOnly 'org.graalvm.js:js-community:25.0.0'
     implementation project(':pdxu-io')
     implementation project(':pdxu-model')
+    runtimeOnly project(':pdxu-editor')
     implementation 'com.jfoenix:jfoenix:9.0.10'
 }
 

@@ -74,7 +74,7 @@ public class GuiImporter {
         Label name = new Label(entry.target().getName());
         name.setTextOverrun(OverrunStyle.ELLIPSIS);
 
-        JFXCheckBox cb = new JFXCheckBox();
+        var cb = new CheckBox();
         cb.selectedProperty().bindBidirectional(entry.selected());
         name.setOnMouseClicked(e -> cb.setSelected(!cb.isSelected()));
 
@@ -102,7 +102,7 @@ public class GuiImporter {
         VBox targets = new VBox();
         targets.getStyleClass().add("import-targets");
 
-        JFXCheckBox cbAll = new JFXCheckBox();
+        var cbAll = new CheckBox();
         cbAll.selectedProperty().bindBidirectional(state.selectAllProperty());
 
         var emptyLabel = new Label("There are no savegames available to import!");
@@ -148,6 +148,7 @@ public class GuiImporter {
 
     private static Region createFilterBar(GuiImporterState state) {
         HBox box = new HBox();
+        box.setSpacing(9);
         box.setAlignment(Pos.CENTER);
         box.getStyleClass().add("filter-bar");
 

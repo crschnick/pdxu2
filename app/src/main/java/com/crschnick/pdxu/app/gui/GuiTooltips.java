@@ -23,16 +23,6 @@ public class GuiTooltips {
         return tt;
     }
 
-    public static Node helpNode(String text) {
-        Label q = new Label(" ? ");
-        q.setStyle("-fx-border-color: #333333FF;");
-        var tt = GuiTooltips.createTooltip(text);
-        tt.setShowDelay(Duration.ZERO);
-        tt.setShowDuration(Duration.INDEFINITE);
-        q.setTooltip(tt);
-        return q;
-    }
-
     public static void install(Node node, String text) {
         Platform.runLater(() -> {
             var tt = GuiTooltips.createTooltip(text);

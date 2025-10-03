@@ -165,6 +165,77 @@ public final class AppPrefs {
             .requiresRestart(false)
             .build());
 
+    final Property<EditorIndentation> editorIndentation = map(Mapping.builder()
+            .property(new GlobalObjectProperty<>(EditorIndentation.ONE_TAB))
+            .key("editorIndentation")
+            .valueClass(EditorIndentation.class)
+            .requiresRestart(false)
+            .build());
+    final Property<Integer> editorPageSize = map(Mapping.builder()
+            .property(new GlobalObjectProperty<>(200))
+            .key("editorPageSize")
+            .valueClass(Integer.class)
+            .requiresRestart(false)
+            .build());
+    final Property<Integer> editorMaxTooltipLines = map(Mapping.builder()
+            .property(new GlobalObjectProperty<>(10))
+            .key("editorMaxTooltipLines")
+            .valueClass(Integer.class)
+            .requiresRestart(false)
+            .build());
+    final BooleanProperty editorEnableNodeTags = map(Mapping.builder()
+            .property(new GlobalBooleanProperty(true))
+            .key("editorEnableNodeTags")
+            .valueClass(Boolean.class)
+            .requiresRestart(false)
+            .build());
+    final BooleanProperty editorEnableNodeJumps = map(Mapping.builder()
+            .property(new GlobalBooleanProperty(true))
+            .key("editorEnableNodeTags")
+            .valueClass(Boolean.class)
+            .requiresRestart(false)
+            .build());
+    final BooleanProperty editorWarnOnNodeTypeChange = map(Mapping.builder()
+            .property(new GlobalBooleanProperty(true))
+            .key("editorWarnOnNodeTypeChange")
+            .valueClass(Boolean.class)
+            .requiresRestart(false)
+            .build());
+    final Property<String> editorExternalProgram = map(Mapping.builder()
+            .property(new GlobalObjectProperty<>())
+            .key("editorExternalProgram")
+            .valueClass(String.class)
+            .requiresRestart(false)
+            .build());
+
+    public ObservableValue<EditorIndentation> editorIndentation() {
+        return editorIndentation;
+    }
+
+    public ObservableValue<Integer> editorPageSize() {
+        return editorPageSize;
+    }
+
+    public ObservableValue<Integer> editorMaxTooltipLines() {
+        return editorMaxTooltipLines;
+    }
+
+    public ObservableValue<Boolean> editorEnableNodeTags() {
+        return editorEnableNodeTags;
+    }
+
+    public ObservableValue<Boolean> editorEnableNodeJumps() {
+        return editorEnableNodeJumps;
+    }
+
+    public ObservableValue<Boolean> editorWarnOnNodeTypeChange() {
+        return editorWarnOnNodeTypeChange;
+    }
+
+    public ObservableValue<String> editorExternalProgram() {
+        return editorExternalProgram;
+    }
+
     public ObservableValue<Path> ck3toeu4Directory() {
         return ck3toeu4Directory;
     }

@@ -1,0 +1,26 @@
+plugins {
+    id 'java-library'
+}
+
+apply from: "$rootDir/gradle/gradle_scripts/java.gradle"
+apply from: "$rootDir/gradle/gradle_scripts/javafx.gradle"
+apply from: "$rootDir/gradle/gradle_scripts/lombok.gradle"
+
+configurations {
+    compileOnly.extendsFrom(javafx)
+}
+
+dependencies {
+    compileOnly 'com.jfoenix:jfoenix:9.0.10'
+    implementation "org.kordamp.ikonli:ikonli-javafx:12.4.0"
+
+    implementation "org.slf4j:slf4j-api:2.0.17"
+
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'commons-io:commons-io:2.20.0'
+    implementation "org.apache.commons:commons-collections4:4.5.0"
+
+    compileOnly project(':app')
+    compileOnly project(':pdxu-io')
+    compileOnly project(':pdxu-model')
+}

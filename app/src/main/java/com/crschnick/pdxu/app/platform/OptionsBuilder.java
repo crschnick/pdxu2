@@ -100,6 +100,19 @@ public class OptionsBuilder {
         return addComp(Comp.of(() -> new Spacer(size, Orientation.VERTICAL)));
     }
 
+    public OptionsBuilder fixedName(String s) {
+        finishCurrent();
+        name = new ReadOnlyStringWrapper(s);
+        lastNameReference = name;
+        return this;
+    }
+
+    public OptionsBuilder fixedDescription(String s) {
+        finishCurrent();
+        description = new ReadOnlyStringWrapper(s);
+        return this;
+    }
+
     public OptionsBuilder nameAndDescription(String key) {
         return name(key).description(key + "Description");
     }

@@ -5,6 +5,8 @@ import com.crschnick.pdxu.app.gui.GuiLayoutComp;
 import com.crschnick.pdxu.app.gui.game.GameGuiFactory;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
+import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.issue.UserReportComp;
 import com.crschnick.pdxu.app.page.PrefsPageComp;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import com.crschnick.pdxu.app.platform.PlatformThread;
@@ -141,7 +143,18 @@ public class AppLayoutModel {
                         AppI18n.observable("discord"),
                         new LabelGraphic.IconGraphic("bi-discord"),
                         null,
-                        () -> Hyperlinks.open(Hyperlinks.DISCORD))));
+                        () -> Hyperlinks.open(Hyperlinks.DISCORD)),
+                new Entry(
+                        AppI18n.observable("feedback"),
+                        new LabelGraphic.IconGraphic("mdoal-bug_report"),
+                        null,
+                        () -> {
+                            var event = ErrorEventFactory.fromMessage("User Report");
+                            if (AppLogs.get().isWriteToFile()) {
+                                event.attachment(AppLogs.get().getSessionLogsDirectory());
+                            }
+                            UserReportComp.show(event.build());
+                        })));
         return l;
     }
 

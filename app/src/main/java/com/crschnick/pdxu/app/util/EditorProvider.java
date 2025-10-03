@@ -20,4 +20,6 @@ public interface EditorProvider {
     void browseExternalFile();
 
     void openExternalFileIfNoSavegame(Path file);
+
+    String getDefaultEditor();
 }

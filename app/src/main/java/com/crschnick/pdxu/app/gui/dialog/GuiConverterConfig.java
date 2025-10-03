@@ -1,7 +1,9 @@
 package com.crschnick.pdxu.app.gui.dialog;
 
+import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.base.ModalButton;
 import com.crschnick.pdxu.app.comp.base.ModalOverlay;
+import com.crschnick.pdxu.app.comp.base.ScrollComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
@@ -9,6 +11,7 @@ import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.GameLanguage;
 import com.crschnick.pdxu.app.installation.GameLocalisationHelper;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
+import com.crschnick.pdxu.app.platform.OptionsBuilder;
 import com.crschnick.pdxu.app.util.ConverterSupport;
 import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.Hyperlinks;
@@ -17,6 +20,8 @@ import com.crschnick.pdxu.io.parser.TextFormatParser;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -69,51 +74,6 @@ public class GuiConverterConfig {
         modal.show();
     }
 
-    private javafx.scene.Node createOptionNode(
-            Node n,
-            Map<String, String> translations,
-            Map<String, String> values) {
-        GridPane grid = new GridPane();
-        if (n.getNodeForKeyIfExistent("radioSelector").isEmpty()) {
-            return grid;
-        }
-
-        var h = GuiTooltips.helpNode(translations.get(n.getNodeForKey("tooltip").getString()));
-        grid.add(h, 0, 0);
-
-        var t = new Text(translations.get(n.getNodeForKey("displayName").getString()));
-        t.setStyle("-fx-font-weight: bold");
-        grid.add(t, 1, 0, 3, 1);
-
-        ToggleGroup tg = new ToggleGroup();
-        int row = 1;
-        String oName = n.getNodeForKey("name").getString();
-        for (var ro : n.getNodeForKey("radioSelector").getNodesForKey("radioOption")) {
-            String roValue = ro.getNodeForKey("name").getString();
-            var btn = new JFXRadioButton(translations.get(ro.getNodeForKey("displayName").getString()));
-            btn.setToggleGroup(tg);
-            btn.selectedProperty().addListener((c, o, ne) -> {
-                values.put(oName, roValue);
-            });
-            if (values.get(oName) != null && values.get(oName).equals(roValue)) {
-                btn.setSelected(true);
-            }
-            if (values.get(oName) == null && ro.getNodeForKey("default").getString().equals("true")) {
-                btn.setSelected(true);
-            }
-
-            grid.add(GuiTooltips.helpNode(translations.get(ro.getNodeForKeyIfExistent("tooltip")
-                    .map(Node::getString).orElse(""))), 0, row);
-            grid.add(btn, 1, row);
-            row++;
-        }
-
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        return grid;
-    }
-
     public boolean showConfig(Map<String, String> values) {
         Node configNode;
         Map<String, String> translations;
@@ -127,40 +87,53 @@ public class GuiConverterConfig {
             return false;
         }
 
-        Alert alert = AppSideWindow.createEmptyAlert();
-
-        ButtonType open = new ButtonType("Open configs");
-        alert.getButtonTypes().add(ButtonType.APPLY);
-        alert.getButtonTypes().add(open);
-        alert.getButtonTypes().add(ButtonType.CANCEL);
-        Button val = (Button) alert.getDialogPane().lookupButton(open);
-        val.addEventFilter(
-                ActionEvent.ACTION,
-                e -> {
-                    DesktopHelper.browsePath(converterSupport.getBackendDir().resolve("configurables"));
-                    e.consume();
-                });
-
-        alert.setTitle("Converter settings");
-        alert.initModality(Modality.NONE);
-        alert.getDialogPane().setMinWidth(500);
-        alert.getDialogPane().getStyleClass().add(CLASS_CONTENT_DIALOG);
-
-        VBox options = new VBox();
+        var options = new OptionsBuilder();
         for (var node : configNode.getNodesForKey("option")) {
-            options.getChildren().add(createOptionNode(node, translations, values));
-            options.getChildren().add(new Separator());
+            if (node.getNodeForKeyIfExistent("radioSelector").isEmpty()) {
+                continue;
+            }
+
+            options.fixedName(translations.get(node.getNodeForKey("displayName").getString()));
+            options.fixedDescription(translations.get(node.getNodeForKey("tooltip").getString()));
+            options.addComp(Comp.empty());
+
+            ToggleGroup tg = new ToggleGroup();
+            String oName = node.getNodeForKey("name").getString();
+            var col = new VBox();
+            for (var ro : node.getNodeForKey("radioSelector").getNodesForKey("radioOption")) {
+                String roValue = ro.getNodeForKey("name").getString();
+                var btnHelp = ro.getNodeForKeyIfExistent("tooltip").filter(t -> !t.getString().startsWith("e_")).orElse(null);
+                var btnText = translations.get(ro.getNodeForKey("displayName").getString()) + (btnHelp != null ? "- " + translations.get(btnHelp.getString()) : "");
+                var btn = new RadioButton(btnText);
+                btn.setAlignment(Pos.CENTER_LEFT);
+                btn.setToggleGroup(tg);
+                btn.selectedProperty().addListener((c, o, ne) -> {
+                    values.put(oName, roValue);
+                });
+                if (values.get(oName) != null && values.get(oName).equals(roValue)) {
+                    btn.setSelected(true);
+                }
+                if (values.get(oName) == null && ro.getNodeForKey("default").getString().equals("true")) {
+                    btn.setSelected(true);
+                }
+
+                col.getChildren().add(btn);
+            }
+
+            options.addComp(Comp.of(() -> col));
+            options.addComp(Comp.hseparator().padding(new Insets(3, 3, 3, 0)));
         }
-        // Remove last separator
-        options.getChildren().remove(options.getChildren().size() - 1);
-        options.setSpacing(10);
 
-        var sp = new ScrollPane(options);
-        sp.setFitToWidth(true);
-        sp.setPrefViewportHeight(500);
-        alert.getDialogPane().setContent(sp);
-
-        Optional<ButtonType> r = alert.showAndWait();
-        return r.isPresent() && r.get().equals(ButtonType.APPLY);
+        var ok = new SimpleBooleanProperty();
+        var modal = ModalOverlay.of("converterSettings", new ScrollComp(options.buildComp()).prefWidth(600));
+        modal.addButton(new ModalButton("openConfigs", () -> {
+            DesktopHelper.browsePath(converterSupport.getBackendDir().resolve("configurables"));
+        }, false, false));
+        modal.addButton(ModalButton.cancel());
+        modal.addButton(ModalButton.ok(() -> {
+            ok.setValue(true);
+        }));
+        modal.showAndWait();
+        return ok.get();
     }
 }
