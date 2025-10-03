@@ -28,6 +28,7 @@ import lombok.extern.jackson.Jacksonized;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class AppLayoutModel {
@@ -66,6 +67,10 @@ public class AppLayoutModel {
 
         // If no active game is set, select the first one available (if existent)
         return entries.getFirst();
+    }
+
+    public Optional<Game> getActiveGame() {
+        return selected.getValue() instanceof GameEntry ge ? Optional.of(ge.game) : Optional.empty();
     }
 
     public static AppLayoutModel get() {

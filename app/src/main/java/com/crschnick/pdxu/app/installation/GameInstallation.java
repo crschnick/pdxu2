@@ -10,6 +10,7 @@ import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.model.GameVersion;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.apache.commons.collections4.bidimap.DualLinkedHashBidiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 public final class GameInstallation {
 
-    public static final BidiMap<Game, GameInstallation> ALL = new DualHashBidiMap<>();
+    public static final BidiMap<Game, GameInstallation> ALL = new DualLinkedHashBidiMap<>();
 
     private final GameInstallType type;
     private final GameDist dist;

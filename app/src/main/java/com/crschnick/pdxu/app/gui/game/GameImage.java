@@ -138,20 +138,7 @@ public class GameImage {
     public static Image VIC3_ICON_RADICALS;
     public static Image VIC3_ICON_LOYALISTS;
 
-    private static void resetImages() {
-        for (var field : GameImage.class.getFields()) {
-            if (field.getType().equals(Image.class)) {
-                try {
-                    field.set(null, ImageHelper.DEFAULT_IMAGE);
-                } catch (IllegalAccessException e) {
-                    ErrorEventFactory.fromThrowable(e).handle();
-                }
-            }
-        }
-    }
-
     public static void loadGameImages(Game g) {
-        resetImages();
         Map<Game, Runnable> loadFuncs = Map.of(
                 Game.EU4, GameImage::loadEu4Images,
                 Game.CK3, GameImage::loadCk3Images,

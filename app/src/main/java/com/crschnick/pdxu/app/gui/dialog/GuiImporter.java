@@ -4,6 +4,7 @@ import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.base.ModalButton;
 import com.crschnick.pdxu.app.comp.base.ModalOverlay;
 import com.crschnick.pdxu.app.core.AppI18n;
+import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.savegame.FileImportTarget;
@@ -85,14 +86,11 @@ public class GuiImporter {
 
         var modal = ModalOverlay.of("importSavegames", Comp.of(() -> createContent(state)));
         modal.addButton(new ModalButton("delete", () -> {
-            if (AppSideWindow.showBlockingAlert(dAlert -> {
-                dAlert.setAlertType(Alert.AlertType.CONFIRMATION);
-                dAlert.setTitle("Confirm deletion");
-                dAlert.setHeaderText("Do you want to delete the selected savegame(s)?");
-            }).map(t -> t.getButtonData().isDefaultButton()).orElse(false)) {
+            var confirm = AppDialog.confirm("deleteSavegames");
+            if (confirm) {
                 state.getSelectedTargets().forEach(FileImportTarget::delete);
             }
-        }, true, false));
+        }, false, false));
         modal.addButtonBarComp(Comp.hspacer());
         modal.addButton(new ModalButton("import", () -> {
             FileImporter.importTargets(state.getSelectedTargets());

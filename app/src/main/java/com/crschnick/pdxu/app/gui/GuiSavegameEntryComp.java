@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.AppResources;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.core.TaskExecutor;
+import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.gui.dialog.GuiSavegameNotes;
 import com.crschnick.pdxu.app.info.SavegameInfo;
@@ -158,7 +159,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 GuiSavegameNotes.showSavegameNotesDialog(e.getNotes());
             });
             notes.setAccessibleText("Notes");
-            GuiTooltips.install(notes, AppI18n.get("editSavegamenotes"));
+            GuiTooltips.install(notes, AppI18n.get("editSavegameNotes"));
             staticButtons.getChildren().add(notes);
         }
 
@@ -166,11 +167,8 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
             Button del = new Button(null, new FontIcon());
             del.setGraphic(new FontIcon("mdi2t-trash-can-outline"));
             del.setOnMouseClicked((m) -> {
-                if (AppSideWindow.showBlockingAlert(alert -> {
-                    alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle(AppI18n.get("deleteSavegametitle"));
-                    alert.setHeaderText(AppI18n.get("deleteSavegamequestion"));
-                }).map(t -> t.getButtonData().isDefaultButton()).orElse(false)) {
+                var confirm = AppDialog.confirm("deleteSavegame");
+                if (confirm) {
                     SavegameActions.delete(e);
                 }
             });
@@ -241,7 +239,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                             });
                             convert.getStyleClass().add(CLASS_CONVERT);
                             convert.setAccessibleText("Convert to " + converterSupport.getToName() + " savegame");
-                            GuiTooltips.install(convert, AppI18n.get("convertTo_" + converterSupport.getToName()));
+                            GuiTooltips.install(convert, AppI18n.get("convertTo" + converterSupport.getToName()));
                             dynamicButtons.getChildren().add(convert);
                         });
                     }

@@ -1,5 +1,9 @@
 package com.crschnick.pdxu.app.gui.dialog;
 
+import com.crschnick.pdxu.app.comp.base.ModalButton;
+import com.crschnick.pdxu.app.comp.base.ModalOverlay;
+import com.crschnick.pdxu.app.core.AppI18n;
+import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.GameLanguage;
@@ -11,6 +15,7 @@ import com.crschnick.pdxu.app.util.Hyperlinks;
 import com.crschnick.pdxu.io.node.Node;
 import com.crschnick.pdxu.io.parser.TextFormatParser;
 import com.jfoenix.controls.JFXRadioButton;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -32,81 +37,36 @@ public class GuiConverterConfig {
     ConverterSupport converterSupport;
 
     public boolean showConfirmConversionDialog() {
-        Alert alert = AppSideWindow.createEmptyAlert();
-
-        var config = new ButtonType("Configure");
-        alert.getButtonTypes().add(config);
-
-        alert.setAlertType(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm conversion");
-        alert.setHeaderText(String.format("""
-                                                  Do you want to convert the selected %s savegame to an %s mod?
-                                                  """, converterSupport.getFromName(), converterSupport.getToName()));
-        alert.setContentText("""
-                This conversion may take a while.
-                """);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get().equals(config);
+        var modal = ModalOverlay.of("converterConfigureTitle", AppDialog.dialogText(
+                AppI18n.observable("converterConfigureContent", converterSupport.getFromName(), converterSupport.getToName())));
+        var ok = new SimpleBooleanProperty();
+        modal.addButton(new ModalButton("converterConfigure", () -> {
+            ok.set(true);
+        }, true, true));
+        modal.showAndWait();
+        return ok.get();
     }
 
     public void showUsageDialog() {
-        Alert alert = AppSideWindow.createEmptyAlert();
-
-        var download = new ButtonType("Show downloads");
-        alert.getButtonTypes().add(download);
-        Button val = (Button) alert.getDialogPane().lookupButton(download);
-        val.setOnAction(e -> {
+        var modal = ModalOverlay.of("converterUsageTitle", AppDialog.dialogTextKey("converterUsageContent"));
+        modal.addButton(new ModalButton("showDownloads", () -> {
             Hyperlinks.open(converterSupport.getDownloadLink());
-        });
-
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setTitle(converterSupport.getFromName() + " to " + converterSupport.getToName() + " converter");
-        alert.setHeaderText("""
-                To use the converter functionality, you first have to download the converter,
-                extract it, and then set the path to the extracted directory in the settings menu.
-                """);
-        alert.showAndWait();
-    }
-
-    public void showAlreadyExistsDialog(String name) {
-        AppSideWindow.showBlockingAlert(alert -> {
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setTitle("Mod already exists");
-            alert.setHeaderText("A converted mod with the name " + name + " already exists in your mod directory.");
-        });
+        }, true, true));
+        modal.show();
     }
 
     public void showConversionSuccessDialog() {
-        Alert alert = AppSideWindow.createEmptyAlert();
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setTitle("Conversion succeeded");
-        alert.setHeaderText("""
-                The Converter has finished successfully.
-                """);
-        alert.setContentText("""
-                The created mod has been added to your mod directory.
-                To play it, simply enable the mod your the Paradox launcher.
-                """);
-        alert.showAndWait();
+        var modal = ModalOverlay.of("converterSuccessTitle", AppDialog.dialogTextKey("converterSuccessContent"));
+        modal.addButton(ModalButton.ok());
+        modal.show();
     }
 
     public void showConversionErrorDialog() {
-        Alert alert = AppSideWindow.createEmptyAlert();
-        var openLog = new ButtonType("Open log");
-        alert.getButtonTypes().add(openLog);
-        alert.setAlertType(Alert.AlertType.ERROR);
-        alert.setTitle("Conversion failed");
-        alert.setHeaderText("""
-                The converter returned an error.
-                """);
-        alert.setContentText("""
-                If you want to diagnose the error, you can take a look at the log file of the converter.
-                """);
-        Button val = (Button) alert.getDialogPane().lookupButton(openLog);
-        val.setOnAction(e -> {
+        var modal = ModalOverlay.of("converterFailedTitle", AppDialog.dialogTextKey("converterFailedContent"));
+        modal.addButton(new ModalButton("converterFailedLogs", () -> {
             DesktopHelper.openInDefaultApplication(converterSupport.getWorkingDir().resolve("log.txt"));
-        });
-        alert.showAndWait();
+        }, true, true));
+        modal.show();
     }
 
     private javafx.scene.Node createOptionNode(

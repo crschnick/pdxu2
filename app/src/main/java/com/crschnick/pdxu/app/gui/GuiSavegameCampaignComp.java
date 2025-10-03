@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.core.AppFont;
 import com.crschnick.pdxu.app.core.AppFontSizes;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
+import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
@@ -80,11 +81,8 @@ public class GuiSavegameCampaignComp<T, I extends SavegameInfo<T>> extends Simpl
             AppFontSizes.xxl(name);
 
             var del = new IconButtonComp(new LabelGraphic.IconGraphic("mdi2t-trash-can-outline"), () -> {
-                if (AppSideWindow.showBlockingAlert(alert -> {
-                    alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle(AppI18n.get("deleteCampaigntitle"));
-                    alert.setHeaderText(AppI18n.get("deleteCampaignquestion"));
-                }).map(t -> t.getButtonData().isDefaultButton()).orElse(false)) {
+                var confirm = AppDialog.confirm("deleteCampaign");
+                if (confirm) {
                     SavegameActions.delete(campaign);
                 }
             }).createRegion();

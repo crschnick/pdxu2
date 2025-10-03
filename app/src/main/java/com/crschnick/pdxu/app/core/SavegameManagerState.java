@@ -41,6 +41,7 @@ public class SavegameManagerState<T, I extends SavegameInfo<T>> {
     public SavegameManagerState(Game game) {
         this.game = game;
         addShownContentChangeListeners();
+        updateShownCollections();
     }
 
     private void addShownContentChangeListeners() {

@@ -57,43 +57,43 @@ public final class AppPrefs {
 
     final Property<Path> eu4Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("eu4")
+            .key("eu4Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> ck3Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("ck3")
+            .key("ck3Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> hoi4Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("hoi4")
+            .key("hoi4Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> stellarisDirectory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("stellaris")
+            .key("stellarisDirectory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> ck2Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("ck2")
+            .key("ck2Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> vic2Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("vic2")
+            .key("vic2Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
     final Property<Path> vic3Directory = map(Mapping.builder()
             .property(new SimpleObjectProperty<>())
-            .key("vic3")
+            .key("vic3Directory")
             .valueClass(Path.class)
             .requiresRestart(true)
             .build());
@@ -394,7 +394,10 @@ public final class AppPrefs {
     }
 
     public void determineDefaults() {
-        eu4Directory.setValue(GameDists.detectDist(Game.EU4, true).map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        eu4Directory.setValue(GameDists.detectDist(Game.EU4, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+        ck3Directory.setValue(GameDists.detectDist(Game.CK3, AppProperties.get().isInitialLaunch())
+                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
     }
 
     private void fixLocalValues() {

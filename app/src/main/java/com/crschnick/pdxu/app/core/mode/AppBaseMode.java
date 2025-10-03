@@ -6,6 +6,7 @@ import com.crschnick.pdxu.app.core.check.*;
 import com.crschnick.pdxu.app.core.window.AppDialog;
 import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.core.window.AppWindowTitle;
+import com.crschnick.pdxu.app.gui.game.GameImage;
 import com.crschnick.pdxu.app.installation.GameAppManager;
 import com.crschnick.pdxu.app.installation.GameCacheManager;
 import com.crschnick.pdxu.app.installation.GameInstallation;
@@ -55,7 +56,6 @@ public class AppBaseMode extends AppOperationMode {
         AppDirectoryPermissionsCheck.checkDirectory(AppSystemInfo.ofCurrent().getTemp());
         WindowsRegistry.init();
         AppJavaOptionsCheck.check();
-        AppLayoutModel.init();
 
         // If we downloaded an update, and decided to no longer automatically update, don't remind us!
         // You can still update manually in the about tab
@@ -72,9 +72,14 @@ public class AppBaseMode extends AppOperationMode {
         IntegrityManager.init();
         TaskExecutor.getInstance().start();
         AppPrefs.get().determineDefaults();
-        GameCacheManager.init();
-        GameInstallation.init();
         SavegameStorage.init();
+        GameInstallation.init();
+        AppLayoutModel.init();
+        AppLayoutModel.get().getActiveGame().ifPresent(game -> {
+            GameImage.loadGameImages(game);
+        });
+
+        GameCacheManager.init();
         AppFileWatcher.init();
         SavegameWatcher.init();
         GameAppManager.init();
