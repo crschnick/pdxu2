@@ -27,7 +27,7 @@ public class BasicUpdater extends UpdateHandler {
                 "checkOutUpdate",
                 () -> {
                     var rel = getLastUpdateCheckResult().getValue();
-                    if (rel == null || !rel.isUpdate()) {
+                    if (rel == null) {
                         return;
                     }
 
@@ -43,7 +43,7 @@ public class BasicUpdater extends UpdateHandler {
                     "installUpdate",
                     () -> {
                         var rel = getLastUpdateCheckResult().getValue();
-                        if (rel == null || !rel.isUpdate()) {
+                        if (rel == null) {
                             return;
                         }
 
@@ -70,15 +70,15 @@ public class BasicUpdater extends UpdateHandler {
         var rel = found.get();
         event("Determined latest suitable release " + rel.getTagName());
         var isUpdate = isUpdate(rel.getTagName());
-        lastUpdateCheckResult.setValue(new AvailableRelease(
+        var val = isUpdate ? new AvailableRelease(
                 AppProperties.get().getVersion(),
                 AppDistributionType.get().getId(),
                 rel.getTagName(),
                 rel.getHtmlUrl().toString(),
                 rel.getOwner().getHtmlUrl().toString(),
                 "## Changes in v" + rel.getTagName() + "\n\n" + rel.getBody(),
-                Instant.now(),
-                isUpdate));
+                Instant.now()) : null;
+        lastUpdateCheckResult.setValue(val);
         return lastUpdateCheckResult.getValue();
     }
 }
