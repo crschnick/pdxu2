@@ -79,13 +79,17 @@ signing {
 }
 
 tasks.register('signArtifacts', Sign) {
-    def dir = layout.buildDirectory.dir("dist/artifacts").get()
-    dir.asFileTree.files.forEach { sign(it) }
+    if (signingEnabled) {
+        def dir = layout.buildDirectory.dir("dist/artifacts").get()
+        dir.asFileTree.files.forEach { sign(it) }
+    }
 }
 
 tasks.register('signChecksums', Sign) {
-    def checksums = layout.buildDirectory.file("dist/checksums/sha256sums.txt").get().asFile
-    sign(checksums)
+    if (signingEnabled) {
+        def checksums = layout.buildDirectory.file("dist/checksums/sha256sums.txt").get().asFile
+        sign(checksums)
+    }
 }
 
 run {
