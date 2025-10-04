@@ -56,19 +56,6 @@ open module com.crschnick.pdxu.app {
     requires java.net.http;
     requires org.jetbrains.annotations;
     requires org.kohsuke.github;
-
-    // Required runtime modules
-    requires jdk.charsets;
-    requires jdk.crypto.cryptoki;
-    requires jdk.localedata;
-    requires jdk.accessibility;
-    requires org.kordamp.ikonli.material2;
-    requires org.kordamp.ikonli.materialdesign2;
-    requires org.kordamp.ikonli.bootstrapicons;
-    requires org.kordamp.ikonli.feather;
-    requires jdk.zipfs;
-
-    // Pdxu modules
     requires com.crschnick.pdxu.io;
     requires com.crschnick.pdxu.model;
     requires com.jfoenix;
@@ -77,7 +64,20 @@ open module com.crschnick.pdxu.app {
     requires java.desktop;
     requires com.github.kwhat.jnativehook;
     requires io.github.ititus.ddsiio;
+
+    // Required runtime modules
+    requires jdk.charsets;
+    requires jdk.crypto.cryptoki;
+    requires jdk.localedata;
+    requires jdk.accessibility;
+    requires org.kordamp.ikonli.material2;
+    requires org.kordamp.ikonli.materialdesign2;
+    requires org.kordamp.ikonli.materialdesign;
+    requires org.kordamp.ikonli.bootstrapicons;
+    requires org.kordamp.ikonli.feather;
+    requires jdk.zipfs;
     requires org.graalvm.polyglot;
+    requires org.graalvm.js;
 
     uses ModuleLayerLoader;
     uses Module;

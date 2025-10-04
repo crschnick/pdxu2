@@ -60,7 +60,6 @@ public class GameDists {
 
         TrackEvent.trace("Looking for basic dist in " + dir);
         for (var e : BASIC_DISTS) {
-            TrackEvent.trace("Testing dist " + e.toString());
             var r = e.apply(g, dir);
             if (r.isPresent()) {
                 TrackEvent.trace("Found working dist " + r.get().getName());
@@ -73,7 +72,6 @@ public class GameDists {
     private static Optional<GameDist> getCompoundDistFromDirectory(Game g, Path dir, boolean checkXbox) {
         TrackEvent.trace("Looking for compound dist in " + dir);
         for (var e : checkXbox ? ALL_COMPOUND_TYPES : FAST_COMPOUND_TYPES) {
-            TrackEvent.trace("Testing dist " + e.toString());
             var r = e.apply(g, dir);
             if (r.isPresent()) {
                 TrackEvent.trace("Found working dist " + r.get().getName());

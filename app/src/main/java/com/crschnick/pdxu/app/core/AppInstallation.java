@@ -154,7 +154,7 @@ public abstract class AppInstallation {
 
         @Override
         public Path getRakalyExecutable() {
-            return getBaseInstallationPath().resolve("rakaly", "rakaly_windows.exe");
+            return getBaseInstallationPath().resolve("rakaly", "rakaly.exe");
         }
 
         @Override
@@ -212,7 +212,7 @@ public abstract class AppInstallation {
 
         @Override
         public Path getRakalyExecutable() {
-            return getBaseInstallationPath().resolve("rakaly", "rakaly_linux");
+            return getBaseInstallationPath().resolve("rakaly", "rakaly");
         }
 
         @Override
@@ -273,7 +273,7 @@ public abstract class AppInstallation {
 
         @Override
         public Path getRakalyExecutable() {
-            return getBaseInstallationPath().resolve("rakaly", "rakaly_mac");
+            return getBaseInstallationPath().resolve("Contents", "MacOS", "rakaly");
         }
 
         @Override

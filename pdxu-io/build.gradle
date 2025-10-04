@@ -7,5 +7,4 @@ apply from: "$rootDir/gradle/gradle_scripts/lombok.gradle"
 
 dependencies {
     compileOnly 'org.graalvm.polyglot:polyglot:25.0.0'
-    compileOnly 'org.graalvm.js:js-community:25.0.0'
 }

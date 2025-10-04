@@ -40,6 +40,7 @@ dependencies {
     implementation 'io.sentry:sentry:8.20.0'
     implementation 'commons-io:commons-io:2.20.0'
     implementation "com.fasterxml.jackson.core:jackson-databind:2.20.0"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.20"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.0"
     implementation "org.kordamp.ikonli:ikonli-material2-pack:12.4.0"
     implementation "org.kordamp.ikonli:ikonli-materialdesign-pack:12.4.0"
@@ -58,7 +59,8 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:4.5.0"
     implementation 'io.github.ititus:ddsiio:3.1.0'
     implementation 'org.graalvm.polyglot:polyglot:25.0.0'
-    implementation 'org.graalvm.polyglot:js:25.0.0'
+    implementation 'org.graalvm.truffle:truffle-runtime:25.0.0'
+    implementation 'org.graalvm.js:js-language:25.0.0'
     implementation project(':pdxu-io')
     implementation project(':pdxu-model')
     runtimeOnly project(':pdxu-editor')

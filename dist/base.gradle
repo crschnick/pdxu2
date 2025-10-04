@@ -34,6 +34,11 @@ if (os.isWindows()) {
                 from "$rootDir/lang"
                 into "$distDir/base/lang"
             }
+            copy {
+                from "$rootDir/rakaly/rakaly_windows.exe"
+                into "$distDir/base/rakaly"
+                rename "rakaly_windows.exe", "rakaly.exe"
+            }
 
             file("$distDir/base/app/.jpackage.xml").delete()
 
@@ -130,6 +135,11 @@ if (os.isWindows()) {
                 from "$rootDir/lang"
                 into "$distDir/base/lang"
             }
+            copy {
+                from "$rootDir/rakaly/rakaly_linux"
+                into "$distDir/base/rakaly"
+                rename "rakaly_linux", "rakaly"
+            }
 
             def customLauncherDir = file("$projectDir/launcher/linux/$arch")
             if (customLauncherDir.exists()) {
@@ -179,6 +189,11 @@ if (os.isWindows()) {
             copy {
                 from "$rootDir/lang"
                 into "$distDir/$app/Contents/Resources/lang"
+            }
+            copy {
+                from "$rootDir/rakaly/rakaly_mac"
+                into "$distDir/$app/Contents/MacOS"
+                rename "rakaly_mac", "rakaly"
             }
 
             def shLauncherFile = file("$distDir/$app/Contents/runtime/Contents/Home/bin/${jpackageExecutableName}")

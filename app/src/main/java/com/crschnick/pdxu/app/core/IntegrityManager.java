@@ -37,9 +37,9 @@ public class IntegrityManager {
     public static void init() {
         INSTANCE = new IntegrityManager();
 
-        var modelPackage = getPackagePath("com.crschnick.pdxu.model", "/com/crschnick/pdxu/model");
-        var ioPackage = getPackagePath("com.crschnick.pdxu.io", "/com/crschnick/pdxu/io");
-        var infoPackage = getPackagePath("com.crschnick.pdxu.app", "/com/crschnick/pdxu/app/info");
+        var modelPackage = getPackagePath("com.crschnick.pdxu.model", "com/crschnick/pdxu/model");
+        var ioPackage = getPackagePath("com.crschnick.pdxu.io", "com/crschnick/pdxu/io");
+        var infoPackage = getPackagePath("com.crschnick.pdxu.app", "com/crschnick/pdxu/app/info");
         for (Game g : Game.values()) {
             INSTANCE.checksums.put(g, calc(ioPackage, modelPackage, infoPackage, g.getId()));
         }

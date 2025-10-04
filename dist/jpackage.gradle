@@ -56,6 +56,8 @@ jlink {
     addExtraModulePath(layout.projectDirectory.dir("jna/${platformName}/${arch}").toString())
     addExtraModulePath(layout.projectDirectory.dir("jnativehook/${platformName}/${arch}").toString())
 
+    addOptions("--add-modules", "com.crschnick.pdxu.editor")
+
     // Include debugger module in dev build
     if (!ci || !isFullRelease) {
         addOptions("--add-modules", "jdk.jdwp.agent")
