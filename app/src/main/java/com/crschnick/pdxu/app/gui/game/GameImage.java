@@ -156,7 +156,11 @@ public class GameImage {
 
     public static Image getGameIcon(Game g) {
         var iconFile = GameInstallation.ALL.get(g).getDist().getIcon();
-        return ImageHelper.loadImage(iconFile);
+        var img = ImageHelper.loadImage(iconFile);
+        if (g == Game.CK3) {
+            img = ImageHelper.cut(img, new Rectangle2D(25, 25, 512 - 50, 512 - 50));
+        }
+        return img;
     }
 
     public static void loadVic3Images() {

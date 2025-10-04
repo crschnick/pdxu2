@@ -91,7 +91,7 @@ public enum Game {
 
     public String getTranslatedAbbreviation() {
         String base = abbreviation.toLowerCase();
-        return AppI18n.get(base.substring(0, 1).toUpperCase() + base.substring(1) + "Abbreviation");
+        return AppI18n.get(base + "Abbreviation");
     }
 
     public String getId() {
@@ -103,7 +103,7 @@ public enum Game {
     }
 
     public String getTranslatedFullName() {
-        return AppI18n.get(abbreviation);
+        return AppI18n.get(id);
     }
 
     public String getWindowsStoreName() {

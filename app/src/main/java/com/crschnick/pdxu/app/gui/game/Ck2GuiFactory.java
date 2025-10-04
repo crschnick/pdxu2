@@ -28,7 +28,7 @@ public class Ck2GuiFactory extends GameGuiFactory<Ck2Tag, Ck2SavegameInfo> {
     public Pane background() {
         var bg = GameImage.backgroundNode(GameImage.CK2_BACKGROUND);
         bg.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
-            return AppPrefs.get().theme().getValue().isDark() ? 0.05 : 0.19;
+            return AppPrefs.get().theme().getValue().isDark() ? 0.05 : 0.17;
         }, AppPrefs.get().theme()));
         return bg;
     }

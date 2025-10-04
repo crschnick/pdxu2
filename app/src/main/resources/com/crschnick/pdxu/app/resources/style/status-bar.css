@@ -1,16 +1,15 @@
-
 .status-bar {
--fx-border-color: #99ff99CC;
--fx-background-color: -color-danger-muted;
--fx-padding: 0 8 0 8;
--fx-min-height: 3.2em;
--fx-max-height: 3.2em;
--fx-border-width: 1 0 0 0;
+    -fx-border-color: -color-success-subtle;
+    -fx-background-color: -color-success-muted;
+    -fx-padding: 0 8 0 8;
+    -fx-min-height: 3.6em;
+    -fx-max-height: 3.6em;
+    -fx-border-width: 1 0 0 0;
 }
 
 .status-compatible-unknown {
--fx-border-color: #999922AA;
--fx-background-color: #99992299;
+-fx-border-color: -color-warning-muted;
+-fx-background-color: -color-warning-muted;
 }
 
 .status-incompatible {
@@ -19,8 +18,8 @@
 }
 
 .status-running {
--fx-border-color: #449955BB;
--fx-background-color: #44995599;
+-fx-border-color: -color-success-muted;
+-fx-background-color: -color-success-emphasis;
 }
 
 .status-bar .image-icon {

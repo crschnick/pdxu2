@@ -134,7 +134,6 @@ public class GuiStatusBarComp<T, I extends SavegameInfo<T>> extends SimpleComp {
             }
             {
                 Button export = new Button(AppI18n.get("export"));
-                AppFontSizes.sm(export);
                 export.setGraphic(new FontIcon());
                 export.getStyleClass().add(CLASS_EXPORT);
                 export.setOnAction(event -> {
@@ -149,7 +148,6 @@ public class GuiStatusBarComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
             if (e.getInfo() != null && ctx.getInstallation().getDist().supportsLauncher()) {
                 Button launch = new Button(AppI18n.get("startLauncher"));
-                AppFontSizes.sm(launch);
                 launch.setGraphic(new FontIcon());
                 launch.getStyleClass().add("launcher-button");
                 launch.setOnAction(event -> {
@@ -183,7 +181,6 @@ public class GuiStatusBarComp<T, I extends SavegameInfo<T>> extends SimpleComp {
                     launch = new Button(AppI18n.get("continueGame"));
                 }
 
-                AppFontSizes.sm(launch);
                 launch.setGraphic(new FontIcon());
                 launch.getStyleClass().add("continue-button");
                 launch.setOnAction(event -> {
@@ -197,7 +194,6 @@ public class GuiStatusBarComp<T, I extends SavegameInfo<T>> extends SimpleComp {
 
             {
                 Button help = new Button();
-                AppFontSizes.sm(help);
                 help.setGraphic(new FontIcon());
                 help.getStyleClass().add("help-button");
                 help.setOnAction(event -> {

@@ -5,7 +5,9 @@ import com.crschnick.pdxu.app.core.AppProperties;
 import com.crschnick.pdxu.app.core.AppTheme;
 import com.crschnick.pdxu.app.core.mode.AppOperationMode;
 import com.crschnick.pdxu.app.installation.Game;
+import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.installation.dist.GameDists;
+import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.platform.GlobalBooleanProperty;
 import com.crschnick.pdxu.app.platform.GlobalDoubleProperty;
 import com.crschnick.pdxu.app.platform.GlobalObjectProperty;
@@ -27,6 +29,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Value;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -464,21 +468,42 @@ public final class AppPrefs {
         save();
     }
 
-    public void determineDefaults() {
-        eu4Directory.setValue(GameDists.detectDist(Game.EU4, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        ck3Directory.setValue(GameDists.detectDist(Game.CK3, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        hoi4Directory.setValue(GameDists.detectDist(Game.HOI4, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        stellarisDirectory.setValue(GameDists.detectDist(Game.STELLARIS, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        ck2Directory.setValue(GameDists.detectDist(Game.CK2, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        vic2Directory.setValue(GameDists.detectDist(Game.VIC2, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
-        vic3Directory.setValue(GameDists.detectDist(Game.VIC3, AppProperties.get().isInitialLaunch())
-                .map(gameDist -> gameDist.getInstallLocation()).orElse(null));
+    public void initInstallations() {
+        setInstallation(Game.EU4, eu4Directory);
+        setInstallation(Game.CK3, ck3Directory);
+        setInstallation(Game.HOI4, hoi4Directory);
+        setInstallation(Game.STELLARIS, stellarisDirectory);
+        setInstallation(Game.CK2, ck2Directory);
+        setInstallation(Game.VIC2, vic2Directory);
+        setInstallation(Game.VIC3, vic3Directory);
+    }
+
+    private void setInstallation(Game g, Property<Path> prop) {
+        if (prop.getValue() == null) {
+            var val = GameDists.detectDist(g, AppProperties.get().isInitialLaunch())
+                    .filter(gameDist -> {
+                        try {
+                            return Files.exists(gameDist.determineUserDir());
+                        } catch (IOException e) {
+                            ErrorEventFactory.fromThrowable(e).omit().handle();
+                            return false;
+                        }
+                    })
+                    .map(gameDist -> gameDist.getInstallLocation())
+                    .orElse(null);
+            prop.setValue(val);
+        }
+
+        if (prop.getValue() != null) {
+            var install = new GameInstallation(g.getInstallType(), GameDists.detectDistFromDirectory(g, prop.getValue()));
+            try {
+                install.loadData();
+                install.initOptional();
+                GameInstallation.ALL.put(g, install);
+            } catch (Exception e) {
+                ErrorEventFactory.fromThrowable(e).handle();
+            }
+        }
     }
 
     private void fixLocalValues() {

@@ -26,7 +26,7 @@ public class Eu4GuiFactory extends GameGuiFactory<Eu4Tag, Eu4SavegameInfo> {
     public Pane background() {
         var bg = GameImage.backgroundNode(EU4_BACKGROUND);
         bg.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
-            return AppPrefs.get().theme().getValue().isDark() ? 0.12 : 0.35;
+            return AppPrefs.get().theme().getValue().isDark() ? 0.16 : 0.35;
         }, AppPrefs.get().theme()));
         return bg;
     }

@@ -10,7 +10,6 @@ import com.crschnick.pdxu.app.gui.game.GameImage;
 import com.crschnick.pdxu.app.installation.GameAppManager;
 import com.crschnick.pdxu.app.installation.GameCacheManager;
 import com.crschnick.pdxu.app.installation.GameInstallation;
-import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.platform.PlatformInit;
 import com.crschnick.pdxu.app.platform.PlatformState;
@@ -20,10 +19,7 @@ import com.crschnick.pdxu.app.savegame.SavegameWatcher;
 import com.crschnick.pdxu.app.update.UpdateAvailableDialog;
 import com.crschnick.pdxu.app.util.EditorProvider;
 import com.crschnick.pdxu.app.util.GlobalTimer;
-import com.crschnick.pdxu.app.util.ThreadHelper;
 import com.crschnick.pdxu.app.util.WindowsRegistry;
-import com.github.kwhat.jnativehook.GlobalScreen;
-import org.apache.commons.lang3.SystemUtils;
 
 public class AppBaseMode extends AppOperationMode {
 
@@ -71,9 +67,8 @@ public class AppBaseMode extends AppOperationMode {
 
         IntegrityManager.init();
         TaskExecutor.getInstance().start();
-        AppPrefs.get().determineDefaults();
         SavegameStorage.init();
-        GameInstallation.init();
+        AppPrefs.get().initInstallations();
         AppLayoutModel.init();
         AppLayoutModel.get().getActiveGame().ifPresent(game -> {
             GameImage.loadGameImages(game);
@@ -83,8 +78,8 @@ public class AppBaseMode extends AppOperationMode {
         AppFileWatcher.init();
         SavegameWatcher.init();
         GameAppManager.init();
-        // EditorProvider.get().init();
-        registerNativeHook();
+        EditorProvider.get().init();
+        AppNativeHook.registerNativeHook();
 
         AppMainWindow.initContent();
 
@@ -97,31 +92,6 @@ public class AppBaseMode extends AppOperationMode {
         initialized = true;
     }
 
-    private void registerNativeHook() {
-        try {
-            if (AppProperties.get().isNativeHookEnabled() && !SystemUtils.IS_OS_MAC) {
-                GlobalScreen.registerNativeHook();
-            }
-        } catch (Throwable ex) {
-            ErrorEventFactory.fromThrowable("Unable to register native hook.\n" +
-                    "This might be a permissions issue with your system. " +
-                    "In-game keyboard shortcuts will be unavailable!" +
-                    "\nRestart the Pdx-Unlimiter once the permission issues are fixed to enable in-game shortcuts.", ex).handle();
-        }
-    }
-
-    private void unregisterNativeHook() {
-        try {
-            if (AppProperties.get().isNativeHookEnabled() && !SystemUtils.IS_OS_MAC) {
-                GlobalScreen.unregisterNativeHook();
-            }
-        } catch (Throwable ex) {
-            ErrorEventFactory.fromThrowable("Unable to unregister native hook.\n" +
-                    "This might be a permissions issue with your system.", ex).handle();
-        }
-    }
-
-
     @Override
     public void onSwitchFrom() {}
 
@@ -132,7 +102,7 @@ public class AppBaseMode extends AppOperationMode {
         SavegameWatcher.reset();
         SavegameStorage.reset();
         GameInstallation.reset();
-        unregisterNativeHook();
+        AppNativeHook.unregisterNativeHook();
 
         TrackEvent.withInfo("Base mode shutdown started").build();
         AppPrefs.reset();

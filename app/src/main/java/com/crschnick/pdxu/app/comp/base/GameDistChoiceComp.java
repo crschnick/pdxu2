@@ -111,6 +111,7 @@ public class GameDistChoiceComp extends SimpleComp {
         var xbox = new IconButtonComp("mdi-xbox", () -> {
             var dist = WindowsStoreDist.getDist(game, null).orElse(null);
             if (dist == null) {
+                ErrorEventFactory.fromMessage(AppI18n.get("xboxDistNotFound")).expected().handle();
                 return;
             }
 
@@ -150,6 +151,7 @@ public class GameDistChoiceComp extends SimpleComp {
                 typeIcon.setValue(new LabelGraphic.IconGraphic("mdi-help"));
                 typeTooltip.set(null);
             }
+            gameDist.setValue(n);
         });
         setDist.setValue(gameDist.getValue());
 

@@ -168,7 +168,10 @@ public class SideMenuBarComp extends Comp<CompStructure<VBox>> {
 
         var indicator = Comp.empty().styleClass("indicator");
         var stack =
-                new StackComp(List.of(indicator, b)).apply(struc -> struc.get().setAlignment(Pos.CENTER_LEFT));
+                new StackComp(List.of(indicator, b)).apply(struc -> {
+                    struc.get().setAlignment(Pos.CENTER);
+                    StackPane.setAlignment(struc.get().getChildren().getFirst(), Pos.CENTER_LEFT);
+                });
         stack.apply(struc -> {
             var indicatorRegion = (Region) struc.get().getChildren().getFirst();
             var buttonRegion = (Region) struc.get().getChildren().get(1);

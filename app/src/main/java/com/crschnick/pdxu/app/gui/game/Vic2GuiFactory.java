@@ -5,8 +5,10 @@ import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.info.vic2.Vic2SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
+import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ImageHelper;
 import com.crschnick.pdxu.model.vic2.Vic2Tag;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -35,7 +37,9 @@ public class Vic2GuiFactory extends GameGuiFactory<Vic2Tag, Vic2SavegameInfo> {
     @Override
     public Pane background() {
         var bg = GameImage.backgroundNode(GameImage.VIC2_BACKGROUND);
-        bg.setOpacity(0.4);
+        bg.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
+            return AppPrefs.get().theme().getValue().isDark() ? 0.04 : 0.16;
+        }, AppPrefs.get().theme()));
         return bg;
     }
 

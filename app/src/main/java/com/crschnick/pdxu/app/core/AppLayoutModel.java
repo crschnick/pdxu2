@@ -211,12 +211,12 @@ public class AppLayoutModel {
         private GameEntry(Game game) {
             super(AppI18n.observable(game.getId()), new LabelGraphic.NodeGraphic(() -> {
                 var pane = GameGuiFactory.get(game).createIcon();
-                pane.setMaxWidth(20);
-                pane.setMaxHeight(20);
-                pane.setPrefWidth(20);
-                pane.setPrefHeight(20);
-                pane.setMinWidth(20);
-                pane.setMinHeight(20);
+                pane.setMaxWidth(24);
+                pane.setMaxHeight(24);
+                pane.setPrefWidth(24);
+                pane.setPrefHeight(24);
+                pane.setMinWidth(24);
+                pane.setMinHeight(24);
                 return pane;
             }), new GuiLayoutComp(new SavegameManagerState<>(game)), null);
             this.game = game;

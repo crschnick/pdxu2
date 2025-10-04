@@ -30,7 +30,7 @@ public class Ck3GuiFactory extends GameGuiFactory<Ck3Tag, Ck3SavegameInfo> {
     public Pane background() {
         var bg = GameImage.backgroundNode(CK3_BACKGROUND);
         bg.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
-            return AppPrefs.get().theme().getValue().isDark() ? 0.05 : 0.19;
+            return AppPrefs.get().theme().getValue().isDark() ? 0.05 : 0.15;
         }, AppPrefs.get().theme()));
         return bg;
     }

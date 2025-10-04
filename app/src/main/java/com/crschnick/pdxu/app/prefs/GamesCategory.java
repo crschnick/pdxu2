@@ -34,27 +34,31 @@ public class GamesCategory extends AppPrefsCategory {
                         .addComp(Comp.empty())
                         .name("eu4")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("eu4InstallDir", Game.EU4, wrap(Game.EU4, prefs.eu4Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.EU4, prefs.eu4Directory))
                         .name("ck3")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("ck3InstallDir", Game.CK3, wrap(Game.CK3, prefs.ck3Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.CK3, prefs.ck3Directory))
                         .name("hoi4")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("hoi4InstallDir", Game.HOI4, wrap(Game.HOI4, prefs.hoi4Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.HOI4, prefs.hoi4Directory))
                         .name("vic3")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("vic3InstallDir", Game.VIC3, wrap(Game.VIC3, prefs.vic3Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.VIC3, prefs.vic3Directory))
                         .name("stellaris")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("stellarisInstallDir", Game.STELLARIS, wrap(Game.STELLARIS, prefs.stellarisDirectory)).maxWidth(600))
+                        .addComp(gameChoice(Game.STELLARIS, prefs.stellarisDirectory))
                         .name("ck2")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("ck2InstallDir", Game.CK2, wrap(Game.CK2, prefs.ck2Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.CK2, prefs.ck2Directory))
                         .name("vic2")
                         .description("installationDirectory")
-                        .addComp(new GameDistChoiceComp("vic2InstallDir", Game.VIC2, wrap(Game.VIC2, prefs.vic2Directory)).maxWidth(600))
+                        .addComp(gameChoice(Game.VIC2, prefs.vic2Directory))
                 );
         return builder.buildComp();
+    }
+
+    private Comp<?> gameChoice(Game g, Property<Path> property) {
+        return new GameDistChoiceComp(g.getId() + "Abbreviation", g, wrap(g, property)).maxWidth(600);
     }
 
     private Property<GameDist> wrap(Game game, Property<Path> p) {

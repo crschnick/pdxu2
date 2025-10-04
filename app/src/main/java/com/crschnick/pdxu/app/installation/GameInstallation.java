@@ -56,39 +56,6 @@ public final class GameInstallation {
         }
     }
 
-    public static void init() {
-        var pr = AppPrefs.get();
-        Optional.ofNullable(pr.eu4Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.EU4, new GameInstallation(Game.EU4.getInstallType(), GameDists.detectDistFromDirectory(Game.EU4, p))));
-        Optional.ofNullable(pr.ck3Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.CK3, new GameInstallation(Game.CK3.getInstallType(), GameDists.detectDistFromDirectory(Game.CK3, p))));
-        Optional.ofNullable(pr.hoi4Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.HOI4, new GameInstallation(Game.HOI4.getInstallType(), GameDists.detectDistFromDirectory(Game.HOI4, p))));
-        Optional.ofNullable(pr.stellarisDirectory().getValue()).ifPresent(
-                p -> ALL.put(Game.STELLARIS, new GameInstallation(Game.STELLARIS.getInstallType(), GameDists.detectDistFromDirectory(Game.STELLARIS, p))));
-        Optional.ofNullable(pr.ck2Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.CK2, new GameInstallation(Game.CK2.getInstallType(), GameDists.detectDistFromDirectory(Game.CK2, p))));
-        Optional.ofNullable(pr.vic2Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.VIC2, new GameInstallation(Game.VIC2.getInstallType(), GameDists.detectDistFromDirectory(Game.VIC2, p))));
-        Optional.ofNullable(pr.vic3Directory().getValue()).ifPresent(
-                p -> ALL.put(Game.VIC3, new GameInstallation(Game.VIC3.getInstallType(), GameDists.detectDistFromDirectory(Game.VIC3, p))));
-
-        for (Game g : Game.values()) {
-            if (!ALL.containsKey(g)) {
-                continue;
-            }
-
-            var i = ALL.get(g);
-            try {
-                i.loadData();
-                i.initOptional();
-            } catch (Exception e) {
-                ErrorEventFactory.fromThrowable(e).handle();
-                ALL.remove(g);
-            }
-        }
-    }
-
     public static void reset() {
         ALL.clear();
     }
@@ -140,7 +107,7 @@ public final class GameInstallation {
     }
 
     public void loadData() throws InvalidInstallationException {
-        Game g = ALL.inverseBidiMap().get(this);
+        Game g = dist.getGame();
         TrackEvent.debug("Initializing " + g.getTranslatedAbbreviation() + " installation ...");
 
         if (getInstallDir().startsWith(FileSystemHelper.getUserDocumentsPath().resolve("Paradox Interactive"))) {
