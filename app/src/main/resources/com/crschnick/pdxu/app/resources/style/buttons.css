@@ -143,10 +143,6 @@
     -fx-icon-code: "mdi-alert-outline";
 }
 
-.jfx-button {
-     -jfx-button-type: FLAT;
-}
-
 .switch-game-button .ikonli-font-icon {
    -fx-icon-code: "mdi-vector-arrange-below";
 }

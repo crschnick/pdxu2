@@ -1,5 +1,7 @@
 package com.crschnick.pdxu.editor.gui;
 
+import atlantafx.base.controls.Spacer;
+import atlantafx.base.layout.InputGroup;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.core.window.AppModifiedStage;
@@ -108,15 +110,15 @@ public class GuiEditor {
                 AppI18n.get("savegameEditorTips"),
                 graphic
         );
+        melterInformation.setGraphicTextGap(8);
         melterInformation.setAlignment(Pos.CENTER);
-        melterInformation.setPadding(new Insets(5, 5, 5, 5));
+        melterInformation.getStyleClass().add("melter-information");
         var topBars = new VBox(
                 GuiEditorMenuBar.createMenuBar(state),
                 v
         );
         if (!state.isEditable()) {
             topBars.getChildren().add(melterInformation);
-            topBars.getChildren().add(new Separator(Orientation.HORIZONTAL));
         }
         topBars.setFillWidth(true);
         melterInformation.prefWidthProperty().bind(topBars.widthProperty());
@@ -303,10 +305,11 @@ public class GuiEditor {
     }
 
     private static Region createFilterBar(EditorFilter edFilter) {
-        HBox box = new HBox();
+        var box = new HBox();
+        box.setAlignment(Pos.CENTER_LEFT);
         box.getStyleClass().add(GuiStyle.CLASS_EDITOR_FILTER);
-        box.setSpacing(8);
 
+        var toggleBar = new InputGroup();
         {
             ToggleButton filterKeys = new ToggleButton();
             filterKeys.setAccessibleText("Include keys in search");
@@ -314,7 +317,7 @@ public class GuiEditor {
             filterKeys.setGraphic(new FontIcon());
             filterKeys.selectedProperty().bindBidirectional(edFilter.filterKeysProperty());
             GuiTooltips.install(filterKeys, AppI18n.get("editorSearchFilterKeys"));
-            box.getChildren().add(filterKeys);
+            toggleBar.getChildren().add(filterKeys);
         }
 
         {
@@ -327,12 +330,13 @@ public class GuiEditor {
                 filterValues.setSelected(n);
             });
             GuiTooltips.install(filterValues, AppI18n.get("editorSearchFilterValues"));
-            box.getChildren().add(filterValues);
+            toggleBar.getChildren().add(filterValues);
         }
+        box.getChildren().add(toggleBar);
 
         box.getChildren().add(new Separator(Orientation.VERTICAL));
 
-        HBox textBar = new HBox();
+        var textBar = new InputGroup();
         {
             TextField filter = new TextField();
             {
@@ -362,6 +366,9 @@ public class GuiEditor {
                 search.setGraphic(new FontIcon());
                 search.getStyleClass().add(GuiStyle.CLASS_FILTER);
                 textBar.getChildren().add(search);
+                filter.prefHeightProperty().bind(search.heightProperty());
+                filter.minHeightProperty().bind(search.heightProperty());
+                filter.maxHeightProperty().bind(search.heightProperty());
             }
 
             {
@@ -391,12 +398,10 @@ public class GuiEditor {
             box.getChildren().add(cs);
         }
 
-        Region spacer = new Region();
-        box.getChildren().add(spacer);
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        box.getChildren().add(new Spacer());
 
         {
-            Button filterDisplay = new Button(null, new FontIcon());
+            Label filterDisplay = new Label(null, new FontIcon());
             filterDisplay.setMnemonicParsing(false);
             edFilter.filterStringProperty().addListener((c, o, n) -> {
                 Platform.runLater(() -> filterDisplay.setText(

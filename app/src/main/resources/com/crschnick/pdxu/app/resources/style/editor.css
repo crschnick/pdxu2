@@ -5,11 +5,17 @@
 }
 
 .editor-grid .pane {
-  -fx-padding: 0.35em 0.25em 0.35em 0.6em;
+  -fx-padding: 0.25em 0.25em 0.25em 0.6em;
+}
+
+.melter-information {
+    -fx-padding: 7;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -color-border-default;
 }
 
 .editor-grid .odd {
-  -fx-background-color: #EAEAEAFF;
+  -fx-background-color: -color-bg-subtle;
 }
 
 .editor-grid .preview {
@@ -17,10 +23,10 @@
 }
 
 .editor-filter-bar {
-  -fx-padding: 0.5em;
-  -fx-background-color: #00ad1533;
--fx-border-color: #AAAAAAFF;
--fx-border-width: 0.05em 0 0 0;
+  -fx-padding: 0.5em 1.2em 0.5em 0.5em;
+  -fx-background-color: -color-bg-inset;
+-fx-border-color: -color-border-default;
+-fx-border-width: 1 0 0 0;
 }
 
 .editor .menu {
@@ -29,38 +35,40 @@
 
 .editor-nav-bar-container {
   -fx-padding: 0.4em;
--fx-border-color: #AAAAAAFF;
-  -fx-background-color: #00ad1533;
--fx-border-width: 0 0 0.05em 0;
-  -fx-font-size: 11pt;
+    -fx-background-color: -color-bg-inset;
+    -fx-border-color: -color-border-default;
+-fx-border-width: 0 0 1 0;
 }
 
 .editor-nav-bar {
-  -fx-background-color: #EEEEEEFF;
--fx-border-color: #AAAAAAFF;
--fx-border-width: 0.05em;
+    -fx-background-color: -color-bg-default;
+    -fx-border-color: -color-border-default;
+-fx-border-width: 1;
   -fx-padding: 0 0.3em 0 0.3em;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
 }
 
-.editor-nav-bar-container .jfx-button {
+.editor-nav-bar-container .button {
   -fx-padding: 0.6em;
+    -fx-background-color: transparent;
 }
 
-.editor-nav-bar .jfx-button {
+.editor-nav-bar .button {
   -fx-padding: 0.2em 0.2em 0.2em 0.2em;
 }
 
-.editor-grid .jfx-button {
+.editor-grid .button {
 -fx-padding: 0.25em 0.2em 0.25em 0.2em;
+    -fx-background-color: transparent;
 }
 
 .editor-grid .text-field {
 -fx-padding: 0.25em 0.2em 0.25em 0.2em;
 -fx-border-width: 0 1em 0 1em;
--jfx-unfocus-color: transparent;
 }
 
-.jfx-color-picker .color-label {
+.color-picker .color-label {
 -fx-padding: 0;
 -fx-alignment: center;
 }

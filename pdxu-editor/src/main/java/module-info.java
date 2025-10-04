@@ -34,6 +34,7 @@ module com.crschnick.pdxu.editor {
     requires org.apache.commons.collections4;
     requires org.apache.commons.lang3;
     requires java.desktop;
+    requires atlantafx.base;
 
 
 }

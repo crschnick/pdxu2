@@ -30,6 +30,7 @@ public class GuiEditorNavBar {
     static Region createNavigationBar(EditorState edState) {
         HBox bar = new HBox();
         bar.setFillHeight(true);
+        bar.setSpacing(5);
 
         var arrows = setupNavArrows(edState);
         bar.getChildren().add(arrows);
