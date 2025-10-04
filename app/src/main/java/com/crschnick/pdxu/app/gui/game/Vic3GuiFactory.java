@@ -39,8 +39,6 @@ public class Vic3GuiFactory extends GameGuiFactory<Vic3Tag, Vic3SavegameInfo> {
 
     @Override
     public Background createEntryInfoBackground(SavegameInfo<Vic3Tag> info) {
-        return new Background(new BackgroundFill(
-                Color.LIGHTGRAY,// Ck3Backgrounds.getBackgroundColor(info),
-                CornerRadii.EMPTY, Insets.EMPTY));
+        return null;
     }
 }

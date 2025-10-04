@@ -27,11 +27,6 @@ public class GameCacheManager {
         return INSTANCE;
     }
 
-    public void onSelectedGameChange() {
-        TrackEvent.debug("Clearing game caches");
-        caches.clear();
-    }
-
     public void onSelectedSavegameCollectionChange() {
         TrackEvent.debug("Clearing savegame collection caches");
         caches.entrySet().removeIf(e -> e.getValue().scope.equals(Scope.SAVEGAME_CAMPAIGN_SPECIFIC));

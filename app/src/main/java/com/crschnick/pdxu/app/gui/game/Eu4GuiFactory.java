@@ -35,6 +35,6 @@ public class Eu4GuiFactory extends GameGuiFactory<Eu4Tag, Eu4SavegameInfo> {
     public Background createEntryInfoBackground(SavegameInfo<Eu4Tag> info) {
         return new Background(new BackgroundFill(
                 ColorHelper.withAlpha(ColorHelper.fromGameColor(info.getData().getTag().getMapColor()), 0.33),
-                CornerRadii.EMPTY, Insets.EMPTY));
+                new CornerRadii(4, 4, 0, 0, false), Insets.EMPTY));
     }
 }

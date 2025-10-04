@@ -7,7 +7,7 @@
     -fx-background-color: -color-bg-default;
 }
 
-.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused .entry {
+.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected .entry {
     -fx-border-color: -color-accent-emphasis;
 }
 
@@ -24,8 +24,16 @@
 
 
 .entry-bar {
--fx-padding: 0.3em;
+-fx-padding: 0.3em 0.6em;
 -fx-spacing: 0.5em;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -color-border-default;
+}
+
+
+.entry-bar.no-background {
+    -fx-background-color: -color-bg-inset;
+    -fx-background-radius: 4 4 0 0;
 }
 
 .entry-bar .tag-bar {

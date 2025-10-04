@@ -45,8 +45,6 @@ public class Vic2GuiFactory extends GameGuiFactory<Vic2Tag, Vic2SavegameInfo> {
 
     @Override
     public Background createEntryInfoBackground(SavegameInfo<Vic2Tag> info) {
-        return new Background(new BackgroundFill(
-                Color.DARKGRAY,
-                CornerRadii.EMPTY, Insets.EMPTY));
+        return null;
     }
 }

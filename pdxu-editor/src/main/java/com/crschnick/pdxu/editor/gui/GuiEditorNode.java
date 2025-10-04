@@ -1,5 +1,6 @@
 package com.crschnick.pdxu.editor.gui;
 
+import com.crschnick.pdxu.app.comp.base.TooltipHelper;
 import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ColorHelper;
@@ -13,6 +14,7 @@ import com.crschnick.pdxu.model.GameColor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -80,10 +82,11 @@ public class GuiEditorNode {
             preview.getStyleClass().add("preview");
             preview.setGraphic(new FontIcon());
             preview.setOnMouseEntered(e -> {
-                var tt = GuiTooltips.createTooltip(NodeWriter.writeToString(
+                var text = NodeWriter.writeToString(
                         n.toWritableNode(),
                         AppPrefs.get().editorMaxTooltipLines().getValue(),
-                        AppPrefs.get().editorIndentation().getValue().getValue()));
+                        AppPrefs.get().editorIndentation().getValue().getValue());
+                var tt = TooltipHelper.create(new ReadOnlyStringWrapper(text), null);
                 tt.setWrapText(false);
                 tt.setShowDelay(Duration.ZERO);
                 Tooltip.install(preview, tt);

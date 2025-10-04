@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.editor.gui;
 
 
+import com.crschnick.pdxu.app.comp.base.TooltipHelper;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.util.CascadeDirectoryHelper;
@@ -10,6 +11,7 @@ import com.crschnick.pdxu.app.util.ThreadHelper;
 import com.crschnick.pdxu.editor.EditorState;
 import com.crschnick.pdxu.editor.node.EditorRealNode;
 import com.jfoenix.controls.JFXButton;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -59,7 +61,9 @@ public abstract class GuiEditorNodeTagFactory {
                 CascadeDirectoryHelper.openFile(fileFunction.apply(node), state.getFileContext()).ifPresent(found -> {
                     var img = ImageHelper.loadImage(found);
                     var imgView = new ImageView(img);
-                    var tt = GuiTooltips.createTooltip(imgView);
+                    var tt = new Tooltip();
+                    tt.setGraphic(imgView);
+                    tt.getStyleClass().add("fancy-tooltip");
                     tt.setShowDelay(Duration.ZERO);
                     b.setTooltip(tt);
                 });
@@ -87,8 +91,8 @@ public abstract class GuiEditorNodeTagFactory {
             b.setAlignment(Pos.CENTER);
             b.setGraphic(new FontIcon("mdi-information-outline"));
 
-            var tt = GuiTooltips.createTooltip("The contents of this value are recalculated every time you launch your game. " +
-                    "Therefore, any changes made to this value will not apply to your game.");
+            var tt = TooltipHelper.create(new ReadOnlyStringWrapper("The contents of this value are recalculated every time you launch your game. " +
+                    "Therefore, any changes made to this value will not apply to your game."), null);
             tt.setShowDelay(Duration.ZERO);
             Tooltip.install(b, tt);
             return b;
@@ -120,7 +124,7 @@ public abstract class GuiEditorNodeTagFactory {
                     return;
                 }
 
-                var tt = GuiTooltips.createTooltip(descFunction.apply(node));
+                var tt = TooltipHelper.create(new ReadOnlyStringWrapper(descFunction.apply(node)), null);
                 tt.setShowDelay(Duration.ZERO);
                 Tooltip.install(b, tt);
             });

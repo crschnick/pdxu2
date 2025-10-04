@@ -58,7 +58,12 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         topBar.getStyleClass().add(CLASS_ENTRY_BAR);
         SavegameContext.withSavegameInfoContextAsync(e, ctx -> {
             Platform.runLater(() -> {
-                topBar.setBackground(ctx.getGuiFactory().createEntryInfoBackground(ctx.getInfo()));
+                var bg = ctx.getGuiFactory().createEntryInfoBackground(ctx.getInfo());
+                if (bg != null) {
+                    topBar.setBackground(bg);
+                } else {
+                    topBar.getStyleClass().add("no-background");
+                }
             });
         });
 

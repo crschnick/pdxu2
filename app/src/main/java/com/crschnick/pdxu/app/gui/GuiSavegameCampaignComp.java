@@ -62,6 +62,7 @@ public class GuiSavegameCampaignComp<T, I extends SavegameInfo<T>> extends Simpl
                 Node w = prop.getValue();
                 w.getStyleClass().add(CLASS_TAG_ICON);
                 btn.getChildren().add(w);
+                btn.getStyleClass().add(gi.getGame().getId() + "-campaign");
             });
         }
 

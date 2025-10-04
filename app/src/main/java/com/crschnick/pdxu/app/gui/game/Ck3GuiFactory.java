@@ -39,6 +39,6 @@ public class Ck3GuiFactory extends GameGuiFactory<Ck3Tag, Ck3SavegameInfo> {
     public Background createEntryInfoBackground(SavegameInfo<Ck3Tag> info) {
         return new Background(new BackgroundFill(
                 Ck3Backgrounds.getBackgroundColor(info),
-                CornerRadii.EMPTY, Insets.EMPTY));
+                new CornerRadii(4, 4, 0, 0, false), Insets.EMPTY));
     }
 }

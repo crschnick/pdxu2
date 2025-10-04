@@ -35,8 +35,6 @@ public class Ck2GuiFactory extends GameGuiFactory<Ck2Tag, Ck2SavegameInfo> {
 
     @Override
     public Background createEntryInfoBackground(SavegameInfo<Ck2Tag> info) {
-        return new Background(new BackgroundFill(
-                Color.DARKGRAY,
-                CornerRadii.EMPTY, Insets.EMPTY));
+        return null;
     }
 }
