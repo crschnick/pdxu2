@@ -11,6 +11,7 @@ import com.crschnick.pdxu.app.util.ThreadHelper;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -94,7 +95,8 @@ public class GuiLayoutComp extends SimpleComp {
         loadingBg.setMinWidth(Pane.USE_COMPUTED_SIZE);
         loadingBg.setPrefHeight(Pane.USE_COMPUTED_SIZE);
 
-        var fileDropOverlay = new StackPane(new FontIcon());
+        var fileDropIcon = new FontIcon();
+        var fileDropOverlay = new StackPane(fileDropIcon);
         fileDropOverlay.setAlignment(Pos.CENTER);
         fileDropOverlay.getStyleClass().add("file-drag");
         fileDropOverlay.setVisible(false);

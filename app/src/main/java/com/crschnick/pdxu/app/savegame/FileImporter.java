@@ -18,6 +18,14 @@ import java.util.stream.Collectors;
 
 public class FileImporter {
 
+    public static void onArgumentsPass(List<String> arguments) {
+        var importTargets = arguments.stream()
+                .map(FileImportTarget::createTargets)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        FileImporter.importTargets(importTargets);
+    }
+
     public static void onFileDrop(List<File> files) {
         var importTargets = files.stream()
                 .map(File::toString)

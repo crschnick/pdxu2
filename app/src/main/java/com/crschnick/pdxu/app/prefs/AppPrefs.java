@@ -13,6 +13,7 @@ import com.crschnick.pdxu.app.platform.GlobalDoubleProperty;
 import com.crschnick.pdxu.app.platform.GlobalObjectProperty;
 import com.crschnick.pdxu.app.platform.PlatformThread;
 import com.crschnick.pdxu.app.util.ConverterSupport;
+import com.crschnick.pdxu.app.util.EditorProvider;
 import com.crschnick.pdxu.app.util.IronyHelper;
 import com.crschnick.pdxu.app.util.OsType;
 
@@ -206,7 +207,7 @@ public final class AppPrefs {
             .requiresRestart(false)
             .build());
     final Property<String> editorExternalProgram = map(Mapping.builder()
-            .property(new GlobalObjectProperty<>())
+            .property(new GlobalObjectProperty<>(EditorProvider.get().getDefaultEditor()))
             .key("editorExternalProgram")
             .valueClass(String.class)
             .requiresRestart(false)
@@ -388,6 +389,7 @@ public final class AppPrefs {
             new ImportsCategory(),
             new IronyCategory(),
             new ConvertersCategory(),
+            new EditorCategory(),
             new UpdatesCategory(),
             new TroubleshootCategory(),
             new LinksCategory());

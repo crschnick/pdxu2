@@ -2,6 +2,7 @@ package com.crschnick.pdxu.app.core;
 
 import com.crschnick.pdxu.app.core.mode.AppOperationMode;
 import com.crschnick.pdxu.app.issue.TrackEvent;
+import com.crschnick.pdxu.app.savegame.FileImporter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ public class AppOpenArguments {
         }
 
         TrackEvent.withDebug("Handling arguments").elements(arguments).handle();
-
-        // TODO: Handle any generic arguments passed to the app, e.g. file names to open
+        FileImporter.onArgumentsPass(arguments);
     }
 }

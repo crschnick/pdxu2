@@ -96,7 +96,7 @@ public class AppProperties {
         logLevel = Optional.ofNullable(System.getProperty(AppNames.propertyName("logLevel")))
                 .filter(AppLogs.LOG_LEVELS::contains)
                 .orElse("info");
-        nativeHookEnabled = Optional.ofNullable(System.getProperty("enableJNativeHook"))
+        nativeHookEnabled = Optional.ofNullable(System.getProperty(AppNames.propertyName("enableJNativeHook")))
                 .map(Boolean::parseBoolean)
                 .orElse(true);
 
