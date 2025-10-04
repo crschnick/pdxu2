@@ -74,8 +74,10 @@ if (os.isLinux()) {
     apply from: 'pkg/pkg.gradle'
 }
 
-signing {
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+if (signingEnabled) {
+    signing {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    }
 }
 
 tasks.register('signArtifacts', Sign) {
