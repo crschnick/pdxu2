@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class AppReleases {
 
-    private static final String GITHUB_REPOSITORY = "crschnick/pdx_unlimiter";
+    private static final String GITHUB_REPOSITORY = "crschnick/pdxu2";
 
     private static GHRepository repository;
 
