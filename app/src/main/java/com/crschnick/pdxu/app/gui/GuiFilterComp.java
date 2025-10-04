@@ -5,7 +5,6 @@ import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.CompStructure;
 import com.crschnick.pdxu.app.comp.SimpleCompStructure;
 import com.crschnick.pdxu.app.core.AppI18n;
-import com.crschnick.pdxu.app.core.AppOpenArguments;
 import com.crschnick.pdxu.app.platform.PlatformThread;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
@@ -17,7 +16,6 @@ import javafx.scene.input.MouseButton;
 import lombok.AllArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor

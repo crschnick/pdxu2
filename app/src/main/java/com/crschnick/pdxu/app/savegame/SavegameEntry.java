@@ -4,7 +4,6 @@ import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.model.GameDate;
 import javafx.beans.property.*;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

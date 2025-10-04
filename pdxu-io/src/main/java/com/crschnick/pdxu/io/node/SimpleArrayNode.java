@@ -129,7 +129,7 @@ public final class SimpleArrayNode extends ArrayNode {
         boolean hasArrays = values.stream().anyMatch(Node::isArray);
         ValueType type = null;
         if (!hasArrays) {
-            type = values.get(0).describe().getValueType();
+            type = values.getFirst().describe().getValueType();
             for (int i = 1; i < values.size(); i++) {
                 var iT = values.get(i).describe().getValueType();
                 if (!iT.equals(type)) {

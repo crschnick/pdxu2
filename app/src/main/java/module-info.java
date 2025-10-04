@@ -31,7 +31,6 @@ open module com.crschnick.pdxu.app {
     requires com.sun.jna;
     requires com.sun.jna.platform;
     requires org.slf4j;
-    requires org.slf4j.jdk.platform.logging;
     requires atlantafx.base;
     requires com.vladsch.flexmark;
     requires com.fasterxml.jackson.core;
@@ -45,7 +44,6 @@ open module com.crschnick.pdxu.app {
     requires javafx.media;
     requires javafx.web;
     requires javafx.graphics;
-    requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
     requires io.sentry;
     requires info.picocli;
@@ -54,7 +52,6 @@ open module com.crschnick.pdxu.app {
     requires jdk.management;
     requires jdk.management.agent;
     requires java.net.http;
-    requires org.jetbrains.annotations;
     requires org.kohsuke.github;
     requires com.crschnick.pdxu.io;
     requires com.crschnick.pdxu.model;
@@ -63,7 +60,6 @@ open module com.crschnick.pdxu.app {
     requires com.realityinteractive.imageio.tga;
     requires java.desktop;
     requires com.github.kwhat.jnativehook;
-    requires io.github.ititus.ddsiio;
 
     // Required runtime modules
     requires jdk.charsets;
@@ -78,6 +74,7 @@ open module com.crschnick.pdxu.app {
     requires jdk.zipfs;
     requires org.graalvm.polyglot;
     requires org.graalvm.js;
+    requires io.github.ititus.ddsiio;
 
     uses ModuleLayerLoader;
     uses Module;

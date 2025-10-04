@@ -4,9 +4,7 @@ import com.crschnick.pdxu.app.comp.base.TooltipHelper;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class GuiTooltips {

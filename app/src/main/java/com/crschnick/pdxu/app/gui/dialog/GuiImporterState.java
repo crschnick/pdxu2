@@ -1,6 +1,5 @@
 package com.crschnick.pdxu.app.gui.dialog;
 
-import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.savegame.FileImportTarget;
 import com.crschnick.pdxu.app.savegame.SavegameWatcher;

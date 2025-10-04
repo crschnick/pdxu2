@@ -2,17 +2,11 @@ package com.crschnick.pdxu.app.installation;
 
 
 import com.crschnick.pdxu.app.installation.dist.GameDist;
-import com.crschnick.pdxu.app.installation.dist.GameDists;
-import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.issue.TrackEvent;
-import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.model.GameVersion;
 import org.apache.commons.collections4.BidiMap;
-import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.collections4.bidimap.DualLinkedHashBidiMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,7 +1,6 @@
 package com.crschnick.pdxu.app.savegame;
 
 
-import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
@@ -11,7 +10,6 @@ import com.crschnick.pdxu.io.savegame.SavegameParseResult;
 import com.crschnick.pdxu.io.savegame.SavegameType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;

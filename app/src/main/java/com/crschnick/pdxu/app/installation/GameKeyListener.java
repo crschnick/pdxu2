@@ -5,7 +5,6 @@ import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.savegame.SavegameActions;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import org.slf4j.LoggerFactory;
 
 public class GameKeyListener implements NativeKeyListener {
 

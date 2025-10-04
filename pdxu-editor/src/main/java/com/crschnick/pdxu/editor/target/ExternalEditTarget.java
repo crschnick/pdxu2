@@ -1,7 +1,6 @@
 package com.crschnick.pdxu.editor.target;
 
 import com.crschnick.pdxu.app.core.AppLayoutModel;
-import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameFileContext;
 import com.crschnick.pdxu.app.installation.GameInstallation;

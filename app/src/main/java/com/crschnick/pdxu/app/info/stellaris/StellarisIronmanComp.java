@@ -33,7 +33,7 @@ public class StellarisIronmanComp extends SimpleInfoComp {
     }
 
     @Override
-    protected void init(SavegameContent content, SavegameData data) {
+    protected void init(SavegameContent content, SavegameData<?> data) {
         this.ironman = data.isIronman();
     }
 

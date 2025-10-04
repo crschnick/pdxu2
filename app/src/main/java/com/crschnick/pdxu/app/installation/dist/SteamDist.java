@@ -234,7 +234,7 @@ public class SteamDist extends GameDist {
     }
 
     @Override
-    public void startLauncher(Map<String, String> env) throws IOException {
+    public void startLauncher(Map<String, String> env) {
         openSteamURI("steam://run/" + getGame().getSteamAppId() + "//");
     }
 

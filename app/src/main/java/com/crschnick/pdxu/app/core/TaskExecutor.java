@@ -5,7 +5,6 @@ import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

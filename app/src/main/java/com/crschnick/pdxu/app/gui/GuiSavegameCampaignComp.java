@@ -2,20 +2,14 @@ package com.crschnick.pdxu.app.gui;
 
 import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.comp.base.IconButtonComp;
-import com.crschnick.pdxu.app.core.AppFont;
 import com.crschnick.pdxu.app.core.AppFontSizes;
-import com.crschnick.pdxu.app.core.AppI18n;
-import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.core.window.AppDialog;
-import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import com.crschnick.pdxu.app.savegame.SavegameActions;
 import com.crschnick.pdxu.app.savegame.SavegameCampaign;
 import com.crschnick.pdxu.app.savegame.SavegameContext;
 import com.crschnick.pdxu.app.savegame.SavegameEntry;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.SetChangeListener;
@@ -23,8 +17,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -32,7 +24,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import lombok.AllArgsConstructor;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.*;
 

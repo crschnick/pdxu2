@@ -11,10 +11,12 @@ public class AppNativeHook {
                 GlobalScreen.registerNativeHook();
             }
         } catch (Throwable ex) {
-            ErrorEventFactory.fromThrowable("Unable to register native hook.\n" +
-                    "This might be a permissions issue with your system. " +
-                    "In-game keyboard shortcuts will be unavailable!" +
-                    "\nRestart the Pdx-Unlimiter once the permission issues are fixed to enable in-game shortcuts.", ex).handle();
+            ErrorEventFactory.fromThrowable("""
+                    Unable to register native hook.
+                    This might be a permissions issue with your system.
+                    In-game keyboard shortcuts will be unavailable!
+                    
+                    Restart the Pdx-Unlimiter once the permission issues are fixed to enable in-game shortcuts.""", ex).handle();
         }
     }
 

@@ -24,7 +24,7 @@ public class StellarisFleetsComp extends SimpleInfoComp {
     @Override
     public Region create(SavegameData<?> data) {
         var r = super.create(data);
-        var img = (ImageView) ((StackPane) ((Label) ((StackPane) r).getChildren().get(0)).getGraphic()).getChildren().get(0);
+        var img = (ImageView) ((StackPane) ((Label) ((StackPane) r).getChildren().getFirst()).getGraphic()).getChildren().getFirst();
         img.fitWidthProperty().unbind();
         img.fitHeightProperty().unbind();
         img.setFitWidth(25);

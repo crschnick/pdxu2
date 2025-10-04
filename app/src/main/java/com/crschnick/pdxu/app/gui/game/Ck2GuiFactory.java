@@ -8,13 +8,9 @@ import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ImageHelper;
 import com.crschnick.pdxu.model.ck2.Ck2Tag;
 import javafx.beans.binding.Bindings;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public class Ck2GuiFactory extends GameGuiFactory<Ck2Tag, Ck2SavegameInfo> {
 

@@ -16,7 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,7 +83,7 @@ public class SavegameActions {
         SavegameType type = SavegameStorage.get(g).getType();
         SavegameParseResult r = null;
         try {
-            var file = savegames.get(0).path;
+            var file = savegames.getFirst().path;
             var bytes = Files.readAllBytes(file);
             if (type.isBinary(bytes)) {
                 bytes = RakalyHelper.toEquivalentPlaintext(file);
@@ -103,7 +102,7 @@ public class SavegameActions {
             @Override
             public void success(SavegameParseResult.Success s) {
                 try {
-                    var targetUuuid = savegames.get(0).getCampaignIdOverride()
+                    var targetUuuid = savegames.getFirst().getCampaignIdOverride()
                             .orElse(type.getCampaignIdHeuristic(s.content));
                     SavegameStorage.get(g).getSavegameCampaign(targetUuuid)
                             .flatMap(col -> col.entryStream().findFirst()).ifPresent(entry -> {
@@ -127,7 +126,7 @@ public class SavegameActions {
             return;
         }
 
-        FileImporter.importTargets(Set.of(savegames.get(0)));
+        FileImporter.importTargets(Set.of(savegames.getFirst()));
     }
 
     public static void importLatestAndLaunch(Game g) {
@@ -136,9 +135,9 @@ public class SavegameActions {
             return;
         }
 
-        var target = savegames.get(0);
+        var target = savegames.getFirst();
         var checksum = target.getSourceFileChecksum();
-        savegames.get(0).importTarget(s -> {
+        savegames.getFirst().importTarget(s -> {
             if (s.isEmpty()) {
                 SavegameStorage.get(g).getEntryForSourceFileChecksum(checksum).ifPresent(e -> {
                     // The info is loaded asynchronously only when the savegame is opened in the gui.

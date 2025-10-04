@@ -141,7 +141,7 @@ public class TextFormatTokenizer {
     }
 
 
-    private boolean checkBuggyCommentValue(char c) throws ParseException {
+    private boolean checkBuggyCommentValue(char c) {
         if (isInQuotes || isInBlock || isInComment) {
             return false;
         }
@@ -291,7 +291,7 @@ public class TextFormatTokenizer {
         }
     }
 
-    private boolean checkForControlTokenKey(byte controlToken) throws ParseException {
+    private boolean checkForControlTokenKey(byte controlToken) {
         // It is not possible to differentiate with multikey nodes between } as key and a multikey node
 //        if (controlToken == CLOSE_GROUP) {
 //            if (getSuccessorByte() == EQUALS_CHAR) {

@@ -12,7 +12,6 @@ import com.crschnick.pdxu.model.GameVersion;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -412,7 +411,7 @@ public interface GameInstallType {
         }
 
         @Override
-        public void writeLaunchConfig(Path userDir, String name, Instant lastPlayed, Path path, GameVersion version) throws IOException {
+        public void writeLaunchConfig(Path userDir, String name, Instant lastPlayed, Path path, GameVersion version) {
 
         }
 
@@ -500,7 +499,7 @@ public interface GameInstallType {
         }
 
         @Override
-        public void writeLaunchConfig(Path userDir, String name, Instant lastPlayed, Path path, GameVersion version) throws IOException {
+        public void writeLaunchConfig(Path userDir, String name, Instant lastPlayed, Path path, GameVersion version) {
 
         }
 
@@ -540,7 +539,7 @@ public interface GameInstallType {
         }
 
         @Override
-        public List<String> getEnabledMods(Path dir, Path userDir) throws Exception {
+        public List<String> getEnabledMods(Path dir, Path userDir) {
             return List.of();
         }
     };

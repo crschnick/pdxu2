@@ -1,13 +1,10 @@
 package com.crschnick.pdxu.app.comp.base;
 
-import atlantafx.base.layout.InputGroup;
 import atlantafx.base.theme.Styles;
 import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppFontSizes;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppMainWindow;
-import com.crschnick.pdxu.app.gui.GuiStyle;
-import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.installation.InvalidInstallationException;
@@ -18,20 +15,9 @@ import com.crschnick.pdxu.app.installation.dist.WindowsStoreDist;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.platform.LabelGraphic;
 import javafx.beans.property.*;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import lombok.AllArgsConstructor;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
 import java.nio.file.Files;

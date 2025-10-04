@@ -6,8 +6,6 @@ import com.crschnick.pdxu.app.util.FileSystemHelper;
 import com.crschnick.pdxu.app.util.OsType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

@@ -1,11 +1,9 @@
 package com.crschnick.pdxu.io.node;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.stream.Collectors;
 
 public class MultiKeyValueNode extends ArrayNode {
 
@@ -78,8 +76,8 @@ public class MultiKeyValueNode extends ArrayNode {
             return true;
         }
 
-        for (int i = 0; i < keyScalars.length; i++) {
-            if (matcher.matchesScalar(context, keyScalars[i])) {
+        for (int keyScalar : keyScalars) {
+            if (matcher.matchesScalar(context, keyScalar)) {
                 return true;
             }
         }
@@ -118,8 +116,8 @@ public class MultiKeyValueNode extends ArrayNode {
 
     @Override
     public boolean forEach(BiPredicate<String, Node> c, boolean includeNullKeys) {
-        for (int i = 0; i < keyScalars.length; i++) {
-            var key = context.evaluate(keyScalars[i]);
+        for (int keyScalar : keyScalars) {
+            var key = context.evaluate(keyScalar);
             if (!c.test(key, value)) {
                 return false;
             }
@@ -128,7 +126,7 @@ public class MultiKeyValueNode extends ArrayNode {
     }
 
     @Override
-    protected void writeFlatInternal(NodeWriter writer) throws IOException {
+    protected void writeFlatInternal(NodeWriter writer) {
         throw new UnsupportedOperationException();
     }
 

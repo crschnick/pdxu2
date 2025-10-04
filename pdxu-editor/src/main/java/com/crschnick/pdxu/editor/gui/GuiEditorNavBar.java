@@ -10,7 +10,6 @@ import com.crschnick.pdxu.editor.EditorNavLocation;
 import com.crschnick.pdxu.editor.EditorState;
 import com.crschnick.pdxu.editor.adapter.EditorSavegameAdapter;
 import com.crschnick.pdxu.editor.node.EditorRealNode;
-import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -121,7 +120,7 @@ public class GuiEditorNavBar {
         edState.getNavigation().currentProperty().addListener((c, o, n) -> {
             Platform.runLater(() -> {
                 if (p.getChildren().size() == 2) {
-                    p.getChildren().remove(0);
+                    p.getChildren().removeFirst();
                 }
 
                 if (n.getEditorNode() != null && n.getEditorNode().isReal() &&
@@ -130,7 +129,7 @@ public class GuiEditorNavBar {
                         var tag = EditorSavegameAdapter.ALL.get(edState.getFileContext().getGame())
                                 .createNodeTag(edState, (EditorRealNode) n.getEditorNode(), null);
                         if (tag != null) {
-                            p.getChildren().add(0, tag);
+                            p.getChildren().addFirst(tag);
                         }
                     } catch (Exception ex) {
                         ErrorEventFactory.fromThrowable(ex).handle();

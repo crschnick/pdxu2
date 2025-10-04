@@ -3,7 +3,6 @@ package com.crschnick.pdxu.app.gui.game;
 import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
-import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.util.ImageHelper;
 import com.crschnick.pdxu.model.hoi4.Hoi4Tag;
 import javafx.beans.value.ChangeListener;

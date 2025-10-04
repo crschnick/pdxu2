@@ -3,14 +3,11 @@ package com.crschnick.pdxu.editor.gui;
 
 import com.crschnick.pdxu.app.comp.base.TooltipHelper;
 import com.crschnick.pdxu.app.core.window.AppSideWindow;
-import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.util.CascadeDirectoryHelper;
 import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.ImageHelper;
-import com.crschnick.pdxu.app.util.ThreadHelper;
 import com.crschnick.pdxu.editor.EditorState;
 import com.crschnick.pdxu.editor.node.EditorRealNode;
-import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

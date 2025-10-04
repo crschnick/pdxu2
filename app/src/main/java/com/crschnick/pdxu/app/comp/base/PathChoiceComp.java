@@ -1,6 +1,5 @@
 package com.crschnick.pdxu.app.comp.base;
 
-import atlantafx.base.theme.Styles;
 import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppMainWindow;
@@ -8,9 +7,6 @@ import com.crschnick.pdxu.app.platform.LabelGraphic;
 import com.crschnick.pdxu.app.platform.PlatformThread;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.Node;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;

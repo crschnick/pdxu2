@@ -2,7 +2,6 @@ package com.crschnick.pdxu.app.prefs;
 
 import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.base.GameDistChoiceComp;
-import com.crschnick.pdxu.app.comp.base.PathChoiceComp;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.installation.dist.GameDist;

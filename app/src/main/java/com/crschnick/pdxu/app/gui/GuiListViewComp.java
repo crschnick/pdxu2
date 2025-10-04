@@ -42,7 +42,7 @@ public class GuiListViewComp<T> extends SimpleComp {
             pane.getChildren().setAll(listView);
 
             if (fixSize && newItems.size() > 0) {
-                listView.fixedCellSizeProperty().bind(((Region) newItems.get(0)).heightProperty());
+                listView.fixedCellSizeProperty().bind(((Region) newItems.getFirst()).heightProperty());
             }
             newItems.forEach(li -> listView.getItems().add(li));
         });
@@ -50,7 +50,7 @@ public class GuiListViewComp<T> extends SimpleComp {
         list.addListener((c, o, n) -> {
             Platform.runLater(() -> {
                 var map = new HashMap<T, Region>();
-                ((ListView<Node>) pane.getChildren().get(0))
+                ((ListView<Node>) pane.getChildren().getFirst())
                         .getItems().forEach(node -> map.put((T) node.getProperties().get("list-item"), (Region) node));
 
                 ListView<Node> listView = new ListView<>();
@@ -68,12 +68,12 @@ public class GuiListViewComp<T> extends SimpleComp {
                 listView.prefWidthProperty().bind(pane.widthProperty());
                 listView.prefHeightProperty().bind(pane.heightProperty());
 
-                var old = (ListView<?>) pane.getChildren().get(0);
+                var old = (ListView<?>) pane.getChildren().getFirst();
                 old.getItems().clear();
                 pane.getChildren().setAll(listView);
 
                 if (fixSize && newItems.size() > 0) {
-                    listView.fixedCellSizeProperty().bind(((Region) newItems.get(0)).heightProperty());
+                    listView.fixedCellSizeProperty().bind(((Region) newItems.getFirst()).heightProperty());
                 }
                 newItems.forEach(li -> listView.getItems().add(li));
             });

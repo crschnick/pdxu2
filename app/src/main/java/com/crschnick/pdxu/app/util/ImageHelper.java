@@ -5,7 +5,6 @@ import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.realityinteractive.imageio.tga.TGAImageReaderSpi;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.*;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.imageio.spi.IIORegistry;

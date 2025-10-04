@@ -4,11 +4,9 @@ import com.crschnick.pdxu.app.prefs.SupportedLocale;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 @Getter
 @AllArgsConstructor

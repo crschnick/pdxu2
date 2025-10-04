@@ -87,7 +87,7 @@ public class Vic3CoatOfArmsCache extends GameCacheManager.Cache {
                     () -> info.getData().vic3().getCoatOfArms() :
                     () -> CoatOfArms.fromNode(all.getNodeForKeyIfExistent(tag.getTag()).orElseThrow(), s -> {
                         var found = all.getNodesForKey(s);
-                        return found.size() > 0 ? found.get(found.size() - 1) : null;
+                        return found.size() > 0 ? found.getLast() : null;
                     });
             var img = Vic3TagRenderer.renderImage(
                     coa.get(), context, (int) (IMG_SIZE * 1.5), IMG_SIZE);

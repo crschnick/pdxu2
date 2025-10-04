@@ -1,11 +1,9 @@
 package com.crschnick.pdxu.app.installation;
 
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
-import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.util.JacksonMapper;
 import com.crschnick.pdxu.io.node.Node;
 import com.crschnick.pdxu.io.parser.TextFormatParser;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

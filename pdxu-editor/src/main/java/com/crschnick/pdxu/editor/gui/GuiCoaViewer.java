@@ -2,12 +2,8 @@ package com.crschnick.pdxu.editor.gui;
 
 import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.core.window.AppModifiedStage;
-import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.core.window.AppWindowStyle;
-import com.crschnick.pdxu.app.gui.GuiStyle;
-import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.Hyperlinks;
-import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

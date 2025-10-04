@@ -3,7 +3,6 @@ package com.crschnick.pdxu.app.core;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameCacheManager;
-import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.issue.TrackEvent;
 import com.crschnick.pdxu.app.savegame.SavegameCampaign;
@@ -14,14 +13,11 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.SetChangeListener;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 public class SavegameManagerState<T, I extends SavegameInfo<T>> {
 

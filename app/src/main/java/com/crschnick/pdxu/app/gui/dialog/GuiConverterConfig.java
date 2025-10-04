@@ -6,8 +6,6 @@ import com.crschnick.pdxu.app.comp.base.ModalOverlay;
 import com.crschnick.pdxu.app.comp.base.ScrollComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.window.AppDialog;
-import com.crschnick.pdxu.app.core.window.AppSideWindow;
-import com.crschnick.pdxu.app.gui.GuiTooltips;
 import com.crschnick.pdxu.app.installation.GameLanguage;
 import com.crschnick.pdxu.app.installation.GameLocalisationHelper;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
@@ -17,24 +15,14 @@ import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.Hyperlinks;
 import com.crschnick.pdxu.io.node.Node;
 import com.crschnick.pdxu.io.parser.TextFormatParser;
-import com.jfoenix.controls.JFXRadioButton;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import lombok.Value;
 
 import java.util.Map;
-import java.util.Optional;
-
-import static com.crschnick.pdxu.app.gui.GuiStyle.CLASS_CONTENT_DIALOG;
 
 @Value
 public class GuiConverterConfig {

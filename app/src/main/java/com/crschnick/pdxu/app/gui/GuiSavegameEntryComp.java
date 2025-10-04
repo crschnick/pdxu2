@@ -6,7 +6,6 @@ import com.crschnick.pdxu.app.core.AppResources;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.core.window.AppDialog;
-import com.crschnick.pdxu.app.core.window.AppSideWindow;
 import com.crschnick.pdxu.app.gui.dialog.GuiSavegameNotes;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.GameInstallation;
@@ -19,7 +18,6 @@ import com.crschnick.pdxu.app.util.OsType;
 import com.crschnick.pdxu.app.util.RakalyHelper;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXSpinner;
-import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +27,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -228,7 +225,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 branch.getStyleClass().add("branch-button");
                 branch.setAccessibleText("Branch");
                 GuiTooltips.install(branch, AppI18n.get("branchSavegame"));
-                dynamicButtons.getChildren().add(0, branch);
+                dynamicButtons.getChildren().addFirst(branch);
             });
         });
 
@@ -277,7 +274,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
                 }
                 if (add) {
                     Platform.runLater(() -> {
-                        dynamicButtons.getChildren().add(0, edit);
+                        dynamicButtons.getChildren().addFirst(edit);
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -343,7 +340,7 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
         };
         createEntryContainer.run();
 
-        entry.stateProperty().addListener(new ChangeListener<SavegameEntry.State>() {
+        entry.stateProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends SavegameEntry.State> observable, SavegameEntry.State oldValue, SavegameEntry.State n) {
                 boolean showLoad = n == SavegameEntry.State.LOADING;

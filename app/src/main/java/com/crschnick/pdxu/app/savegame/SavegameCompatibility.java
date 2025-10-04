@@ -1,6 +1,5 @@
 package com.crschnick.pdxu.app.savegame;
 
-import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
 import com.crschnick.pdxu.model.GameVersion;
