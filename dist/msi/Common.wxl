@@ -5,11 +5,16 @@
 	<String Id="CoreName" Value="Pdx-Unlimiter Core" />
 	<String Id="DesktopName" Value="Desktop Shortcut" />
 	<String Id="StartMenuName" Value="Start Menu Shortcut" />
+	<String Id="FileAssociationsName" Value="File extension associations" />
 
 	<String Id="CoreDesc" Value="The essential Pdx-Unlimiter component files." />
 	<String Id="DesktopDesc" Value="Creates a desktop shortcut." />
 	<String Id="StartMenuDesc" Value="Creates a start menu shortcut." />
+	<String Id="FileAssociationsDesc" Value="Register savegame files to open with the Pdx-Unlimiter" />
 
+	<String Id="Eu4Desc" Value="Europa Universalis IV savegame" />
+	
+	<String Id="OpenWith" Value="Open with Pdx-Unlimiter" />
 	<String Id="NewerVersionInstalled" Value="A newer version is already installed." />
 	<String Id="DesktopShortcutDescription" Value="Starts Pdx-Unlimiter" />
 	<String Id="Description" Value="An installer for the Pdx-Unlimiter desktop application" />

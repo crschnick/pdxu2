@@ -1,10 +1,10 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment>
 			<ComponentGroup Id="FileComponents" Directory="APPLICATIONFOLDER">
-				<Files Include="..\build\dist\installer-win\**" />
-				<Component Id="SystemFileIdentifier" Condition="ALLUSERS=1 OR (ALLUSERS=2 AND Privileged)">
-					<File Id="SystemFileIdentifierFile" Source="system" KeyPath="yes" />
-				</Component>
+				<Files Include="..\build\dist\installer-win\**">
+					<Exclude Files="..\build\dist\installer-win\$(var.ExecutableName).exe" />
+				</Files>
+				<File Id="Executable" Source="..\build\dist\installer-win\$(var.ExecutableName).exe"></File>
 			</ComponentGroup>
 
 
@@ -24,6 +24,17 @@
 				<RemoveFolder Id="RemoveDesktopShortcut" On="uninstall" />
 
 				<RegistryValue Id="RegDesktopShortcutKey" Root="HKMU" Key="SOFTWARE\$(var.DynamicProductName)" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+			</Component>
+
+			<!-- File associations -->
+			<Component Id="FileAssociations">
+				<ProgId Id="Eu4ProgId" Description="!(loc.Eu4Desc)" Icon="Executable">
+					<Extension Id="eu4">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				
+				<RegistryValue Id="FileAssociationsKey" Root="HKMU" Key="SOFTWARE\$(var.DynamicProductName)" Name="FileAssociations" Value="1" Type="integer" KeyPath="yes" />
 			</Component>
 	</Fragment>
 </Wix>

@@ -50,7 +50,7 @@ public class BasicUpdater extends UpdateHandler {
                         var url = rel.getRepository() + "/releases/download/" + rel.getVersion() + "/" +
                                 AppNames.ofCurrent().getDistName() + "-installer-windows-" + AppProperties.get().getArch() + ".msi";
                         AppOperationMode.executeAfterShutdown(() -> {
-                            var command = "start \"\" /wait msiexec /i \"" + url + "\" /qb&start \"\" \"" + AppInstallation.ofCurrent().getExecutablePath() + "\"";
+                            var command = "set MSIFASTINSTALL=7&set DISABLEROLLBACK=1&start \"\" /wait msiexec /i \"" + url + "\" /qb&start \"\" \"" + AppInstallation.ofCurrent().getExecutablePath() + "\"";
                             LocalExec.executeAsync("cmd", "/c", command);
                         });
                     },

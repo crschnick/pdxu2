@@ -33,6 +33,9 @@
 		<Feature Id="StartMenuShortcut" Title="!(loc.StartMenuName)" Description="!(loc.StartMenuDesc)" Level="1">
 			<ComponentRef Id="StartMenuShortcut" />
 		</Feature>
+		<Feature Id="FileAssociations" Title="!(loc.FileAssociationsName)" Description="!(loc.FileAssociationsDesc)" Level="1">
+			<ComponentRef Id="FileAssociations" />
+		</Feature>
 		
 		<ui:WixUI Id="WixUI_Custom" />
 	</Package>
