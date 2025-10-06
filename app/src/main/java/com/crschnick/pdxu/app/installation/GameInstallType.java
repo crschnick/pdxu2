@@ -382,7 +382,7 @@ public interface GameInstallType {
         }
     };
 
-    GameInstallType CK2 = new StandardInstallType("CK2game") {
+    GameInstallType CK2 = new StandardInstallType(OsType.ofLocal() == OsType.MACOS ? "ck2" : "CK2game") {
 
         public String getCompatibleSavegameName(String name) {
             return Normalizer.normalize(super.getCompatibleSavegameName(name), Normalizer.Form.NFC)
