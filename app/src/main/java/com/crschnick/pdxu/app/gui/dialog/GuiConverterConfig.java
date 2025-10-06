@@ -10,6 +10,7 @@ import com.crschnick.pdxu.app.installation.GameLanguage;
 import com.crschnick.pdxu.app.installation.GameLocalisationHelper;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.platform.OptionsBuilder;
+import com.crschnick.pdxu.app.prefs.AppPrefs;
 import com.crschnick.pdxu.app.util.ConverterSupport;
 import com.crschnick.pdxu.app.util.DesktopHelper;
 import com.crschnick.pdxu.app.util.Hyperlinks;
@@ -44,6 +45,7 @@ public class GuiConverterConfig {
         var modal = ModalOverlay.of("converterUsageTitle", AppDialog.dialogTextKey("converterUsageContent"));
         modal.addButton(new ModalButton("showDownloads", () -> {
             Hyperlinks.open(converterSupport.getDownloadLink());
+            AppPrefs.get().selectCategory("paradoxConverters");
         }, true, true));
         modal.show();
     }

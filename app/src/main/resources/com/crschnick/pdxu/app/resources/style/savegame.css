@@ -3,7 +3,11 @@
     -fx-border-width: 0;
 }
 
-.entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover .entry {
+.root:light .entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover .entry {
+    -fx-background-color: derive(-color-bg-default-transparent, -2%);
+}
+
+.root:dark .entry-list .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover .entry {
     -fx-background-color: -color-bg-default;
 }
 

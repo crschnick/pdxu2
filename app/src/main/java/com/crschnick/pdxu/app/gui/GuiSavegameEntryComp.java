@@ -1,5 +1,6 @@
 package com.crschnick.pdxu.app.gui;
 
+import atlantafx.base.controls.Spacer;
 import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.AppResources;
@@ -23,6 +24,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -409,6 +411,10 @@ public class GuiSavegameEntryComp<T, I extends SavegameInfo<T>> extends SimpleCo
 //        }
 
         content.setCursor(Cursor.HAND);
-        return entryNode;
+
+        // Somehow, the vertical padding on list cells does not apply
+        // So do this instead
+        var box = new VBox(entryNode, new Spacer(8, Orientation.VERTICAL));
+        return box;
     }
 }

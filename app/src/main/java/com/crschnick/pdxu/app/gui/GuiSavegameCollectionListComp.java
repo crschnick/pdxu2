@@ -7,6 +7,7 @@ import com.crschnick.pdxu.app.comp.base.IconButtonComp;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.gui.dialog.GuiImporter;
 import com.crschnick.pdxu.app.info.SavegameInfo;
+import com.crschnick.pdxu.app.installation.dist.GameDistLauncher;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
@@ -21,11 +22,20 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
 
     private final SavegameManagerState<T,I> savegameManagerState;
 
+    private Comp<?> createLaunchButton() {
+        var b = new IconButtonComp("mdi-play", () -> {
+            GameDistLauncher.startLauncher(savegameManagerState.getGame());
+        });
+        b.apply(struc -> {
+            struc.get().getStyleClass().remove(Styles.FLAT);
+        });
+        return b;
+    }
+
     private Comp<?> createImportButton() {
-        var b = new IconButtonComp("mdi2l-layers", () -> {
+        var b = new IconButtonComp("mdi-import", () -> {
             GuiImporter.createImporterDialog(savegameManagerState.getGame());
         });
-        b.styleClass("import-button");
         b.apply(struc -> {
             struc.get().getStyleClass().remove(Styles.FLAT);
         });
@@ -40,8 +50,15 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
             });
         });
         var filter = new GuiFilterComp(filterProperty).createRegion();
+        var launchButton = createLaunchButton().createRegion();
         var importButton = createImportButton().createRegion();
-        var hbox = new HBox(filter, importButton);
+        var hbox = new HBox(launchButton, filter, importButton);
+        launchButton.minHeightProperty().bind(filter.heightProperty());
+        launchButton.prefHeightProperty().bind(filter.heightProperty());
+        launchButton.maxHeightProperty().bind(filter.heightProperty());
+        launchButton.minWidthProperty().bind(filter.heightProperty());
+        launchButton.prefWidthProperty().bind(filter.heightProperty());
+        launchButton.maxWidthProperty().bind(filter.heightProperty());
         importButton.minHeightProperty().bind(filter.heightProperty());
         importButton.prefHeightProperty().bind(filter.heightProperty());
         importButton.maxHeightProperty().bind(filter.heightProperty());
