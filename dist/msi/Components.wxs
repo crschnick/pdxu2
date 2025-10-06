@@ -33,6 +33,36 @@
 						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
 					</Extension>
 				</ProgId>
+				<ProgId Id="Ck3ProgId" Description="!(loc.Ck3Desc)" Icon="Executable">
+					<Extension Id="ck3">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				<ProgId Id="Hoi4ProgId" Description="!(loc.Hoi4Desc)" Icon="Executable">
+					<Extension Id="hoi4">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				<ProgId Id="StellarisProgId" Description="!(loc.StellarisDesc)" Icon="Executable">
+					<Extension Id="sav">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				<ProgId Id="Ck2ProgId" Description="!(loc.Ck2Desc)" Icon="Executable">
+					<Extension Id="ck2">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				<ProgId Id="Vic2ProgId" Description="!(loc.Vic2Desc)" Icon="Executable">
+					<Extension Id="v2">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
+				<ProgId Id="Vic3ProgId" Description="!(loc.Vic3Desc)" Icon="Executable">
+					<Extension Id="v3">
+						<Verb Id="open" Command="!(loc.OpenWith)" TargetFile="Executable" Argument="&quot;%1&quot;"/>
+					</Extension>
+				</ProgId>
 				
 				<RegistryValue Id="FileAssociationsKey" Root="HKMU" Key="SOFTWARE\$(var.DynamicProductName)" Name="FileAssociations" Value="1" Type="integer" KeyPath="yes" />
 			</Component>

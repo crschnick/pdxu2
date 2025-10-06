@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.savegame;
 
 
+import com.crschnick.pdxu.app.core.AppLayoutModel;
 import com.crschnick.pdxu.app.core.TaskExecutor;
 import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.installation.GameInstallation;
@@ -113,89 +114,6 @@ public abstract class FileImportTarget {
 
     public abstract Path getPath();
 
-    public static final class DownloadImportTarget extends FileImportTarget {
-
-        private final URL url;
-        private Path downloadedFile;
-
-        public DownloadImportTarget(URL url) {
-            this.url = url;
-        }
-
-        @Override
-        public void importTarget(Consumer<Optional<SavegameParseResult>> onFinish) {
-            if (GameInstallation.ALL.containsKey(Game.EU4)) {
-                return;
-            }
-
-            TaskExecutor.getInstance().submitTask(() -> {
-                try {
-                    HttpClient client = HttpClient.newBuilder()
-                            .version(HttpClient.Version.HTTP_2)
-                            .followRedirects(HttpClient.Redirect.NORMAL)
-                            .build();
-
-                    HttpRequest request = HttpRequest.newBuilder()
-                            .uri(url.toURI())
-                            .GET()
-                            .build();
-
-                    HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-                    byte[] data = response.body();
-
-                    String tempDir = System.getProperty("java.io.tmpdir");
-                    this.downloadedFile = Paths.get(tempDir).resolve("pdxu")
-                            .resolve(Path.of(url.getPath()).getFileName().toString() + ".eu4");
-                    FileUtils.forceMkdirParent(downloadedFile.toFile());
-                    Files.write(downloadedFile, data);
-
-                    onFinish.accept(SavegameStorage.ALL.get(Game.EU4)
-                            .importSavegame(downloadedFile, true, null, getCampaignIdOverride().orElse(null)));
-                } catch (Exception e) {
-                    ErrorEventFactory.fromThrowable(e).handle();
-                }
-            }, true);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            DownloadImportTarget that = (DownloadImportTarget) o;
-            return Objects.equals(url, that.url);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(url);
-        }
-
-        @Override
-        public void delete() {
-            TaskExecutor.getInstance().submitTask(() -> {
-                if (!Files.exists(downloadedFile)) {
-                    return;
-                }
-
-                try {
-                    Files.delete(downloadedFile);
-                } catch (IOException e) {
-                    ErrorEventFactory.fromThrowable(e).handle();
-                }
-            }, false);
-        }
-
-        @Override
-        public String getRawName() {
-            return url.toString();
-        }
-
-        @Override
-        public Path getPath() {
-            return downloadedFile;
-        }
-    }
-
     public static class StandardImportTarget extends FileImportTarget implements Comparable<StandardImportTarget> {
 
         private final SavegameStorage<?, ?> savegameStorage;
@@ -239,6 +157,11 @@ public abstract class FileImportTarget {
                 // File might no longer exist, since this is executed asynchronously in the task executor queue
                 if (!Files.exists(path)) {
                     return;
+                }
+
+                var layout = AppLayoutModel.get();
+                if (layout != null) {
+                    layout.selectGame(SavegameStorage.ALL.inverseBidiMap().get(savegameStorage));
                 }
 
                 onFinish.accept(savegameStorage.importSavegame(

@@ -13,6 +13,12 @@
 	<String Id="FileAssociationsDesc" Value="Register savegame files to open with the Pdx-Unlimiter" />
 
 	<String Id="Eu4Desc" Value="Europa Universalis IV savegame" />
+	<String Id="Ck3Desc" Value="Crusader Kings 3 savegame" />
+	<String Id="Hoi4Desc" Value="Hearts of Iron IV savegame" />
+	<String Id="StellarisDesc" Value="Stellaris savegame" />
+	<String Id="Ck2Desc" Value="Crusader Kings 2 savegame" />
+	<String Id="Vic2Desc" Value="Victoria 2 savegame" />
+	<String Id="Vic3Desc" Value="Victoria 3 savegame" />
 	
 	<String Id="OpenWith" Value="Open with Pdx-Unlimiter" />
 	<String Id="NewerVersionInstalled" Value="A newer version is already installed." />

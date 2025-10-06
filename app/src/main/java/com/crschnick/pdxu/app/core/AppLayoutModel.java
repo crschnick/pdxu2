@@ -15,6 +15,7 @@ import com.crschnick.pdxu.app.util.GlobalTimer;
 import com.crschnick.pdxu.app.util.Hyperlinks;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -70,6 +71,15 @@ public class AppLayoutModel {
 
         // If no active game is set, select the first one available (if existent)
         return entries.getFirst();
+    }
+
+    public void selectGame(Game game) {
+        var entry = entries.stream().filter(e -> e instanceof GameEntry ge && ge.game == game).findFirst();
+        if (entry.isPresent()) {
+            PlatformThread.runLaterIfNeeded(() -> {
+                selected.setValue(entry.get());
+            });
+        }
     }
 
     public Optional<Game> getActiveGame() {
