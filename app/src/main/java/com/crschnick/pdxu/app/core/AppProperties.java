@@ -5,6 +5,7 @@ import com.crschnick.pdxu.app.core.mode.AppOperationModeSelection;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.issue.TrackEvent;
 
+import com.crschnick.pdxu.app.util.FileSystemHelper;
 import lombok.Value;
 
 import java.io.IOException;
@@ -100,9 +101,7 @@ public class AppProperties {
                 .map(Boolean::parseBoolean)
                 .orElse(true);
 
-        defaultDataDir = AppSystemInfo.ofCurrent()
-                .getUserHome()
-                .resolve("." + AppNames.ofCurrent().getKebapName());
+        defaultDataDir = FileSystemHelper.getUserDocumentsPath().resolve(AppNames.ofCurrent().getName());
         dataDir = Optional.ofNullable(System.getProperty(AppNames.propertyName("dataDir")))
                 .map(s -> {
                     var p = Path.of(s);

@@ -5,25 +5,29 @@ import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.CompStructure;
 import com.crschnick.pdxu.app.comp.SimpleCompStructure;
 import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import lombok.Setter;
 
 import java.util.List;
 
-public class InputGroupComp extends Comp<CompStructure<InputGroup>> {
+public class InputGroupComp extends Comp<CompStructure<HBox>> {
 
     private final List<Comp<?>> entries;
 
     @Setter
     private Comp<?> heightReference;
 
+    @Setter
+    private boolean mergeComps = true;
+
     public InputGroupComp(List<Comp<?>> comps) {
         entries = List.copyOf(comps);
     }
 
     @Override
-    public CompStructure<InputGroup> createBase() {
-        InputGroup b = new InputGroup();
+    public CompStructure<HBox> createBase() {
+        HBox b = mergeComps ? new InputGroup() : new HBox();
         b.getStyleClass().add("input-group-comp");
         for (var entry : entries) {
             b.getChildren().add(entry.createRegion());

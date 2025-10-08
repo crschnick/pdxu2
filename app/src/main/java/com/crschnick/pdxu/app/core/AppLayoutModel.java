@@ -141,13 +141,6 @@ public class AppLayoutModel {
                         new PrefsPageComp(),
                         null),
                 new Entry(
-                        AppI18n.observable("editor"),
-                        new LabelGraphic.IconGraphic("mdi2c-comment-edit-outline"),
-                        null,
-                        () -> {
-                            EditorProvider.get().browseExternalFile();
-                        }),
-                new Entry(
                         AppI18n.observable("docs"),
                         new LabelGraphic.IconGraphic("mdi2b-book-open-variant"),
                         null,

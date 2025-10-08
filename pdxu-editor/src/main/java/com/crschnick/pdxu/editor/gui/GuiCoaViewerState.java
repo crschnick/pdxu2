@@ -2,6 +2,7 @@ package com.crschnick.pdxu.editor.gui;
 
 
 import com.crschnick.pdxu.app.core.AppI18n;
+import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.gui.game.Ck3TagRenderer;
 import com.crschnick.pdxu.app.gui.game.Vic3TagRenderer;
 import com.crschnick.pdxu.app.installation.Game;
@@ -113,7 +114,7 @@ public abstract class GuiCoaViewerState<T extends GuiCoaDisplayType> {
             FileChooser dirChooser = new FileChooser();
             dirChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Image", "*.png"));
             dirChooser.setTitle(AppI18n.get("selectFile"));
-            File file = dirChooser.showSaveDialog(null);
+            File file = dirChooser.showSaveDialog(AppMainWindow.get().getStage());
             if (file == null) {
                 return;
             }

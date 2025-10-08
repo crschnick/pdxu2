@@ -1,7 +1,10 @@
 package com.crschnick.pdxu.editor;
 
+import com.crschnick.pdxu.app.core.AppI18n;
 import com.crschnick.pdxu.app.core.TaskExecutor;
+import com.crschnick.pdxu.app.core.window.AppMainWindow;
 import com.crschnick.pdxu.app.info.SavegameInfo;
+import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.issue.ErrorEventFactory;
 import com.crschnick.pdxu.app.savegame.SavegameEntry;
 import com.crschnick.pdxu.app.savegame.SavegameStorage;
@@ -44,10 +47,11 @@ public class Editor implements EditorProvider {
         createNewEditor(target);
     }
 
-    public void browseExternalFile() {
+    public void browseExternalFile(Game g) {
         Platform.runLater(() -> {
             FileChooser c = new FileChooser();
-            List<File> file = c.showOpenMultipleDialog(null);
+            c.setTitle(AppI18n.get("selectGameFile", g.getTranslatedFullName()));
+            List<File> file = c.showOpenMultipleDialog(AppMainWindow.get().getStage());
             if (file != null) {
                 file.forEach(f -> createNewEditor(new ExternalEditTarget(f.toPath())));
             }

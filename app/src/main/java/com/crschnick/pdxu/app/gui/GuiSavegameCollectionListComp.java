@@ -4,16 +4,20 @@ import atlantafx.base.theme.Styles;
 import com.crschnick.pdxu.app.comp.Comp;
 import com.crschnick.pdxu.app.comp.SimpleComp;
 import com.crschnick.pdxu.app.comp.base.IconButtonComp;
+import com.crschnick.pdxu.app.comp.base.InputGroupComp;
 import com.crschnick.pdxu.app.core.SavegameManagerState;
 import com.crschnick.pdxu.app.gui.dialog.GuiImporter;
 import com.crschnick.pdxu.app.info.SavegameInfo;
 import com.crschnick.pdxu.app.installation.dist.GameDistLauncher;
+import com.crschnick.pdxu.app.util.EditorProvider;
 import com.crschnick.pdxu.app.util.ThreadHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 import static com.crschnick.pdxu.app.gui.GuiStyle.CLASS_CAMPAIGN_LIST;
 
@@ -22,12 +26,24 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
 
     private final SavegameManagerState<T,I> savegameManagerState;
 
+    private Comp<?> createEditButton() {
+        var b = new IconButtonComp("mdi2c-comment-edit-outline", () -> {
+            EditorProvider.get().browseExternalFile(savegameManagerState.getGame());
+        });
+        b.apply(struc -> {
+            struc.get().getStyleClass().remove(Styles.FLAT);
+            struc.get().minWidthProperty().bind(struc.get().heightProperty());
+        });
+        return b;
+    }
+
     private Comp<?> createLaunchButton() {
         var b = new IconButtonComp("mdi-play", () -> {
             GameDistLauncher.startLauncher(savegameManagerState.getGame());
         });
         b.apply(struc -> {
             struc.get().getStyleClass().remove(Styles.FLAT);
+            struc.get().minWidthProperty().bind(struc.get().heightProperty());
         });
         return b;
     }
@@ -38,6 +54,7 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
         });
         b.apply(struc -> {
             struc.get().getStyleClass().remove(Styles.FLAT);
+            struc.get().minWidthProperty().bind(struc.get().heightProperty());
         });
         return b;
     }
@@ -49,27 +66,19 @@ public class GuiSavegameCollectionListComp<T, I extends SavegameInfo<T>> extends
                 savegameManagerState.getFilter().filterProperty().set(newValue);
             });
         });
-        var filter = new GuiFilterComp(filterProperty).createRegion();
-        var launchButton = createLaunchButton().createRegion();
-        var importButton = createImportButton().createRegion();
-        var hbox = new HBox(launchButton, filter, importButton);
-        launchButton.minHeightProperty().bind(filter.heightProperty());
-        launchButton.prefHeightProperty().bind(filter.heightProperty());
-        launchButton.maxHeightProperty().bind(filter.heightProperty());
-        launchButton.minWidthProperty().bind(filter.heightProperty());
-        launchButton.prefWidthProperty().bind(filter.heightProperty());
-        launchButton.maxWidthProperty().bind(filter.heightProperty());
-        importButton.minHeightProperty().bind(filter.heightProperty());
-        importButton.prefHeightProperty().bind(filter.heightProperty());
-        importButton.maxHeightProperty().bind(filter.heightProperty());
-        importButton.minWidthProperty().bind(filter.heightProperty());
-        importButton.prefWidthProperty().bind(filter.heightProperty());
-        importButton.maxWidthProperty().bind(filter.heightProperty());
-        hbox.setSpacing(8);
-        hbox.setPadding(new Insets(8, 8, 0, 8));
-        hbox.setAlignment(Pos.CENTER);
-        HBox.setHgrow(filter, Priority.ALWAYS);
-        return hbox;
+        var filter = new GuiFilterComp(filterProperty).hgrow();
+        var launchButton = createLaunchButton();
+        var importButton = createImportButton();
+        var editButton = createEditButton();
+        var group = new InputGroupComp(List.of(launchButton, editButton, filter, importButton));
+        group.setMergeComps(false);
+        group.setHeightReference(filter);
+        group.apply(struc -> {
+            struc.get().setSpacing(4);
+            struc.get().setPadding(new Insets(8, 8, 0, 8));
+            struc.get().setAlignment(Pos.CENTER);
+        });
+        return group.createRegion();
     }
 
     @Override

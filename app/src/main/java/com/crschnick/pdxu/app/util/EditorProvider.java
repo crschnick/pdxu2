@@ -1,6 +1,7 @@
 package com.crschnick.pdxu.app.util;
 
 import com.crschnick.pdxu.app.info.SavegameInfo;
+import com.crschnick.pdxu.app.installation.Game;
 import com.crschnick.pdxu.app.savegame.SavegameEntry;
 import com.crschnick.pdxu.app.savegame.SavegameStorage;
 
@@ -17,7 +18,7 @@ public interface EditorProvider {
 
     <T,I extends SavegameInfo<T>> void openSavegame(SavegameStorage<T,I> storage, SavegameEntry<T,I> entry);
 
-    void browseExternalFile();
+    void browseExternalFile(Game g);
 
     void openExternalFileIfNoSavegame(Path file);
 

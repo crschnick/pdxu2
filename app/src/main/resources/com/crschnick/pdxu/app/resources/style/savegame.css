@@ -15,6 +15,10 @@
     -fx-border-color: -color-accent-emphasis;
 }
 
+t.entry-list .list-view {
+-fx-border-color: -color-bg-default-transparent;
+}
+
 .entry {
     -fx-border-radius: 4;
     -fx-background-radius: 4;
